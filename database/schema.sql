@@ -51,8 +51,8 @@ CREATE TABLE Category (
 CREATE TABLE Deck_Category (
 	Category_id integer NOT NULL,
 	Deck_id integer NOT NULL
-	CONSTRAINT fk_Category_id FOREIGN KEY (Category_id) REFERENCES Category(Category_id),
-	CONSTRAINT fk_Deck_id FOREIGN KEY (Deck_id) REFERENCES Deck(Deck_id)
+	CONSTRAINT fk_CategoryDeck_id FOREIGN KEY (Category_id) REFERENCES Category(Category_id),
+	CONSTRAINT fk_DeckCat_id FOREIGN KEY (Deck_id) REFERENCES Deck(Deck_id)
 );
 
 CREATE TABLE Deck_Cards (
@@ -65,15 +65,15 @@ CREATE TABLE Deck_Cards (
 CREATE TABLE User_Decks (
 	User_id integer NOT NULL,
 	Deck_id integer NOT NULL
-	CONSTRAINT fk_User_id FOREIGN KEY (User_id) REFERENCES User_info(User_id),
-	CONSTRAINT fk_Deck_id FOREIGN KEY (Deck_id) REFERENCES Deck(Deck_id)
+	CONSTRAINT fk_UserDeck_id FOREIGN KEY (User_id) REFERENCES User_info(User_id),
+	CONSTRAINT fk_DeckUser_id FOREIGN KEY (Deck_id) REFERENCES Deck(Deck_id)
 );
 
 CREATE TABLE Card_Tags (
 	Card_id integer NOT NULL,
 	Tag_id integer NOT NULL
-	CONSTRAINT fk_Card_id FOREIGN KEY (Card_id) REFERENCES Card(Card_id),
-	CONSTRAINT fk_Tag_id FOREIGN KEY (Tag_id) REFERENCES Tags(tags_id)
+	CONSTRAINT fk_CardTag_id FOREIGN KEY (Card_id) REFERENCES Card(Card_id),
+	CONSTRAINT fk_TagCard_id FOREIGN KEY (Tag_id) REFERENCES Tags(tags_id)
 );
 
 Commit Transaction
