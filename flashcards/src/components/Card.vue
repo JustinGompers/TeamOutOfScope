@@ -48,7 +48,7 @@ export default {
             cards: []
         };  
     },
-
+/*
     //borrowed from TodoList.vue file from Building REST APIs tutorial
     //not entirely sure yet how it might be used--assign what comes back from FlashCardsDB to the local cards variable?
     created() {
@@ -110,8 +110,8 @@ export default {
       // set the focus to the input box so the user can start typing a new card
       input.focus();
     }
+    */
   };
-
 
 </script>
 

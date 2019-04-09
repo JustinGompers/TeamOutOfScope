@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <h1 id="title">Flashy Cards</h1>
+    <img id="logo" src="./assets/flashed-clipart-running.gif">
     <login></login>
+    <registration></registration>
     <card></card>
   </div>
 
@@ -9,15 +11,20 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+<<<<<<< HEAD
+//import HelloWorld from './components/HelloWorld.vue'
+=======
+>>>>>>> a640ecb7e11b022ef8931e75e64454331cc79ef7
 import Card from './components/Card.vue'
 import Login from './components/Login.vue'
+import Registration from './components/Registration.vue'
 
 export default {
   name: 'app',
   components: {
     Card,
-    Login
+    Login,
+    Registration
   }
 }
 </script>
@@ -30,5 +37,12 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background: lightblue;
+}
+#logo{
+  width: 25%;
+}
+#title{
+  font-size: 600%;
 }
 </style>
