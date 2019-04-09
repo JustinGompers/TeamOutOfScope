@@ -2,23 +2,25 @@
 -- This script creates all of the database objects (tables, constraints, etc) for the database
 -- *************************************************************************************************
 
-
+USE master;
 GO
 DROP DATABASE IF EXISTS FlashCardDB;
 GO
 CREATE DATABASE FlashCardDB;
 GO
+Use FlashCardDB;
+GO
 
 Begin Transaction
 
 CREATE TABLE User_info (
-	User_id integer identity (1,1) NOT NULL,
+	Person_id integer identity (1,1) NOT NULL,
 	Username varchar(200) NOT NULL,
 	FirstName varchar(100) NOT NULL,
 	LastName varchar(200) NOT NULL,
 	Password varchar(200) NOT NULL,
 	Hash varchar(200) NOT NULL
-	CONSTRAINT pk_User_info_User_id PRIMARY KEY (User_id)
+	CONSTRAINT pk_User_info_User_id PRIMARY KEY (Person_id)
 );
 
 CREATE TABLE Card (
@@ -63,9 +65,9 @@ CREATE TABLE Deck_Cards (
 );
 
 CREATE TABLE User_Decks (
-	User_id integer NOT NULL,
+	Person_id integer NOT NULL,
 	Deck_id integer NOT NULL
-	CONSTRAINT fk_UserDeck_id FOREIGN KEY (User_id) REFERENCES User_info(User_id),
+	CONSTRAINT fk_UserDeck_id FOREIGN KEY (Person_id) REFERENCES User_info(Person_id),
 	CONSTRAINT fk_DeckUser_id FOREIGN KEY (Deck_id) REFERENCES Deck(Deck_id)
 );
 
