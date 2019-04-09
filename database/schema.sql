@@ -19,7 +19,7 @@ CREATE TABLE User_info (
 	FirstName varchar(100) NOT NULL,
 	LastName varchar(200) NOT NULL,
 	Password varchar(200) NOT NULL,
-	Hash varchar(200) NOT NULL
+	Hash varchar(200)
 	CONSTRAINT pk_User_info_User_id PRIMARY KEY (Person_id)
 );
 
