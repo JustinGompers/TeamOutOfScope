@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
+    <login></login>
     <card></card>
   </div>
 
@@ -10,11 +11,13 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import Card from './components/Card.vue'
+import Login from './components/Login.vue'
 
 export default {
   name: 'app',
   components: {
-    Card
+    Card,
+    Login
   }
 }
 </script>
