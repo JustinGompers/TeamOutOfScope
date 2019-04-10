@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace FlashyCards.DAL
 {
-    public class UserRegisterDataAccessLayer : IUserRegisterDataAccessLayer<UserModel>
+    public class UserRegisterDataAccessLayer : IUserRegisterDataAccessLayer
     {
         private string connectionString;
         private const string SQL_RegisterUser = "INSERT INTO User_Info (Username, FirstName, LastName, Password) Values (@username, @firstName, @lastName, @password);";
-        private const string SQL_LoginUser = "SELECT * FROM User_info where Username = @userName and Password = @password);";
+        private const string SQL_LoginUser = "SELECT * FROM User_info where Username = @userName and Password = @password;";
 
         public UserRegisterDataAccessLayer(string connectionString)
         {
@@ -33,7 +33,7 @@ namespace FlashyCards.DAL
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        tempModel.userId = Convert.ToInt32(reader["User_id"]);
+                        tempModel.userId = Convert.ToInt32(reader["Person_id"]);
                         tempModel.userName = Convert.ToString(reader["Username"]);
                         tempModel.firstName = Convert.ToString(reader["FirstName"]);
                         tempModel.lastName = Convert.ToString(reader["LastName"]);
@@ -49,7 +49,7 @@ namespace FlashyCards.DAL
             return tempModel;
         }
 
-        public void createUser(UserModel userModel)
+        public void createUser(RegisterUserModel userModel)
         {
             try
             {
