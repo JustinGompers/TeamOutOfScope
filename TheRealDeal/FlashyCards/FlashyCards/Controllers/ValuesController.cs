@@ -10,10 +10,10 @@ namespace FlashyCards.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlashyCardsController : ControllerBase
+    public class ValuesController : ControllerBase
     {
         private UserRegisterDataAccessLayer dal;
-        public FlashyCardsController(UserRegisterDataAccessLayer dataAccessLayer)
+        public ValuesController(UserRegisterDataAccessLayer dataAccessLayer)
         {
             dal = dataAccessLayer;
         }

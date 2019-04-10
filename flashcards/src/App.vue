@@ -12,9 +12,9 @@
 
 <script>
 <<<<<<< HEAD
-//import HelloWorld from './components/HelloWorld.vue'
 =======
->>>>>>> a640ecb7e11b022ef8931e75e64454331cc79ef7
+//import HelloWorld from './components/HelloWorld.vue'
+>>>>>>> c8551b15247ba13527162d955a253bc46236cda9
 import Card from './components/Card.vue'
 import Login from './components/Login.vue'
 import Registration from './components/Registration.vue'

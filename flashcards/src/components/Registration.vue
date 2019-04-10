@@ -2,28 +2,28 @@
     <div class= "RegistrationSection">    
         <button id="RegistrationButton" v-on:click.prevent="ShowRegistrationForm = true" v-if="ShowRegistrationForm== false">Register</button>
 
-        <form @submit="checkForm" id="formLogin" v-if="ShowRegistrationForm === true">
+        <form @submit.prevent="Submit(User)" id="formLogin" v-if="ShowRegistrationForm === true">
             <div>
                 <label>Email:</label>
-                <input type="email" v-model="email" id="email" placeholder="Enter your email">
+                <input type="email" v-model="User.userName" id="email" name="email" placeholder="Enter your email">
             </div>
             <div>
                 <label>Password: </label>
-                <input type="text" v-model="password" id="Registration-password" placeholder="Enter your password">
+                <input type="text" v-model="User.password" id="Registration-password" name="password" placeholder="Enter your password">
             </div>
             <div>
                 <label>Password2: </label>
-                <input type="text" v-model="password2" placeholder="Confirm your passoword.">
+                <input type="text" v-model="password2" name="password2" placeholder="Confirm your passoword.">
             </div>
             <div>
                 <label>First name: </label>
-                <input type="text" v-model="firstName" placeholder="Enter your first name.">
+                <input type="text" v-model="User.firstName" name="FirstName" placeholder="Enter your first name.">
             </div>
             <div>
                 <label>Last name: </label>
-                <input type="text" v-model="lastName" placeholder="Enter your last name.">
+                <input type="text" v-model="User.lastName" name="LastName" placeholder="Enter your last name.">
             </div>
-            <button @click="Submit()">Submit</button>
+            <button>Submit</button>
             <button id="cancelRegistrationButton" v-on:click.prevent="ShowRegistrationForm = false">Cancel</button>
         </form>
     </div>
@@ -37,19 +37,37 @@ export default {
         return {
             errors: [],
             ShowRegistrationForm: false,
-            email: null,
-            password: null,
-            password2: null,
-            firstName: null,
-            lastName: null
+            apiURL: 'https://localhost:44337/api/values',
+            password2: '',
+            User: {
+                userName: '',
+                firstName: '',
+                lastName: '',
+                password: ''
+        },
         }
     },
     methods: {
+    Submit(User) {
+        //this.$validator.validateAll()
+        //if(!this.errors.any()){
+        //alert('submit')
+        //}
+        fetch(this.apiURL, {
+        method: 'POST',
+        body: User,
+        mode: 'no-cors'
+        }).then(function(response) {
+            console.log(JSON.stringify(User))
+        }).catch(err => {
+            err
+        });
+    },
         checkForm: function (e) {
       this.errors = [];
 
       if (!this.password) {
-        this.errors.push("Name required.");
+        this.errors.push(" required.");
       }
       if (!this.password2) {
         this.errors.push("Name required.");
@@ -71,16 +89,11 @@ export default {
       }
       e.preventDefault();
     },
-    validEmail: function (email) {
+        validEmail: function (email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
-    },
-    Submit() {
-      this.$validator.validateAll()
-      if (!this.errors.any()) {
-        alert('submit')
-      }
-    }
+        },
+    
     }
 }
 </script>
