@@ -10,10 +10,10 @@ namespace FlashyCards.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlashyCardsController : ControllerBase
+    public class ValuesController : ControllerBase
     {
         private UserRegisterDataAccessLayer dal;
-        public FlashyCardsController(UserRegisterDataAccessLayer dataAccessLayer)
+        public ValuesController(UserRegisterDataAccessLayer dataAccessLayer)
         {
             dal = dataAccessLayer;
         }
@@ -25,17 +25,17 @@ namespace FlashyCards.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        //GET api/values
-        [HttpGet("{username}/{password}", Name = "GetUserInfo")]
-        public ActionResult<UserModel> GetUserInfo(string username, string password)
-        {
-            UserModel user = dal.getUserInfo(username, password);
-            if (user != null)
-            {
-                return user;
-            }
-            return NotFound();
-        }
+        ////GET api/values
+        //[HttpGet("{username:string}/{password:string}", Name = "GetUserInfo")]
+        //public ActionResult<UserModel> GetUserInfo(string username, string password)
+        //{
+        //    UserModel user = dal.getUserInfo(username, password);
+        //    if (user != null)
+        //    {
+        //        return user;
+        //    }
+        //    return NotFound();
+        //}
 
         // POST api/values
         [HttpPost]
