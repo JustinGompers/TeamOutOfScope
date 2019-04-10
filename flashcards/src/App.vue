@@ -11,10 +11,7 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 //import HelloWorld from './components/HelloWorld.vue'
-=======
->>>>>>> a640ecb7e11b022ef8931e75e64454331cc79ef7
 import Card from './components/Card.vue'
 import Login from './components/Login.vue'
 import Registration from './components/Registration.vue'

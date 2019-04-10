@@ -39,7 +39,7 @@ namespace FlashyCards.Controllers
 
         // POST api/values
         [HttpPost]
-        public ActionResult RegisterUser([FromBody] UserModel newUser)
+        public ActionResult RegisterUser([FromForm] UserModel newUser)
         {
             dal.createUser(newUser);
 
