@@ -65,7 +65,7 @@ export default {
 
             //if a confirmed user is returned, emit the confirmedUser object so that the next component
             //can obtain this info
-            if (this.singleUser != null || this.singleUser != {}){
+            if (this.singleUser != null || this.singleUser != {} || this.singleUser.length == 0){
                 this.showSuccessMsg = true;
                 this.$emit('confirmedUser', this.singleUser);
                 console.log("This worked.");
