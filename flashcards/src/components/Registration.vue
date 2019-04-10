@@ -5,7 +5,7 @@
         <form @submit.prevent="Submit(User)" id="formLogin" v-if="ShowRegistrationForm === true">
             <div>
                 <label>Email:</label>
-                <input type="email" v-model="User.email" id="email" name="email" placeholder="Enter your email">
+                <input type="email" v-model="User.userName" id="email" name="email" placeholder="Enter your email">
             </div>
             <div>
                 <label>Password: </label>
@@ -40,10 +40,10 @@ export default {
             apiURL: 'https://localhost:44337/api/values',
             password2: '',
             User: {
-                email: '',
-                password: '',
+                userName: '',
                 firstName: '',
-                lastName: ''
+                lastName: '',
+                password: ''
         },
         }
     },
@@ -55,7 +55,7 @@ export default {
         //}
         fetch(this.apiURL, {
         method: 'POST',
-        body: JSON.stringify(User),
+        body: User,
         mode: 'no-cors'
         }).then(function(response) {
             console.log(JSON.stringify(User))
