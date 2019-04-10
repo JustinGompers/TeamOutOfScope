@@ -1,13 +1,14 @@
-﻿using System;
+﻿using FlashyCards.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace FlashyCards.DAL
 {
-    interface IUserRegisterDataAccessLayer<T>
+    interface IUserRegisterDataAccessLayer
     {
-        void createUser(T t);
-        T getUserInfo(string userName, string Password);
+        void createUser(RegisterUserModel newUser);
+        UserModel getUserInfo(string userName, string Password);
     }
 }
