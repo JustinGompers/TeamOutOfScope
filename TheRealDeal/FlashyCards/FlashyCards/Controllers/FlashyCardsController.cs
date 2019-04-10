@@ -18,14 +18,7 @@ namespace FlashyCards.Controllers
             dal = dataAccessLayer;
         }
 
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        //GET api/values
+        //Login User Get API
         [HttpGet("{username}/{password}", Name = "GetUserInfo")]
         public ActionResult<UserModel> GetUserInfo(string username, string password)
         {
@@ -37,25 +30,13 @@ namespace FlashyCards.Controllers
             return NotFound();
         }
 
-        // POST api/values
+        // Register User Post API
         [HttpPost]
         public ActionResult RegisterUser([FromBody] RegisterUserModel newUser)
         {
             dal.createUser(newUser);
 
             return CreatedAtRoute("GetUserInfo", new { username = newUser.userName, password = newUser.password }, newUser);
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
