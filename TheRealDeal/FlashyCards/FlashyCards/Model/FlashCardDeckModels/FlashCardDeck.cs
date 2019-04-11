@@ -7,5 +7,8 @@ namespace FlashyCards.Model.FlashCardDeckModels
 {
     public class FlashCardDeck
     {
+        public string deckName { get; set; }
+        public bool isSharing { get; set; }
+        public string catagory { get; set; }
     }
 }
