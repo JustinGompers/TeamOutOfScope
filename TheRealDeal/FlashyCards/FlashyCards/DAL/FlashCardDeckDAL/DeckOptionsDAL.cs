@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FlashyCards.Model.FlashCardDeckModels;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using FlashyCards.Model.UserInfoModels;
 
 namespace FlashyCards.DAL.FlashCardDeckDAL
 {
@@ -16,20 +17,33 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
             this.connectionString = connectionString;
         }
 
-        //public Category GetCategoryList()
-        //{
-        //    List<Category> CategoryList = new List<Category>();
+        public List<Category> GetCategoryList()
+        {
+            List<Category> CategoryList = new List<Category>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GetCategories, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Category tempCategory = new Category();
+                        tempCategory.Name = Convert.ToString(reader["Name"]);
+                        tempCategory.ID = Convert.ToInt32(reader["Category_id"]);
 
-        //    try
-        //    {
-        //        using(SqlConnection)
+                        CategoryList.Add(tempCategory);
+                    }
+                }
 
-        //    }
-        //    catch (Exception)
-        //    {
+            }
+            catch (SqlException)
+            {
 
-        //        throw;
-        //    }
+                throw;
+            }
+            return CategoryList;
         }
     }
 }

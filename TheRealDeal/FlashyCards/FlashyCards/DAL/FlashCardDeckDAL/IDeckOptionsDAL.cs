@@ -1,4 +1,4 @@
-﻿using FlashyCards.Model.UserInfoModels;
+﻿using FlashyCards.Model.FlashCardDeckModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,6 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
 {
     interface IDeckOptionsDAL
     {
-        Category GetCategoryList();
+        List<Category> GetCategoryList();
     }
 }
