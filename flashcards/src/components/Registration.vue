@@ -1,8 +1,12 @@
 <template>
     <div class= "RegistrationSection">    
-        <button id="RegistrationButton" v-on:click.prevent="ShowRegistrationForm = true" v-if="ShowRegistrationForm== false">Register</button>
-        <div class='registerForm'>
-        <form @submit.prevent="Button()" id="formLogin" v-if="ShowRegistrationForm === true">
+        <a id="RegistrationButton" v-on:click.prevent="show()" v-if="ShowRegistrationForm== false">Register</a>
+        <modal name="Form" :width="600" :height="600" @submit.prevent="Button()">
+            <div id="modal-header">
+                <h2>Register Form</h2>
+            </div>
+            <div id="modal-body">
+            <form id="formLogin">
             <div>
                 <label>Email:</label>
                 <input type="email" v-validate="'required|email'" v-model="User.userName" id="email" name="userName" placeholder="Enter your email">
@@ -26,10 +30,12 @@
                 <label>Last name: </label>
                 <input type="text" v-model="User.lastName" name="lastName" placeholder="Enter your last name.">
             </div>
-            <button>Submit</button>
+            <button @submit.prevent="Button()">Submit</button>
             <button id="cancelRegistrationButton" v-on:click.prevent="ShowRegistrationForm = false">Cancel</button>
-        </form>
+         </form>
         </div>
+        </modal>
+
     </div>
 </template>
 
@@ -84,10 +90,16 @@ export default {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         },
-    
+        show(){
+            this.$modal.show('Form');
+        }
     }
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
+#RegistrationButton{
+    Color: white;
+    border-bottom: solid;
+}
 </style>
