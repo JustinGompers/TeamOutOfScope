@@ -1,6 +1,6 @@
 <template>
     <div class= "RegistrationSection">    
-        <a id="RegistrationButton" v-on:click.prevent="show()" v-if="ShowRegistrationForm== false">Register</a>
+        <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
         <modal name="Form" :width="600" :height="600" @submit.prevent="Button()">
             <div id="modal-header">
                 <h2>Register Form</h2>
@@ -31,7 +31,7 @@
                 <input type="text" v-model="User.lastName" name="lastName" placeholder="Enter your last name.">
             </div>
             <button @submit.prevent="Button()">Submit</button>
-            <button id="cancelRegistrationButton" v-on:click.prevent="ShowRegistrationForm = false">Cancel</button>
+            <button id="cancelRegistrationButton" v-on:click.prevent="hide()">Cancel</button>
          </form>
         </div>
         </modal>
@@ -46,7 +46,6 @@ export default {
     data(){
         return {
             error: [],
-            ShowRegistrationForm: false,
             apiURL: 'https://localhost:44337/api/values',
             password2: '',
             User: {
@@ -92,6 +91,9 @@ export default {
         },
         show(){
             this.$modal.show('Form');
+        },
+        hide(){
+            this.$modal.hide('Form');
         }
     }
 }
