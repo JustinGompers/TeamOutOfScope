@@ -58,7 +58,7 @@ export default {
           let reg = document.getElementById("formLogin")
             let person = new FormData(reg)
             fetch(this.apiURL, {
-                method: 'POST',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
                 body: person,
                 mode: 'no-cors',
                 headers: {

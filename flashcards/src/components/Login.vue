@@ -27,12 +27,13 @@ export default {
 
     data() {
         return {
+            userId: 0,
             email: '',
             password: '',
             showLoginForm: false, 
             users: [],
             //example:  "http://localhost:5000/api/cards",
-            apiURL: "https://localhost:44337/api/flashycards",
+            apiURL: "https://localhost:44337/api/values",
             showSuccessMsg: false, 
             showFailMsg: false, 
             singleUser: {}
@@ -45,7 +46,9 @@ export default {
         submitLogin(input)
         {
             // use fetch to this user from the database         
-            fetch(this.apiURL + '/' + this.email + '/' + this.password)
+            fetch(this.apiURL + '/' + this.email + '/' + this.password,{
+                mode: 'no-cors'
+                })
                 .then(response => {
                     return response.json();
                 })
@@ -64,7 +67,7 @@ export default {
 
             //if a confirmed user is returned, emit the confirmedUser object so that the next component
             //can obtain this info
-            if (this.singleUser != null || this.singleUser != {} || this.singleUser.length == 0){
+            if (this.singleUser.userId > 0){
                 this.showSuccessMsg = true;
                 this.$emit('confirmedUser', this.singleUser);
                 console.log("This worked.");
