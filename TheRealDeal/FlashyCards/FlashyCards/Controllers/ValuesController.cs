@@ -43,18 +43,18 @@ namespace FlashyCards.Controllers
             return CreatedAtRoute("GetUserInfo", new { username = newUser.userName, password = newUser.password }, newUser);
         }
 
-        //Returns List of Categories Get API (url = api/values
-        [HttpGet (Name ="GetCategoriesList")]
-        public ActionResult GetCategoriesList()
-        {
-            List<Category> categories = new List<Category>();
-            categories = deckOptionsDAL.GetCategoryList();
-            if (categories != null)
-            {
-                return categories;
-            }
-            return NotFound();
-        }
-        
+        //Returns List of Categories Get API(url = api / values
+        //[HttpGet(Name = "GetCategoriesList")]
+        //public ActionResult GetCategoriesList()
+        //{
+        //    List<Category> categories = new List<Category>();
+        //    categories = deckOptionsDAL.GetCategoryList();
+        //    if (categories != null)
+        //    {
+        //        return categories;
+        //    }
+        //    return NotFound();
+        //}
+
     }
 }
