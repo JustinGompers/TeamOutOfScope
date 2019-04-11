@@ -38,5 +38,6 @@ namespace FlashyCards.Controllers
 
             return CreatedAtRoute("GetUserInfo", new { username = newUser.userName, password = newUser.password }, newUser);
         }
+        
     }
 }

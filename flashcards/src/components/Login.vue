@@ -23,7 +23,7 @@
 
 <script>
 export default {
-    name: "login",
+    name: "Card",
 
 
     data() {

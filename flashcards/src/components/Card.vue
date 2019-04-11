@@ -1,37 +1,45 @@
 <template>
     <div class= "cardSection"> 
         <h2>This is where the card section will go</h2>   
-      <button id="createCard" v-on:click="showNewCardForm">Create Your Card</button>
-      
-      <ul id="formNewCard">
-        <li id="newCardQuestion" style="display:none;">
-            <input type="text" id="new-question" placeholder="Add New Question" v-on:keyup.enter="addCard">
-        </li>
-        <li id="newCardAnswer" style="display:none;">
-            <input type="text" id="new-answer" placeholder="Add New Answer" v-on:keyup.enter="addCard">
-        </li>
-        <li
-            v-for="card in cards"
-            v-bind:key="card.id"
-            v-bind:class="{/*TO BE COMPLETED*/}"
-            
-            v-on:click="changeStatus(card.id, $event)"> <!--not sure how this will be used yet-->
-        
-            <input type="checkbox">
-            {{card.question}}
-            {{card.answer}}
-            <i class="far fa-check-circle" v-bind:class="{/*TO BE COMPLETED*/}"></i> <!--not sure how this will be used yet-->
-        </li>
-      </ul> 
-    
-    </div>
+      <button id="CardButton" v-on:click.prevent="showCardForm = true" v-if="showCardForm== false">Create Your Card</button>
 
-    
+      <ul id="formCard" v-if="showCardForm === true">
+        <li id="questionField" >
+            <input type="text" id="question" placeholder="Enter a question" v-model.trim="question"/>
+        </li>
+        <li id="answerField">
+            <input type="text" id="answer" placeholder="Enter the answer" v-model.trim="answer"/>
+        </li>
+        <button id="submitQuestionButton" v-on:click="submitQuestion">Submit Question</button>
+        <button id="cancelQuestionButton" v-on:click.prevent="showQuestionForm = false">Cancel</button>
+
+        <button id="submitAnswerButton" v-on:click="submitAnswer">Submit Answer</button>
+        <button id="cancelAnswerButton" v-on:click.prevent="showQuestionForm = false">Cancel</button>
+        </ul>
+
+        </div>
 </template>
 
+      
+      // <ul id="formNewCard">
+      //   <li
+      //       v-for="card in cards"
+      //       v-bind:key="card.id"
+      //       v-bind:class="{/*TO BE COMPLETED*/}"
+            
+      //       v-on:click="changeStatus(card.id, $event)"> <!--not sure how this will be used yet-->
+        
+      //       <input type="checkbox">
+      //       {{card.question}}
+      //       {{card.answer}}
+      //       <i class="far fa-check-circle" v-bind:class="{/*TO BE COMPLETED*/}"></i> <!--not sure how this will be used yet-->
+      //   </li>
+      // </ul> 
+    
+    
 <script>
 export default {
-    name: "card",   
+    name: "Card",   
 
     props: {
         id: Number,
@@ -40,14 +48,31 @@ export default {
         image: String
     },   
 
-
     data() {
         return {
-            //example:  "http://localhost:5000/api/cards",
-            apiURL: "YOUR_REST_API_URL",
+
+            question: '',
+            answer: '',
+            apiURL: "https://localhost:44337/api/flashycards",
             cards: []
         };  
     },
+
+    methods: {
+
+        submitCard(input)
+        {        
+            fetch(this.apiURL + '/' + this.question + '/' + this.answer)
+                .then(response => {
+                    return response.json();
+                })
+            
+                .then(cards => {
+                    this.Card_id = cards;
+                });   
+
+            this.showCardForm = false;
+              }}
 /*
     //borrowed from TodoList.vue file from Building REST APIs tutorial
     //not entirely sure yet how it might be used--assign what comes back from FlashCardsDB to the local cards variable?
@@ -111,12 +136,7 @@ export default {
       input.focus();
     }
     */
-  };
-
-</script>
-
-<style lang="scss" scoped>
-
-</style>
 
 
+
+}
