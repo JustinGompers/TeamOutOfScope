@@ -5,6 +5,7 @@
     <login></login>
     <registration></registration>
     <card></card>
+    <deck></deck>
   </div>
 
 
@@ -15,13 +16,15 @@
 import Card from './components/Card.vue'
 import Login from './components/Login.vue'
 import Registration from './components/Registration.vue'
+import Deck from './components/Deck.vue'
 
 export default {
   name: 'app',
   components: {
     Card,
     Login,
-    Registration
+    Registration, 
+    Deck
   }
 }
 </script>
