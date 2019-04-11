@@ -2,14 +2,25 @@
   <div id="app">
     <fixed-header>
       <div id='header'>
-        <img id="logo" src="./assets/flashed-clipart-running.gif">
-        <h1 id="title">Flashy Cards</h1>
-        <img id="logo" src="./assets/reverse-flash.gif">
+        <div id='main'>
+          <img id="logo" src="./assets/flashed-clipart-running.gif">
+          <h1 id="title">Flashy Cards</h1>
+          <img id="logo" src="./assets/reverse-flash.gif">
+        </div>
+        <Slide disableOutsideClick>
+          <a id="home" href="#">
+            <div id='hamburgers'>
+              <h2>Flashy Menu</h2>
+              <login></login>
+              <registration></registration>
+            </div>
+          </a>
+        </Slide>
+        
       </div>
     </fixed-header>
     <div class='content'>
-      <login></login>
-      <registration></registration>
+
       <card></card>
       <deck></deck>
     </div>
@@ -25,10 +36,12 @@ import Login from './components/Login.vue'
 import Registration from './components/Registration.vue'
 import Deck from './components/Deck.vue'
 import FixedHeader from 'vue-fixed-header'
+import { Slide } from 'vue-burger-menu'
 
 export default {
   name: 'app',
   components: {
+    Slide,
     FixedHeader,
     Card,
     Login,
@@ -53,12 +66,14 @@ export default {
   top: 0;
   width: 100vw;
 }
-#header{
+#main{
   display: flex;
-  justify-content: center;
-  background: black;
   color:white;
-  
+}
+#header{
+  display:flex;
+  background: black;
+  justify-content: center;
 }
 #logo{
   width: 5vw;
@@ -66,5 +81,32 @@ export default {
 }
 #title{
   font-size: 3vw;
+}
+.bm-burger-bars {
+  background-color: white;
+}
+.bm-menu{
+  height: 40%;
+  background-color: #800020;
+  transition: 0.5s;
+}
+.bm-item-list{
+  margin-left: 5%;
+}
+.bm-item-list > *{
+  padding: 0.0em;
+}
+#hamburgers{
+  display: inline;
+}
+#hamburgers h2{
+  font-size: 200%;
+  color: white;
+  background: black;
+  border: solid black;
+  border-radius: 4px;
+}
+li{
+  margin-left: 5%;
 }
 </style>
