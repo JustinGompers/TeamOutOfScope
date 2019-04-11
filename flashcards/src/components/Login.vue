@@ -1,7 +1,7 @@
 <template>
     <div class= "loginSection"> 
         <h2>This is the start of the Login section</h2>   
-        <button id="loginButton" v-on:click.prevent="showLoginForm = true" v-if="showLoginForm== false">Login / Register</button>
+        <button id="loginButton" v-on:click.prevent="showLoginForm = true" v-if="showLoginForm== false">Login</button>
 
         <ul id="formLogin" v-if="showLoginForm === true">
         <li id="emailField" >
