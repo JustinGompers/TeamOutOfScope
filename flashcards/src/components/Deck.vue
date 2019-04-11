@@ -6,6 +6,10 @@
       <ul id="formCreateDeck" v-if="showCreateDeckForm === true">
         
         <input type="text" id="deck-name" placeholder="Enter name of deck" v-model.trim="name"/>
+
+        <select id="deck-category" v-model="categories">
+            <option v-for="category in categories" {{category.Name}}</option>"
+            </select>
         
         <form id="ShareDeckField">
              Would you like to publicly share your deck?<br>
@@ -26,11 +30,24 @@ export default {
         return {
             name: '',
             share_deck: false,
-            showCreateDeckForm: false
+            category: '',
+            showCreateDeckForm: false, 
+            categories: []
+           
 
         
         };
-    }
+    }, 
+
+    methods: {
+        getCategories() {
+
+        }
+    },
+
+        createDeck(input) {
+
+        }
 }
 
 </script>

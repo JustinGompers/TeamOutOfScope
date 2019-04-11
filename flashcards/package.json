@@ -10,7 +10,8 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "vee-validate": "^2.2.2",
-    "vue": "^2.6.6"
+    "vue": "^2.6.6",
+    "vue-fixed-header": "^3.2.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",

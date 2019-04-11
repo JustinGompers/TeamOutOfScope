@@ -1,7 +1,7 @@
 <template>
     <div class= "RegistrationSection">    
         <button id="RegistrationButton" v-on:click.prevent="ShowRegistrationForm = true" v-if="ShowRegistrationForm== false">Register</button>
-
+        <div class='registerForm'>
         <form @submit.prevent="Button()" id="formLogin" v-if="ShowRegistrationForm === true">
             <div>
                 <label>Email:</label>
@@ -29,6 +29,7 @@
             <button>Submit</button>
             <button id="cancelRegistrationButton" v-on:click.prevent="ShowRegistrationForm = false">Cancel</button>
         </form>
+        </div>
     </div>
 </template>
 
@@ -54,7 +55,6 @@ export default {
     Button() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-            alert('Form Submitted!');
           let reg = document.getElementById("formLogin")
             let person = new FormData(reg)
             fetch(this.apiURL, {
@@ -68,6 +68,13 @@ export default {
             .catch(err => {
                 err
             });
+            this.User.userName = '';
+            this.User.firstName = '';
+            this.User.lastName = '';
+            this.User.password = '';
+            this.password2 = '';
+            this.ShowRegistrationForm = false;
+            alert('Your form has been sumbitted welcom to FlashyCard family!');
         }else{
             alert('Correct them errors!');
         }
