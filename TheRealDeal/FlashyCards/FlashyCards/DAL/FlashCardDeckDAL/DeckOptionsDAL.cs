@@ -19,7 +19,7 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
 
         public List<Category> GetCategoryList()
         {
-            List<Category> CategoryList = new List<Category>();
+            List<Category> categoryList = new List<Category>();
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -33,7 +33,7 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
                         tempCategory.Name = Convert.ToString(reader["Name"]);
                         tempCategory.ID = Convert.ToInt32(reader["Category_id"]);
 
-                        CategoryList.Add(tempCategory);
+                        categoryList.Add(tempCategory);
                     }
                 }
 
@@ -43,7 +43,7 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
 
                 throw;
             }
-            return CategoryList;
+            return categoryList;
         }
     }
 }

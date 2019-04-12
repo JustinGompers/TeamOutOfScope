@@ -50,17 +50,16 @@ namespace FlashyCards.Controllers
         }
 
         //Returns List of Categories Get API(url = api / values
-        //[HttpGet(Name = "GetCategoriesList")]
-        //public ActionResult GetCategoriesList()
-        //{
-        //    List<Category> categories = new List<Category>();
-        //    categories = deckOptionsDAL.GetCategoryList();
-        //    if (categories != null)
-        //    {
-        //        return categories;
-        //    }
-        //    return NotFound();
-        //}
+        [HttpGet(Name = "GetCategoriesList")]
+        public ActionResult<List<Category>> GetCategoriesList()
+        {
+            List<Category> categories = deckOptionsDAL.GetCategoryList();
+            if (categories != null)
+            {
+                return categories;
+            }
+            return NotFound();
+        }
 
     }
 }
