@@ -4,14 +4,13 @@
       <div id='header'>
         <div id='main'>
           <img id="logo" src="./assets/flashed-clipart-running.gif">
-          <h1 id="title">Flashy Cards</h1>
+          <img id="title" src="./assets/Flashlogo.png">
           <img id="logo" src="./assets/reverse-flash.gif">
         </div>
         <Slide disableOutsideClick>
           <a id="home" href="#">
             <div id='hamburgers'>
               <h2>Flashy Menu</h2>
-              <login></login>
               <registration></registration>
             </div>
           </a>
@@ -20,9 +19,7 @@
       </div>
     </fixed-header>
     <div class='content'>
-
-      <card></card>
-      <deck></deck>
+      <login></login>
     </div>
   </div>
 
@@ -76,11 +73,12 @@ export default {
   justify-content: center;
 }
 #logo{
-  width: 5vw;
-  height: 5vw;
+  width: 7vw;
+  height: 7vw;
 }
 #title{
-  font-size: 3vw;
+  width: 30vw;
+  height: 10vw;
 }
 .bm-burger-bars {
   background-color: white;

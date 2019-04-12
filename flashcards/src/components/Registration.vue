@@ -1,12 +1,13 @@
 <template>
     <div class= "RegistrationSection">    
-        <a id="RegistrationButton" v-on:click.prevent="show()" v-if="ShowRegistrationForm== false">Register</a>
-        <modal name="Form" :width="600" :height="600" @submit.prevent="Button()">
+        <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
+        <modal id='form' name="Form" :width="600" :height="400" @submit.prevent="Button()">
             <div id="modal-header">
                 <h2>Register Form</h2>
             </div>
             <div id="modal-body">
             <form id="formLogin">
+                <div id="body">
             <div>
                 <label>Email:</label>
                 <input type="email" v-validate="'required|email'" v-model="User.userName" id="email" name="userName" placeholder="Enter your email">
@@ -30,8 +31,11 @@
                 <label>Last name: </label>
                 <input type="text" v-model="User.lastName" name="lastName" placeholder="Enter your last name.">
             </div>
-            <button @submit.prevent="Button()">Submit</button>
-            <button id="cancelRegistrationButton" v-on:click.prevent="ShowRegistrationForm = false">Cancel</button>
+            </div>
+            <div id="buttons">
+                <button @click.prevent="Button()">Submit</button>
+                <button id="cancelRegistrationButton" v-on:click.prevent="hide()">Cancel</button>
+            </div>
          </form>
         </div>
         </modal>
@@ -46,7 +50,6 @@ export default {
     data(){
         return {
             error: [],
-            ShowRegistrationForm: false,
             apiURL: 'https://localhost:44337/api/values',
             password2: '',
             User: {
@@ -64,7 +67,7 @@ export default {
           let reg = document.getElementById("formLogin")
             let person = new FormData(reg)
             fetch(this.apiURL, {
-                method: 'POST',
+                method: 'POST',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                 body: person,
                 mode: 'no-cors',
                 headers: {
@@ -79,10 +82,10 @@ export default {
             this.User.lastName = '';
             this.User.password = '';
             this.password2 = '';
-            this.ShowRegistrationForm = false;
-            alert('Your form has been sumbitted welcom to FlashyCard family!');
+            this.$modal.hide('Form');
+            alert('Your form has been sumbitted welcome to FlashyCard family!');
         }else{
-            alert('Correct them errors!');
+            alert('Your form has missing fields.  Please fill out to register.');
         }
       });
     },
@@ -92,6 +95,9 @@ export default {
         },
         show(){
             this.$modal.show('Form');
+        },
+        hide(){
+            this.$modal.hide('Form');
         }
     }
 }
@@ -101,5 +107,31 @@ export default {
 #RegistrationButton{
     Color: white;
     border-bottom: solid;
+}
+#modal-header{
+    text-align: center;
+    background: lightblue;
+}
+#body{
+    padding-left: 10px;
+}
+#buttons{
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
+}
+#buttons button{
+        background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
+}
+#form{
+}
+div input{
+    align-items: center;
 }
 </style>
