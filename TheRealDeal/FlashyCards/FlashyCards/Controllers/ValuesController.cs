@@ -17,11 +17,9 @@ namespace FlashyCards.Controllers
     public class ValuesController : ControllerBase
     {
         private UserRegisterDataAccessLayer dal;
-        private DeckOptionsDAL deckOptionsDAL;
-        public ValuesController(UserRegisterDataAccessLayer dataAccessLayer, DeckOptionsDAL deckOptionsDAL)
+        public ValuesController(UserRegisterDataAccessLayer dataAccessLayer)
         {
             dal = dataAccessLayer;
-            this.deckOptionsDAL = deckOptionsDAL;
         }
 
         //Login User Get API (url = api/values/username/password)
@@ -44,18 +42,5 @@ namespace FlashyCards.Controllers
 
             return CreatedAtRoute("GetUserInfo", new { username = newUser.userName, password = newUser.password }, newUser);
         }
-
-        //Returns List of Categories Get API(url = api / values
-        [HttpGet(Name = "GetCategoriesList")]
-        public ActionResult<List<Category>> GetCategoriesList()
-        {
-            List<Category> categories = deckOptionsDAL.GetCategoryList();
-            if (categories != null)
-            {
-                return categories;
-            }
-            return NotFound();
-        }
-
     }
 }
