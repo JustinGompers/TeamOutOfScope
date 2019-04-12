@@ -1,20 +1,27 @@
 <template>
     <div class= "loginSection"> 
-        <button id="loginButton">Login</button>
-        <form id="formLogin" v-on:submit="submitLogin()">
-            <div id="emailField" >
-                <label>Email:</label>
-                <input type="text" id="login-email" name="userName" placeholder="Enter your email" v-model.trim="email"/>
+        <button id="loginButton" v-on:click.prevent="show()">Login</button>
+        <modal id="form" name="Login" :width="600" :height="300">
+            <div id="modal-header">
+                <h2>Login Form</h2>
             </div>
-            <div id="passwordField">
-                <label>Password:</label>
-                <input type="text" id="login-password" name="password" placeholder="Enter your password" v-model.trim="password"/>
+            <div id="modal-body">
+            <form id="formLogin" @submit.prevent="submitLogin">
+                <div id="emailField" >
+                    <label>Email:</label>
+                    <input type="text" id="login-email" name="userName" placeholder="Enter your email" v-model.trim="email"/>
+                </div>
+                <div id="passwordField">
+                    <label>Password:</label>
+                    <input type="text" id="login-password" name="password" placeholder="Enter your password" v-model.trim="password"/>
+                </div>
+                <div>
+                    <button id="submitLoginButton" >Submit</button>
+                    <button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button>
+                </div>
+            </form>
             </div>
-            <div>
-                <button id="submitLoginButton" >Submit</button>
-                <button id="cancelLoginButton">Cancel</button>
-            </div>
-        </form>
+        </modal>
         <p id="loginSuccessful" v-if="showSuccessMsg===true">Welcome {{ singleUser.firstName }} {{ singleUser.lastName }}!</p>
         <p id="loginFailed" v-if="showFailMsg===true">Email and/or password are not a match.</p>
 
@@ -44,8 +51,9 @@ export default {
     methods: {
 
         //Finish Login Section
-        submitLogin()
+        submitLogin(e)
         {
+            e.preventDefault();
             console.log(this.email)
             console.log(this.password)
             this.apiURL = this.apiURL + '/' + this.email + '/' + this.password;
@@ -93,6 +101,12 @@ export default {
             //this.password = '';
             
             
+        },
+        show(){
+            this.$modal.show('Login');
+        },
+        hide(){
+            this.$modal.hide('Login');
         }
     //Once it's determined which component will pick up the emit from this function, then have to bind that in the App.vue file
     //Ex:  <componentName v-bind:elementName="confirmedUser">  or <componentName v-bind:elementName="noUserFound">
@@ -112,7 +126,9 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
-
+<style>
+#modal-header{
+    text-align: center;
+}
 </style>
 
