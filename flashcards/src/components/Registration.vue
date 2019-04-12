@@ -51,13 +51,15 @@ export default {
         return {
             error: [],
             apiURL: 'https://localhost:44337/api/values',
+            apiURL2: 'https://localhost:44337/api/values',
             password2: '',
             User: {
                 userName: '',
                 firstName: '',
                 lastName: '',
                 password: ''
-        },
+            },
+            Userlogged: {}
         }
     },
     methods: {
@@ -65,7 +67,7 @@ export default {
       this.$validator.validateAll().then((result) => {
         if (result) {
           let reg = document.getElementById("formLogin")
-            let person = new FormData(reg)
+           let person = new FormData(reg)
             fetch(this.apiURL, {
                 method: 'POST',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                 body: person,
@@ -74,9 +76,19 @@ export default {
                     'Content-Type': 'application/json'
                 }
             })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                this.Userlogged = data;
+                console.log(this.Userlogged.userId)
+                this.$emit('registeredUser', this.Userlogged);
+            })
             .catch(err => {
                 err
             });
+            
+            
             this.User.userName = '';
             this.User.firstName = '';
             this.User.lastName = '';

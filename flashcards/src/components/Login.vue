@@ -15,7 +15,7 @@
                 <button id="cancelLoginButton">Cancel</button>
             </div>
         </form>
-        <p id="loginSuccessful" v-if="showSuccessMsg===true">Welcome {{singleUser.FirstName}} {{singleUser.LastName}}!</p>
+        <p id="loginSuccessful" v-if="showSuccessMsg===true">Welcome {{ singleUser.firstName }} {{ singleUser.lastName }}!</p>
         <p id="loginFailed" v-if="showFailMsg===true">Email and/or password are not a match.</p>
 
 
@@ -29,7 +29,6 @@ export default {
 
     data() {
         return {
-            userId: 0,
             email: '',
             password: '',
             showLoginForm: false, 
@@ -52,16 +51,29 @@ export default {
             this.apiURL = this.apiURL + '/' + this.email + '/' + this.password;
             // use fetch to this user from the database         
             fetch(this.apiURL,{
-                method: 'GET',
-                mode: 'no-cors'
+                method: 'GET'
                 })
                 .then(response => {
-                    console.log(response);
                     return response.json();
                 })
             //assign the user objects from the DB to the users array defined in this component
-                .then(user => {
-                    this.singleUser = user;
+                .then(data => {
+                    this.singleUser = data;
+                    console.log(this.singleUser.userId);
+                    if (this.singleUser.userId > 0){
+                        this.showSuccessMsg = true;
+                        this.$emit('confirmedUser', this.singleUser);
+                        console.log("This worked.");
+                    }
+                    //otherwise emit empty object titled noUserFound
+                    else {
+                        this.showFailMsg = true;
+                        this.$emit('noUserFound', this.singleUser); 
+                        console.log("This DID NOT work!");
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
                 });   
 
             this.showLoginForm = false;
@@ -74,20 +86,7 @@ export default {
 
             //if a confirmed user is returned, emit the confirmedUser object so that the next component
             //can obtain this info
-            if (this.singleUser.userId > 0){
-                this.showSuccessMsg = true;
-                this.$emit('confirmedUser', this.singleUser);
-                console.log("This worked.");
-            }
-            //otherwise emit empty object titled noUserFound
-            else {
-               this.showFailMsg = true;
-               this.$emit('noUserFound', this.singleUser); 
-               console.log("This DID NOT work!");
-            }
-            return false;
-
-            
+            //console.log(this.singleUser.userId)
 
             //clear the email and password fields
             //this.email='';
