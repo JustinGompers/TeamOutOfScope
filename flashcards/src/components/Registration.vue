@@ -1,7 +1,7 @@
 <template>
     <div class= "RegistrationSection">    
         <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
-        <modal id='form' name="Form" :width="600" :height="300" @submit.prevent="Button()">
+        <modal id='form' name="Form" :width="600" :height="400" @submit.prevent="Button()">
             <div id="modal-header">
                 <h2>Register Form</h2>
             </div>
@@ -83,9 +83,17 @@ export default {
             this.User.password = '';
             this.password2 = '';
             this.ShowRegistrationForm = false;
-            alert('Your form has been sumbitted welcom to FlashyCard family!');
+            alert('Your form has been sumbitted welcome to FlashyCard family!');
         }else{
-            alert('Correct them errors!');
+            this.$modal.hide('Form');
+            this.$modal.show({
+                template:
+                <div>
+                    <h1>Please fill out the complete form.</h1>
+                </div>
+            },{
+                height: 'auto'
+            })
         }
       });
     },
