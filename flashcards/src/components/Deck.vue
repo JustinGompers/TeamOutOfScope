@@ -41,7 +41,8 @@ export default {
             share_deck: false,            
             showCreateDeckForm: false, 
             categories: [],
-            decks: []   
+            decks: [],
+            deck: {}   
 
         };
     }, 
