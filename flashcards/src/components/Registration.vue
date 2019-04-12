@@ -1,12 +1,13 @@
 <template>
     <div class= "RegistrationSection">    
         <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
-        <modal name="Form" :width="600" :height="600" @submit.prevent="Button()">
+        <modal id='form' name="Form" :width="600" :height="300" @submit.prevent="Button()">
             <div id="modal-header">
                 <h2>Register Form</h2>
             </div>
             <div id="modal-body">
             <form id="formLogin">
+                <div id="body">
             <div>
                 <label>Email:</label>
                 <input type="email" v-validate="'required|email'" v-model="User.userName" id="email" name="userName" placeholder="Enter your email">
@@ -30,8 +31,11 @@
                 <label>Last name: </label>
                 <input type="text" v-model="User.lastName" name="lastName" placeholder="Enter your last name.">
             </div>
-            <button @submit.prevent="Button()">Submit</button>
-            <button id="cancelRegistrationButton" v-on:click.prevent="hide()">Cancel</button>
+            </div>
+            <div id="buttons">
+                <button @submit.prevent="Button()">Submit</button>
+                <button id="cancelRegistrationButton" v-on:click.prevent="hide()">Cancel</button>
+            </div>
          </form>
         </div>
         </modal>
@@ -103,5 +107,31 @@ export default {
 #RegistrationButton{
     Color: white;
     border-bottom: solid;
+}
+#modal-header{
+    text-align: center;
+    background: lightblue;
+}
+#body{
+    padding-left: 10px;
+}
+#buttons{
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
+}
+#buttons button{
+        background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
+}
+#form{
+}
+div input{
+    align-items: center;
 }
 </style>
