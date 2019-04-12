@@ -1,12 +1,12 @@
 <template>
     <div class= "RegistrationSection">    
         <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
-        <modal id='form' name="Form" :width="600" :height="300" @submit.prevent="Button()">
+        <modal id='form' name="Form" :width="600" :height="400" @submit.prevent="Button()">
             <div id="modal-header">
                 <h2>Register Form</h2>
             </div>
             <div id="modal-body">
-            <form id="formLogin">
+            <form id="formLogin" @submit.prevent="Button">
                 <div id="body">
             <div>
                 <label>Email:</label>
@@ -33,7 +33,7 @@
             </div>
             </div>
             <div id="buttons">
-                <button @submit.prevent="Button()">Submit</button>
+                <button>Submit</button>
                 <button id="cancelRegistrationButton" v-on:click.prevent="hide()">Cancel</button>
             </div>
          </form>
@@ -51,13 +51,15 @@ export default {
         return {
             error: [],
             apiURL: 'https://localhost:44337/api/values',
+            apiURL2: 'https://localhost:44337/api/values',
             password2: '',
             User: {
                 userName: '',
                 firstName: '',
                 lastName: '',
                 password: ''
-        },
+            },
+            Userlogged: {}
         }
     },
     methods: {
@@ -65,27 +67,37 @@ export default {
       this.$validator.validateAll().then((result) => {
         if (result) {
           let reg = document.getElementById("formLogin")
-            let person = new FormData(reg)
+           let person = new FormData(reg)
             fetch(this.apiURL, {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                method: 'POST',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                 body: person,
                 mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                this.Userlogged = data;
+                console.log(this.Userlogged.userId)
+                this.$emit('registeredUser', this.Userlogged);
+            })
             .catch(err => {
                 err
             });
+            
+            
             this.User.userName = '';
             this.User.firstName = '';
             this.User.lastName = '';
             this.User.password = '';
             this.password2 = '';
-            this.ShowRegistrationForm = false;
-            alert('Your form has been sumbitted welcom to FlashyCard family!');
+            this.$modal.hide('Form');
+            alert('Your form has been sumbitted welcome to FlashyCard family!');
         }else{
-            alert('Correct them errors!');
+            alert('Your form has missing fields.  Please fill out to register.');
         }
       });
     },

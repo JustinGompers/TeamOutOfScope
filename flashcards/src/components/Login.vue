@@ -1,19 +1,28 @@
 <template>
     <div class= "loginSection"> 
-        <button id="loginButton" v-on:click.prevent="showLoginForm = true" v-if="showLoginForm== false">Login</button>
-
-        <ul id="formLogin" v-if="showLoginForm === true">
-        <li id="emailField" >
-            <input type="text" id="login-email" placeholder="Enter your email" v-model.trim="email"/>
-        </li>
-        <li id="passwordField">
-            <input type="text" id="login-password" placeholder="Enter your password" v-model.trim="password"/>
-        </li>
-        <button id="submitLoginButton" v-on:click="submitLogin">Submit</button>
-        <button id="cancelLoginButton" v-on:click.prevent="showLoginForm = false">Cancel</button>
-        </ul>
-
-        <p id="loginSuccessful" v-if="showSuccessMsg===true">Welcome {{singleUser.FirstName}} {{singleUser.LastName}}!</p>
+        <button id="loginButton" v-on:click.prevent="show()">Login</button>
+        <modal id="form" name="Login" :width="600" :height="300">
+            <div id="modal-header">
+                <h2>Login Form</h2>
+            </div>
+            <div id="modal-body">
+            <form id="formLogin" @submit.prevent="submitLogin">
+                <div id="emailField" >
+                    <label>Email:</label>
+                    <input type="text" id="login-email" name="userName" placeholder="Enter your email" v-model.trim="email"/>
+                </div>
+                <div id="passwordField">
+                    <label>Password:</label>
+                    <input type="text" id="login-password" name="password" placeholder="Enter your password" v-model.trim="password"/>
+                </div>
+                <div>
+                    <button id="submitLoginButton" >Submit</button>
+                    <button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button>
+                </div>
+            </form>
+            </div>
+        </modal>
+        <p id="loginSuccessful" v-if="showSuccessMsg===true">Welcome {{ singleUser.firstName }} {{ singleUser.lastName }}!</p>
         <p id="loginFailed" v-if="showFailMsg===true">Email and/or password are not a match.</p>
 
 
@@ -27,7 +36,6 @@ export default {
 
     data() {
         return {
-            userId: 0,
             email: '',
             password: '',
             showLoginForm: false, 
@@ -43,18 +51,37 @@ export default {
     methods: {
 
         //Finish Login Section
-        submitLogin(input)
+        submitLogin(e)
         {
+            e.preventDefault();
+            console.log(this.email)
+            console.log(this.password)
+            this.apiURL = this.apiURL + '/' + this.email + '/' + this.password;
             // use fetch to this user from the database         
-            fetch(this.apiURL + '/' + this.email + '/' + this.password,{
-                mode: 'no-cors'
+            fetch(this.apiURL,{
+                method: 'GET'
                 })
                 .then(response => {
                     return response.json();
                 })
             //assign the user objects from the DB to the users array defined in this component
-                .then(user => {
-                    this.singleUser = user;
+                .then(data => {
+                    this.singleUser = data;
+                    console.log(this.singleUser.userId);
+                    if (this.singleUser.userId > 0){
+                        this.showSuccessMsg = true;
+                        this.$emit('confirmedUser', this.singleUser);
+                        console.log("This worked.");
+                    }
+                    //otherwise emit empty object titled noUserFound
+                    else {
+                        this.showFailMsg = true;
+                        this.$emit('noUserFound', this.singleUser); 
+                        console.log("This DID NOT work!");
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
                 });   
 
             this.showLoginForm = false;
@@ -67,25 +94,19 @@ export default {
 
             //if a confirmed user is returned, emit the confirmedUser object so that the next component
             //can obtain this info
-            if (this.singleUser.userId > 0){
-                this.showSuccessMsg = true;
-                this.$emit('confirmedUser', this.singleUser);
-                console.log("This worked.");
-               }
-            //otherwise emit empty object titled noUserFound
-             else {
-               this.showFailMsg = true;
-                this.$emit('noUserFound', this.singleUser); 
-                console.log("This DID NOT work!");
-            }
-
-            
+            //console.log(this.singleUser.userId)
 
             //clear the email and password fields
-            this.email='';
-            this.password = '';
+            //this.email='';
+            //this.password = '';
             
             
+        },
+        show(){
+            this.$modal.show('Login');
+        },
+        hide(){
+            this.$modal.hide('Login');
         }
     //Once it's determined which component will pick up the emit from this function, then have to bind that in the App.vue file
     //Ex:  <componentName v-bind:elementName="confirmedUser">  or <componentName v-bind:elementName="noUserFound">
@@ -105,7 +126,9 @@ export default {
 
 </script>
 
-<style lang="scss" scoped>
-
+<style>
+#modal-header{
+    text-align: center;
+}
 </style>
 

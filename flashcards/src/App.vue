@@ -4,25 +4,24 @@
       <div id='header'>
         <div id='main'>
           <img id="logo" src="./assets/flashed-clipart-running.gif">
-          <h1 id="title">Flashy Cards</h1>
+          <img id="title" src="./assets/Flashlogo.png">
           <img id="logo" src="./assets/reverse-flash.gif">
         </div>
         <Slide disableOutsideClick>
           <a id="home" href="#">
             <div id='hamburgers'>
-              <h2>Flashy Menu</h2>
-              <login></login>
-              <registration></registration>
+              <h2>Flashy Menu {{ User.userId }}</h2>
+              <registration @registeredUser="getRegisteredUser"></registration>
             </div>
           </a>
         </Slide>
         
       </div>
     </fixed-header>
-    <div class='content'>
-
-      <card></card>
-      <deck></deck>
+    <div class='content' v-if="User != {}">
+      <login @confirmedUser="getUserInfo"></login>
+      <Card></Card>
+      <Deck></Deck>
     </div>
   </div>
 
@@ -47,6 +46,19 @@ export default {
     Login,
     Registration, 
     Deck
+  },
+  data() {
+    return {
+      User: {}
+    }
+  },
+  methods: {
+    getUserInfo(UserInfo){
+      this.User = UserInfo;
+    },
+    getRegisteredUser(UserInformation){
+      this.User = UserInformation;
+    }
   }
 }
 </script>
@@ -76,11 +88,12 @@ export default {
   justify-content: center;
 }
 #logo{
-  width: 5vw;
-  height: 5vw;
+  width: 7vw;
+  height: 7vw;
 }
 #title{
-  font-size: 3vw;
+  width: 30vw;
+  height: 10vw;
 }
 .bm-burger-bars {
   background-color: white;
