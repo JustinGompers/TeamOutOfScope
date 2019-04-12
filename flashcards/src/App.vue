@@ -20,6 +20,8 @@
     </fixed-header>
     <div class='content' v-if="User != {}">
       <login @confirmedUser="getUserInfo"></login>
+      <Card></Card>
+      <Deck></Deck>
     </div>
   </div>
 
