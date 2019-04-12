@@ -9,6 +9,7 @@
         <input type="text" id="deck-name" placeholder="Enter name of deck" v-model.trim="name"/>
         
         <div>
+            <p>Choose the category of your deck:</p>
             <select id="deck-category" v-model="categoryName">
                 <option v-for="category in categories" v-bind:key="category.Category_id"> {{category.Name}}</option>"
             </select>
