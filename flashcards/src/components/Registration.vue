@@ -86,14 +86,6 @@ export default {
             alert('Your form has been sumbitted welcome to FlashyCard family!');
         }else{
             this.$modal.hide('Form');
-            this.$modal.show({
-                template:
-                <div>
-                    <h1>Please fill out the complete form.</h1>
-                </div>
-            },{
-                height: 'auto'
-            })
         }
       });
     },
