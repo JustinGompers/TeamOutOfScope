@@ -10,16 +10,18 @@
         <Slide disableOutsideClick>
           <a id="home" href="#">
             <div id='hamburgers'>
-              <h2>Flashy Menu</h2>
-              <registration></registration>
+              <h2>Flashy Menu {{ User.userId }}</h2>
+              <registration @registeredUser="getRegisteredUser"></registration>
             </div>
           </a>
         </Slide>
         
       </div>
     </fixed-header>
-    <div class='content'>
-      <login></login>
+    <div class='content' v-if="User != {}">
+      <login @confirmedUser="getUserInfo"></login>
+      <Card></Card>
+      <Deck></Deck>
     </div>
   </div>
 
@@ -44,6 +46,19 @@ export default {
     Login,
     Registration, 
     Deck
+  },
+  data() {
+    return {
+      User: {}
+    }
+  },
+  methods: {
+    getUserInfo(UserInfo){
+      this.User = UserInfo;
+    },
+    getRegisteredUser(UserInformation){
+      this.User = UserInformation;
+    }
   }
 }
 </script>

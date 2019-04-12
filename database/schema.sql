@@ -31,11 +31,19 @@ CREATE TABLE Card (
 	CONSTRAINT pk_Card_Card_id PRIMARY KEY (Card_id)
 );
 
+CREATE TABLE Category (
+	Category_id integer identity (1,1) NOT NULL,
+	Name varchar(100)
+	CONSTRAINT pk_Category_Category_id PRIMARY KEY (Category_id)
+);
+
 CREATE TABLE Deck (
 	Deck_id integer identity (1,1) NOT NULL,
 	Name varchar(100) NOT NULL,
+	Category_id integer NOT NULL,
 	Share_Deck BIT NOT NULL
-	CONSTRAINT pk_Deck_Deck_id PRIMARY KEY (Deck_id) 
+	CONSTRAINT pk_Deck_Deck_id PRIMARY KEY (Deck_id),
+	CONSTRAINT fk_CategoryDeck_id FOREIGN KEY (Category_id) REFERENCES Category(Category_id) 
 );
 
 CREATE TABLE Tags (
@@ -44,18 +52,6 @@ CREATE TABLE Tags (
 	CONSTRAINT pk_Tags_tags_id PRIMARY KEY (tags_id)
 );
 
-CREATE TABLE Category (
-	Category_id integer identity (1,1) NOT NULL,
-	Name varchar(100)
-	CONSTRAINT pk_Category_Category_id PRIMARY KEY (Category_id)
-);
-
-CREATE TABLE Deck_Category (
-	Category_id integer NOT NULL,
-	Deck_id integer NOT NULL
-	CONSTRAINT fk_CategoryDeck_id FOREIGN KEY (Category_id) REFERENCES Category(Category_id),
-	CONSTRAINT fk_DeckCat_id FOREIGN KEY (Deck_id) REFERENCES Deck(Deck_id)
-);
 
 CREATE TABLE Deck_Cards (
 	Deck_id integer NOT NULL,

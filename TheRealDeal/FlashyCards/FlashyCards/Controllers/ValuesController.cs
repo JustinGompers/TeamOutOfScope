@@ -36,11 +36,15 @@ namespace FlashyCards.Controllers
 
         // Register User Post API (url = api/values)
         [HttpPost]
-        public ActionResult RegisterUser([FromForm] RegisterUserModel newUser)
+        public ActionResult<UserModel> RegisterUser([FromForm] RegisterUserModel newUser)
         {
             dal.createUser(newUser);
-
-            return CreatedAtRoute("GetUserInfo", new { username = newUser.userName, password = newUser.password }, newUser);
+            UserModel user = dal.getUserInfo(newUser.userName, newUser.password);
+            if (user != null)
+            {
+                return user;
+            }
+            return NotFound();
         }
     }
 }
