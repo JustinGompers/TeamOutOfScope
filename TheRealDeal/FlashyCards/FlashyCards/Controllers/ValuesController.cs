@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FlashyCards.DAL;
+using FlashyCards.DAL.FlashCardDeckDAL;
 using FlashyCards.Model;
+using FlashyCards.Model.FlashCardDeckModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlashyCards.Controllers
@@ -13,12 +15,14 @@ namespace FlashyCards.Controllers
     public class ValuesController : ControllerBase
     {
         private UserRegisterDataAccessLayer dal;
-        public ValuesController(UserRegisterDataAccessLayer dataAccessLayer)
+        private DeckOptionsDAL deckOptionsDAL;
+        public ValuesController(UserRegisterDataAccessLayer dataAccessLayer, DeckOptionsDAL deckOptionsDAL)
         {
             dal = dataAccessLayer;
+            this.deckOptionsDAL = deckOptionsDAL;
         }
 
-        //Login User Get API
+        //Login User Get API (url = api/values/username/password)
         [HttpGet("{username}/{password}", Name = "GetUserInfo")]
         public ActionResult<UserModel> GetUserInfo(string username, string password)
         {
@@ -30,7 +34,7 @@ namespace FlashyCards.Controllers
             return NotFound();
         }
 
-        // Register User Post API
+        // Register User Post API (url = api/values)
         [HttpPost]
         public ActionResult RegisterUser([FromForm] RegisterUserModel newUser)
         {
@@ -38,6 +42,19 @@ namespace FlashyCards.Controllers
 
             return CreatedAtRoute("GetUserInfo", new { username = newUser.userName, password = newUser.password }, newUser);
         }
-        
+
+        //Returns List of Categories Get API(url = api / values
+        //[HttpGet(Name = "GetCategoriesList")]
+        //public ActionResult GetCategoriesList()
+        //{
+        //    List<Category> categories = new List<Category>();
+        //    categories = deckOptionsDAL.GetCategoryList();
+        //    if (categories != null)
+        //    {
+        //        return categories;
+        //    }
+        //    return NotFound();
+        //}
+
     }
 }

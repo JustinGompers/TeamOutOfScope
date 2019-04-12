@@ -2,44 +2,30 @@
     <div class= "cardSection"> 
         <h2>This is where the card section will go</h2>   
       <button id="CardButton" v-on:click.prevent="showCardForm = true" v-if="showCardForm== false">Create Your Card</button>
-
-      <ul id="formCard" v-if="showCardForm === true">
-        <li id="questionField" >
-            <input type="text" id="question" placeholder="Enter a question" v-model.trim="question"/>
-        </li>
-        <li id="answerField">
-            <input type="text" id="answer" placeholder="Enter the answer" v-model.trim="answer"/>
-        </li>
-        <button id="submitQuestionButton" v-on:click="submitQuestion">Submit Question</button>
-        <button id="cancelQuestionButton" v-on:click.prevent="showQuestionForm = false">Cancel</button>
-
-        <button id="submitAnswerButton" v-on:click="submitAnswer">Submit Answer</button>
-        <button id="cancelAnswerButton" v-on:click.prevent="showQuestionForm = false">Cancel</button>
-        </ul>
-
-        </div>
-</template>
-
       
-      // <ul id="formNewCard">
-      //   <li
-      //       v-for="card in cards"
-      //       v-bind:key="card.id"
-      //       v-bind:class="{/*TO BE COMPLETED*/}"
-            
-      //       v-on:click="changeStatus(card.id, $event)"> <!--not sure how this will be used yet-->
+      <form id="formCard" v-if="showCardForm" >
+
+        <div>
+        <label>Question:</label>
+            <input type="text" id="question" placeholder="Enter a question" v-model="question" />
+        </div>
+        <div>
+          <label>Answer: </label>
+            <input type="text" id="answer" placeholder="Enter the answer" v-model="answer" />
+        </div>
         
-      //       <input type="checkbox">
-      //       {{card.question}}
-      //       {{card.answer}}
-      //       <i class="far fa-check-circle" v-bind:class="{/*TO BE COMPLETED*/}"></i> <!--not sure how this will be used yet-->
-      //   </li>
-      // </ul> 
-    
+        <button id="submitQuestionButton" v-on:click="submitCard">Submit</button>
+        <button id="cancelQuestionButton" v-on:click.prevent="showCardForm = false">Cancel</button>
+        
+      </form>
+      </div>
+    </div>
+</template> 
+        
     
 <script>
 export default {
-    name: "Card",   
+    name: 'Card',   
 
     props: {
         id: Number,
@@ -51,28 +37,64 @@ export default {
     data() {
         return {
 
-            question: '',
-            answer: '',
-            apiURL: "https://localhost:44337/api/flashycards",
-            cards: []
+          cards: [],
+          showCardForm: false,
+          apiURL: "https://localhost:44337/api/flashycards",
+          question: '',
+          answer: '',
+            
         };  
     },
 
     methods: {
-
-        submitCard(input)
-        {        
-            fetch(this.apiURL + '/' + this.question + '/' + this.answer)
-                .then(response => {
-                    return response.json();
-                })
-            
-                .then(cards => {
-                    this.Card_id = cards;
-                });   
-
+    Button() {
+        if (result) {
+          let cardInput = document.getElementById("formCard")
+            let card = new FormData(cardInput)
+            fetch(this.apiURL, {
+                method: 'POST',
+                body: card,
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .catch(err => {
+                err
+            });
+            this.question = '';
+            this.answer = '';
             this.showCardForm = false;
-              }}
+            alert('Your card has been submitted!');
+        }else{
+            alert('Correct them errors!');
+        }
+    }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
     //borrowed from TodoList.vue file from Building REST APIs tutorial
     //not entirely sure yet how it might be used--assign what comes back from FlashCardsDB to the local cards variable?
@@ -140,3 +162,4 @@ export default {
 
 
 }
+</script>

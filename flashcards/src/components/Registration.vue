@@ -1,8 +1,13 @@
 <template>
     <div class= "RegistrationSection">    
-        <button id="RegistrationButton" v-on:click.prevent="ShowRegistrationForm = true" v-if="ShowRegistrationForm== false">Register</button>
-
-        <form @submit.prevent="Button()" id="formLogin" v-if="ShowRegistrationForm === true">
+        <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
+        <modal id='form' name="Form" :width="600" :height="300" @submit.prevent="Button()">
+            <div id="modal-header">
+                <h2>Register Form</h2>
+            </div>
+            <div id="modal-body">
+            <form id="formLogin">
+                <div id="body">
             <div>
                 <label>Email:</label>
                 <input type="email" v-validate="'required|email'" v-model="User.userName" id="email" name="userName" placeholder="Enter your email">
@@ -26,9 +31,15 @@
                 <label>Last name: </label>
                 <input type="text" v-model="User.lastName" name="lastName" placeholder="Enter your last name.">
             </div>
-            <button>Submit</button>
-            <button id="cancelRegistrationButton" v-on:click.prevent="ShowRegistrationForm = false">Cancel</button>
-        </form>
+            </div>
+            <div id="buttons">
+                <button @submit.prevent="Button()">Submit</button>
+                <button id="cancelRegistrationButton" v-on:click.prevent="hide()">Cancel</button>
+            </div>
+         </form>
+        </div>
+        </modal>
+
     </div>
 </template>
 
@@ -39,7 +50,6 @@ export default {
     data(){
         return {
             error: [],
-            ShowRegistrationForm: false,
             apiURL: 'https://localhost:44337/api/values',
             password2: '',
             User: {
@@ -54,7 +64,6 @@ export default {
     Button() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-            alert('Form Submitted!');
           let reg = document.getElementById("formLogin")
             let person = new FormData(reg)
             fetch(this.apiURL, {
@@ -68,6 +77,13 @@ export default {
             .catch(err => {
                 err
             });
+            this.User.userName = '';
+            this.User.firstName = '';
+            this.User.lastName = '';
+            this.User.password = '';
+            this.password2 = '';
+            this.ShowRegistrationForm = false;
+            alert('Your form has been sumbitted welcom to FlashyCard family!');
         }else{
             alert('Correct them errors!');
         }
@@ -77,10 +93,45 @@ export default {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         },
-    
+        show(){
+            this.$modal.show('Form');
+        },
+        hide(){
+            this.$modal.hide('Form');
+        }
     }
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
+#RegistrationButton{
+    Color: white;
+    border-bottom: solid;
+}
+#modal-header{
+    text-align: center;
+    background: lightblue;
+}
+#body{
+    padding-left: 10px;
+}
+#buttons{
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
+}
+#buttons button{
+        background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
+}
+#form{
+}
+div input{
+    align-items: center;
+}
 </style>
