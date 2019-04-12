@@ -10,6 +10,6 @@ namespace FlashyCards.DAL.FlashCardDAL
     interface ICardOptions
     {
         void createCard(FlashCard newCard);
-        FlashCard getCardInfo(string question, string answer, string image);
+        List<Cards> getCardInfo(string question, string answer, string image);
     }
 }

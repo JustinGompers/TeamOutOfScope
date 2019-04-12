@@ -6,20 +6,20 @@ using FlashyCards.DAL;
 using FlashyCards.DAL.FlashCardDeckDAL;
 using FlashyCards.Model;
 using FlashyCards.Model.FlashCardDeckModels;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlashyCards.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
         private UserRegisterDataAccessLayer dal;
-        private DeckOptionsDAL deckOptionsDAL;
-        public ValuesController(UserRegisterDataAccessLayer dataAccessLayer, DeckOptionsDAL deckOptionsDAL)
+        public ValuesController(UserRegisterDataAccessLayer dataAccessLayer)
         {
             dal = dataAccessLayer;
-            this.deckOptionsDAL = deckOptionsDAL;
         }
 
         //Login User Get API (url = api/values/username/password)
@@ -36,25 +36,15 @@ namespace FlashyCards.Controllers
 
         // Register User Post API (url = api/values)
         [HttpPost]
-        public ActionResult RegisterUser([FromForm] RegisterUserModel newUser)
+        public ActionResult<UserModel> RegisterUser([FromForm] RegisterUserModel newUser)
         {
             dal.createUser(newUser);
-
-            return CreatedAtRoute("GetUserInfo", new { username = newUser.userName, password = newUser.password }, newUser);
+            UserModel user = dal.getUserInfo(newUser.userName, newUser.password);
+            if (user != null)
+            {
+                return user;
+            }
+            return NotFound();
         }
-
-        //Returns List of Categories Get API(url = api / values
-        //[HttpGet(Name = "GetCategoriesList")]
-        //public ActionResult GetCategoriesList()
-        //{
-        //    List<Category> categories = new List<Category>();
-        //    categories = deckOptionsDAL.GetCategoryList();
-        //    if (categories != null)
-        //    {
-        //        return categories;
-        //    }
-        //    return NotFound();
-        //}
-
     }
 }

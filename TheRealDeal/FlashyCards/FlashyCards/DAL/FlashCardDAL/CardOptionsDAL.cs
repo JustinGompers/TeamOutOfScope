@@ -12,12 +12,14 @@ namespace FlashyCards.DAL.FlashCardDAL
         private string connectionString;
         private const string SQL_GetCards = "Select * FROM Card order by asc;";
 
+
         public CardOptionsDAL(string connectionString)
         {
             this.connectionString = connectionString;
         }
-        public List<Cards> getCardInfo()
+        public List<Cards> getCardInfo(string question, string answer, string image)
         {
+            FlashCard flashCard = new FlashCard();
             List<Cards> CardsList = new List<Cards>();
             try
             {
@@ -26,13 +28,17 @@ namespace FlashyCards.DAL.FlashCardDAL
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(SQL_GetCards, conn);
                     SqlDataReader reader = cmd.ExecuteReader();
+                    cmd.Parameters.AddWithValue("@question", question);
+                    cmd.Parameters.AddWithValue("@answer", answer);
+                    cmd.Parameters.AddWithValue("@image", image);
+
                     while (reader.Read())
                     {
-                        FlashCard tempCard = new FlashCard();
-                        tempCard.question = Convert.ToString(reader["Name"]);
-                        tempCard.Card_id = Convert.ToInt32(reader["Category_id"]);
-
-                        CardsList.Add(tempCard);
+                        flashCard.userID = Convert.ToInt32(reader["Person_id"]);
+                        flashCard.question = Convert.ToString(reader["Question"]);
+                        flashCard.answer = Convert.ToString(reader["Answer"]);
+                        flashCard.image = Convert.ToString(reader["Image"]);
+                        
                     }
                 }
 
@@ -45,7 +51,13 @@ namespace FlashyCards.DAL.FlashCardDAL
             return CategoryList;
         }
 
-    }
+        public void createCard(FlashCard newCard)
+        {
+            throw new NotImplementedException();
+        }
 
-    
+
+
+
+    }
 }
