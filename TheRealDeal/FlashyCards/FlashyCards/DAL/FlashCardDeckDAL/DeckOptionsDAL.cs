@@ -11,6 +11,7 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
     {
         private string connectionString;
         private const string SQL_GetCategories = "Select * FROM Category order by Name asc;";
+        //private const string SQL_CreateNewDeckInDeckTable =
 
 
         public DeckOptionsDAL(string connectionString)
@@ -31,8 +32,8 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
                     while (reader.Read())
                     {
                         Category tempCategory = new Category();
-                        tempCategory.ID = Convert.ToInt32(reader["Category_id"]);
                         tempCategory.Name = Convert.ToString(reader["Name"]);
+                        tempCategory.ID = Convert.ToInt32(reader["Category_id"]);
                         categoryList.Add(tempCategory);
                     }
                 }
