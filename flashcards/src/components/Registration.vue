@@ -6,7 +6,7 @@
                 <h2>Register Form</h2>
             </div>
             <div id="modal-body">
-            <form id="formLogin">
+            <form id="formLogin" @submit.prevent="Button">
                 <div id="body">
             <div>
                 <label>Email:</label>
@@ -33,7 +33,7 @@
             </div>
             </div>
             <div id="buttons">
-                <button @click.prevent="Button()">Submit</button>
+                <button>Submit</button>
                 <button id="cancelRegistrationButton" v-on:click.prevent="hide()">Cancel</button>
             </div>
          </form>
