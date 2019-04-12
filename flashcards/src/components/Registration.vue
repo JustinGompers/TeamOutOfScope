@@ -33,7 +33,7 @@
             </div>
             </div>
             <div id="buttons">
-                <button @submit.prevent="Button()">Submit</button>
+                <button @click.prevent="Button()">Submit</button>
                 <button id="cancelRegistrationButton" v-on:click.prevent="hide()">Cancel</button>
             </div>
          </form>
@@ -67,7 +67,7 @@ export default {
           let reg = document.getElementById("formLogin")
             let person = new FormData(reg)
             fetch(this.apiURL, {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                method: 'POST',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
                 body: person,
                 mode: 'no-cors',
                 headers: {
@@ -82,10 +82,10 @@ export default {
             this.User.lastName = '';
             this.User.password = '';
             this.password2 = '';
-            this.ShowRegistrationForm = false;
+            this.$modal.hide('Form');
             alert('Your form has been sumbitted welcome to FlashyCard family!');
         }else{
-            this.$modal.hide('Form');
+            alert('Your form has missing fields.  Please fill out to register.');
         }
       });
     },

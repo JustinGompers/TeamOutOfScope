@@ -11,7 +11,6 @@
           <a id="home" href="#">
             <div id='hamburgers'>
               <h2>Flashy Menu</h2>
-              <login></login>
               <registration></registration>
             </div>
           </a>
@@ -20,9 +19,7 @@
       </div>
     </fixed-header>
     <div class='content'>
-
-      <card></card>
-      <deck></deck>
+      <login></login>
     </div>
   </div>
 

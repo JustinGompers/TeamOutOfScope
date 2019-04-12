@@ -6,10 +6,12 @@ using FlashyCards.DAL;
 using FlashyCards.DAL.FlashCardDeckDAL;
 using FlashyCards.Model;
 using FlashyCards.Model.FlashCardDeckModels;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlashyCards.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase

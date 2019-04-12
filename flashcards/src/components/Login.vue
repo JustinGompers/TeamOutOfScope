@@ -1,18 +1,20 @@
 <template>
     <div class= "loginSection"> 
-        <button id="loginButton" v-on:click.prevent="showLoginForm = true" v-if="showLoginForm== false">Login</button>
-
-        <ul id="formLogin" v-if="showLoginForm === true">
-        <li id="emailField" >
-            <input type="text" id="login-email" placeholder="Enter your email" v-model.trim="email"/>
-        </li>
-        <li id="passwordField">
-            <input type="text" id="login-password" placeholder="Enter your password" v-model.trim="password"/>
-        </li>
-        <button id="submitLoginButton" v-on:click="submitLogin">Submit</button>
-        <button id="cancelLoginButton" v-on:click.prevent="showLoginForm = false">Cancel</button>
-        </ul>
-
+        <button id="loginButton">Login</button>
+        <form id="formLogin" v-on:submit="submitLogin()">
+            <div id="emailField" >
+                <label>Email:</label>
+                <input type="text" id="login-email" name="userName" placeholder="Enter your email" v-model.trim="email"/>
+            </div>
+            <div id="passwordField">
+                <label>Password:</label>
+                <input type="text" id="login-password" name="password" placeholder="Enter your password" v-model.trim="password"/>
+            </div>
+            <div>
+                <button id="submitLoginButton" >Submit</button>
+                <button id="cancelLoginButton">Cancel</button>
+            </div>
+        </form>
         <p id="loginSuccessful" v-if="showSuccessMsg===true">Welcome {{singleUser.FirstName}} {{singleUser.LastName}}!</p>
         <p id="loginFailed" v-if="showFailMsg===true">Email and/or password are not a match.</p>
 
@@ -43,13 +45,18 @@ export default {
     methods: {
 
         //Finish Login Section
-        submitLogin(input)
+        submitLogin()
         {
+            console.log(this.email)
+            console.log(this.password)
+            this.apiURL = this.apiURL + '/' + this.email + '/' + this.password;
             // use fetch to this user from the database         
-            fetch(this.apiURL + '/' + this.email + '/' + this.password,{
+            fetch(this.apiURL,{
+                method: 'GET',
                 mode: 'no-cors'
                 })
                 .then(response => {
+                    console.log(response);
                     return response.json();
                 })
             //assign the user objects from the DB to the users array defined in this component
@@ -71,19 +78,20 @@ export default {
                 this.showSuccessMsg = true;
                 this.$emit('confirmedUser', this.singleUser);
                 console.log("This worked.");
-               }
-            //otherwise emit empty object titled noUserFound
-             else {
-               this.showFailMsg = true;
-                this.$emit('noUserFound', this.singleUser); 
-                console.log("This DID NOT work!");
             }
+            //otherwise emit empty object titled noUserFound
+            else {
+               this.showFailMsg = true;
+               this.$emit('noUserFound', this.singleUser); 
+               console.log("This DID NOT work!");
+            }
+            return false;
 
             
 
             //clear the email and password fields
-            this.email='';
-            this.password = '';
+            //this.email='';
+            //this.password = '';
             
             
         }
