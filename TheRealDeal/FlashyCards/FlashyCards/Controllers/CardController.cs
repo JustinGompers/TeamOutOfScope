@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlashyCards.DAL.FlashCardDAL;
+using FlashyCards.Model.FlashCardModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +13,11 @@ namespace FlashyCards.Controllers
     [ApiController]
     public class CardController : ControllerBase
     {
-        // GET: api/Card
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private CardOptionsDAL Dal;
+        public CardController(CardOptionsDAL Dal)
         {
-            return new string[] { "value1", "value2" };
+            this.Dal = Dal;
+
         }
 
         // GET: api/Card/5
@@ -27,8 +29,10 @@ namespace FlashyCards.Controllers
 
         // POST: api/Card
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult InsertCard([FromBody] FlashCard flashCard)
         {
+            Dal.createCard(flashCard);
+            return CreatedAtRoute("Get", new { Id = flashCard.cardID }, flashCard);
         }
 
         // PUT: api/Card/5
