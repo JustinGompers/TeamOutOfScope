@@ -1,7 +1,7 @@
 <template>
     <div class= "loginSection"> 
         <button id="loginButton" v-on:click.prevent="show()">Login</button>
-        <modal id="form" name="Login" :width="600" :height="300">
+        <modal id="form" name="Login" :width="600" :height="165">
             <div id="modal-header">
                 <h2>Login Form</h2>
             </div>
@@ -9,13 +9,15 @@
             <form id="formLogin" @submit.prevent="submitLogin">
                 <div id="emailField" >
                     <label>Email:</label>
-                    <input type="text" id="login-email" name="userName" placeholder="Enter your email" v-model.trim="email"/>
+                    <input type="text" v-validate="'required|email'" id="login-email" name="userName" placeholder="Enter your email" v-model.trim="email"/>
+                    <span>{{ errors.first('userName') }}</span>
                 </div>
                 <div id="passwordField">
                     <label>Password:</label>
-                    <input type="text" id="login-password" name="password" placeholder="Enter your password" v-model.trim="password"/>
+                    <input type="text" v-validate="'required'" id="login-password" name="password" placeholder="Enter your password" v-model.trim="password"/>
+                    <span>{{ errors.first('password') }}</span>
                 </div>
-                <div>
+                <div id="buttons">
                     <button id="submitLoginButton" >Submit</button>
                     <button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button>
                 </div>
@@ -53,6 +55,8 @@ export default {
         //Finish Login Section
         submitLogin(e)
         {
+            this.$validator.validateAll().then((result) => {
+                if (result){
             e.preventDefault();
             console.log(this.email)
             console.log(this.password)
@@ -100,7 +104,11 @@ export default {
             //this.email='';
             //this.password = '';
             
-            
+                }
+                else{
+                    alert('Please enter both fields to log in!');
+                }   
+        })
         },
         show(){
             this.$modal.show('Login');
@@ -129,6 +137,12 @@ export default {
 <style>
 #modal-header{
     text-align: center;
+}
+#buttons{
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
 }
 </style>
 
