@@ -10,27 +10,33 @@ namespace FlashyCards.DAL.FlashCardDAL
     public class CardOptionsDAL : ICardOptions
     {
         private string connectionString;
-        private const string SQL_GetCards = "Select * FROM Card order by asc;";
+
+        private const string SQL_CreateNewCard = "INSERT into Card (question, answer, image) VALUES (@question, @answer, @image); SELECT @@Identity";
+        private const string SQL_GetCard = "SELECT * from Card_Deck as CD " +
+            "JOIN Card on CD.Card_id = Card.Card_id " +
+            "WHERE CD.Deck_id = @CD.Deck_ID";
+        
+        
+
 
 
         public CardOptionsDAL(string connectionString)
         {
             this.connectionString = connectionString;
         }
-        public List<Cards> getCardInfo(string question, string answer, string image)
+        public List<FlashCard> getCardInfo(FlashCard flashCard )
         {
-            FlashCard flashCard = new FlashCard();
-            List<Cards> CardsList = new List<Cards>();
+            
+            List<FlashCard> cardsList = new List<FlashCard>();
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand(SQL_GetCards, conn);
+                    SqlCommand cmd = new SqlCommand(SQL_GetCard, conn);
+                    cmd.Parameters.AddWithValue("@CD.Deck_ID", flashCard.cardID);
                     SqlDataReader reader = cmd.ExecuteReader();
-                    cmd.Parameters.AddWithValue("@question", question);
-                    cmd.Parameters.AddWithValue("@answer", answer);
-                    cmd.Parameters.AddWithValue("@image", image);
+                    
 
                     while (reader.Read())
                     {
@@ -38,7 +44,7 @@ namespace FlashyCards.DAL.FlashCardDAL
                         flashCard.question = Convert.ToString(reader["Question"]);
                         flashCard.answer = Convert.ToString(reader["Answer"]);
                         flashCard.image = Convert.ToString(reader["Image"]);
-                        
+                        cardsList.Add(flashCard);
                     }
                 }
 
@@ -48,16 +54,35 @@ namespace FlashyCards.DAL.FlashCardDAL
 
                 throw;
             }
-            return CategoryList;
+            return cardsList;
         }
 
-        public void createCard(FlashCard newCard)
+        public int createCard(FlashCard flashCard)
         {
-            throw new NotImplementedException();
+            int card_ID = 0;
+           // List<FlashCard> cardsList = new List<FlashCard>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_CreateNewCard, conn);
+                    cmd.Parameters.AddWithValue("@question", flashCard.question);
+                    cmd.Parameters.AddWithValue("@answer", flashCard.answer);
+                    cmd.Parameters.AddWithValue("@image", flashCard.image);
+                    card_ID = Convert.ToInt32(cmd.ExecuteScalar());
+                    
+                }
+
+            }
+            catch (SqlException)
+            {
+
+                throw;
+            }
+            return card_ID;
         }
 
-
-
-
+       
     }
 }
