@@ -1,7 +1,7 @@
 <template>
     <div class= "RegistrationSection">    
         <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
-        <modal id='form' name="Cards" :width="600" :height="400" @submit.prevent="Button()">
+        <modal id='form' name="Cards" :width="600" :height="400">
             <div id="modal-header">
                 <h2>Register Form</h2>
             </div>
