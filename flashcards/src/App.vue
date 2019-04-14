@@ -24,7 +24,7 @@
                   <span>{{ this.User.firstName }} {{ this.User.lastName }}</span>
               </div>
               <div id="Card">
-                <Card></Card>
+                  <Card></Card>
                 </div>
             </div>
           </a>

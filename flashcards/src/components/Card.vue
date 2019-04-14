@@ -1,7 +1,7 @@
 <template>
     <div class= "CardSection">   
       <a id="CardButton" v-on:click.prevent="show()">Create a Card</a>
-      <modal id="Form" name="Form" :width="600" :height="165">
+      <modal id="Form" name="CreateCard" :width="600" :height="165">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
             </div>
@@ -60,7 +60,8 @@ export default {
 
     methods: {
     Button() {
-        if (result) {
+         this.$validator.validateAll().then((result) => {
+             if (result) {
           let cardInput = document.getElementById("formCard")
             let card = new FormData(cardInput)
             fetch(this.apiURL, {
@@ -86,15 +87,16 @@ export default {
         }else{
             alert('Your card has missing fields!');
         }
-    }
+    })
     },
 
     show(){
-            this.$modal.show('Form');
+            this.$modal.show('CreateCard');
         },
         hide(){
-            this.$modal.hide('Form');
+            this.$modal.hide('CreateCard');
         }
+}
 }
 
 
