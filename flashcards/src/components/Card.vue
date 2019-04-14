@@ -1,6 +1,6 @@
 <template>
     <div class= "CardSection">   
-      <a id="CardButton" v-on:click.prevent="show()">Create Your Card</a>
+      <a id="CardButton" v-on:click.prevent="show()">Create a Card</a>
       <modal id="Form" name="Form" :width="600" :height="165">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
@@ -22,12 +22,11 @@
         </div>
       </form>
       </div>
+      <button id="SubmitButton">Submit</button>
+      <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
       </modal>
-        <button id="SubmitButton">Submit</button>
-        <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
         
-      
-      
+
       </div>
     
 </template> 
