@@ -21,7 +21,7 @@ namespace FlashyCards.Controllers
             this.deckOptionsDAL = deckOptionsDAL;
         }
 
-        //Returns List of Categories Get API(url = api/Deck)
+        //Returns List of Categories GET API(url = api/Deck)
         [HttpGet(Name = "GetCategoriesList")]
         public ActionResult<List<Category>> GetCategoriesList()
         {
@@ -29,6 +29,31 @@ namespace FlashyCards.Controllers
             if (categories != null)
             {
                 return categories;
+            }
+            return NotFound();
+        }
+
+        //Returns List of Decks Associated with User GET API(url = api/Deck/{user_Id})
+        [HttpGet("{user_Id}", Name = "GetUserDecks")]
+        public ActionResult<List<UserFlashCardDeckWithID>> GetUserDecks(int user_Id)
+        {
+            List<UserFlashCardDeckWithID> userDecks = deckOptionsDAL.GetUserDecks(user_Id);
+            if (userDecks != null)
+            {
+                return userDecks;
+            }
+            return NotFound();
+        }
+
+        //Creates a Deck Associated with a User POST API(url = api/Deck)
+        [HttpPost]
+        public ActionResult<List<UserFlashCardDeckWithID>> createUserDeck([FromForm] UserFlashCardDeck newDeck)
+        {
+            deckOptionsDAL.CreateDeck(newDeck);
+            List<UserFlashCardDeckWithID> updatedUserDecks = deckOptionsDAL.GetUserDecks(newDeck.person_id);
+            if (updatedUserDecks != null)
+            {
+                return updatedUserDecks;
             }
             return NotFound();
         }
