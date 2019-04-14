@@ -9,5 +9,7 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
     interface IDeckOptionsDAL
     {
         List<Category> GetCategoryList();
+        void CreateDeck(UserFlashCardDeck newDeck);
+        List<UserFlashCardDeckWithID> GetUserDecks(int userID);
     }
 }
