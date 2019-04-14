@@ -141,9 +141,10 @@ export default {
         font-size: 25px;
         cursor: pointer;
 }
-#form{
-}
 div input{
     align-items: center;
+}
+#RegistrationButton{
+    font-size: 24pt;
 }
 </style>
