@@ -1,6 +1,6 @@
 <template>
     <div class= "CardSection">   
-      <button id="CardButton" v-on:click.prevent="show()">Create Your Card</button>
+      <a id="CardButton" v-on:click.prevent="show()">Create Your Card</a>
       <modal id="Form" name="Form" :width="600" :height="165">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
@@ -23,8 +23,8 @@
       </form>
       </div>
       </modal>
-        <button id="SubmitButton" v-on:click="submitCard">Submit</button>
-        <button id="CancelButton" v-on:click.prevent="showCardForm = false">Cancel</button>
+        <button id="SubmitButton">Submit</button>
+        <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
         
       
       
@@ -104,10 +104,9 @@ export default {
 
 <style>
 
-#CardButton{
-  border: 1px solid rgb(207, 93, 0);
-  border-radius: 15px;
-  box-shadow: 2px 2px #888888;
+#CardButton{ 
+  Color: white;
+  border-bottom: solid;
 }
 #SubmitButton{
   border: 1px solid rgb(207, 93, 0);

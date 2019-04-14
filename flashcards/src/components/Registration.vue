@@ -1,7 +1,7 @@
 <template>
     <div class= "RegistrationSection">    
         <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
-        <modal id='form' name="Form" :width="600" :height="400" @submit.prevent="Button()">
+        <modal id='form' name="Cards" :width="600" :height="400" @submit.prevent="Button()">
             <div id="modal-header">
                 <h2>Register Form</h2>
             </div>
@@ -106,10 +106,10 @@ export default {
             return re.test(email);
         },
         show(){
-            this.$modal.show('Form');
+            this.$modal.show('Cards');
         },
         hide(){
-            this.$modal.hide('Form');
+            this.$modal.hide('Cards');
         }
     }
 }
