@@ -1,12 +1,12 @@
 <template>
     <div class= "CardSection">   
-      <button id="CardButton" v-on:click.prevent="showCardForm = true" v-if="showCardForm== false">Create Your Card</button>
+      <button id="CardButton" v-on:click.prevent="show()">Create Your Card</button>
       <modal id="Form" name="Form" :width="600" :height="165">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
             </div>
             <div id="modal-body">
-      <form id="formCard" v-if="showCardForm" >
+      <form id="formCard" @submit.prevent="Button" >
 
         <div>
         <input type="text" id="question" placeholder="Enter a question" v-model="question" />
