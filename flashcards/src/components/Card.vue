@@ -1,7 +1,11 @@
 <template>
     <div class= "CardSection">   
       <button id="CardButton" v-on:click.prevent="showCardForm = true" v-if="showCardForm== false">Create Your Card</button>
-      
+      <modal id="Form" name="Form" :width="600" :height="165">
+        <div id="modal-header">
+                <h2>Create a Card Form</h2>
+            </div>
+            <div id="modal-body">
       <form id="formCard" v-if="showCardForm" >
 
         <div>
@@ -16,11 +20,14 @@
         <div>
         <input type="text" id="tags" placeholder="Enter tags" v-model="tags" />
         </div>
-        
+      </form>
+      </div>
+      </modal>
         <button id="SubmitButton" v-on:click="submitCard">Submit</button>
         <button id="CancelButton" v-on:click.prevent="showCardForm = false">Cancel</button>
         
-      </form>
+      
+      
       </div>
     
 </template> 
@@ -35,6 +42,7 @@ export default {
     //     question: String,
     //     answer: String,
     //     image: String
+
     // },   
 
     data() {
@@ -64,6 +72,9 @@ export default {
                     'Content-Type': 'application/json'
                 }
             })
+            .then(response => {
+                return response.json();
+            })
             .catch(err => {
                 err
             });
@@ -74,11 +85,19 @@ export default {
             this.showCardForm = false;
             alert('Your card has been submitted!');
         }else{
-            alert('Correct them errors!');
+            alert('Your card has missing fields!');
         }
     }
     },
+
+    show(){
+            this.$modal.show('Form');
+        },
+        hide(){
+            this.$modal.hide('Form');
+        }
 }
+
 
 </script>
 
