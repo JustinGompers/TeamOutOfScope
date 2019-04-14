@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 
 namespace FlashyCards.Model.FlashCardDeckModels
 {
-    public class FlashCardDeck
+    public class UserFlashCardDeckWithID
     {
         public string deckName { get; set; }
         public bool isSharing { get; set; }
-        public string catagory { get; set; }
+        public int category_id { get; set; }
+        public int person_id { get; set; }
+        public int deck_id { get; set; }
     }
 }

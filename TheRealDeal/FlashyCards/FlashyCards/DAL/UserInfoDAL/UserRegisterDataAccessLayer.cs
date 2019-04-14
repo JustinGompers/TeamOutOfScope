@@ -31,6 +31,7 @@ namespace FlashyCards.DAL
                     cmd.Parameters.AddWithValue("@userName", userName);
                     cmd.Parameters.AddWithValue("@password", password);
                     SqlDataReader reader = cmd.ExecuteReader();
+
                     while (reader.Read())
                     {
                         tempModel.userId = Convert.ToInt32(reader["Person_id"]);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FlashyCards.DAL
 {
-    interface IUserRegisterDataAccessLayer
+    interface IUserRegisterDataAccessLayer 
     {
         void createUser(RegisterUserModel newUser);
         UserModel getUserInfo(string userName, string Password);
