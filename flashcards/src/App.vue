@@ -138,7 +138,7 @@ li{
   padding-top: 15px;
 }
 #menu{
-  width: 20vw;
+  width: 14vw;
 }
 #userPhoto{
   border-radius: 125px;
