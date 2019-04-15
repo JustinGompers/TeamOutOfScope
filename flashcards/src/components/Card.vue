@@ -6,28 +6,29 @@
                 <h2>Create a Card Form</h2>
             </div>
             <div id="modal-body">
-      <form id="formCard" @submit.prevent="Button" >
-
+      <form id="formCard" @submit.prevent="Button()" >
+          <input type="hidden" id="DeckId" value="1" name="deckId" />
         <div>
           <label>Question: </label>
-        <input type="text" id="question" placeholder="Enter a question" v-model="question" />
+        <input type="text" v-validate="'required'" id="question" placeholder="Enter a question" name="question" v-model="question" />
         </div>
         <div>
           <label>Answer: </label>
-        <input type="text" id="answer" placeholder="Enter the answer" v-model="answer" />
+        <input type="text" id="answer" v-validate="'required'" placeholder="Enter the answer" name="answer" v-model="answer" />
         </div>
         <div>
           <label>Image: </label>
-        <input type="text" id="image" placeholder="Enter an image url" v-model="image" />
+        <input type="text" id="image" placeholder="Enter an image url" name="img" v-model="image" />
         </div>
         <div>
           <label>Tags: </label>
-        <input type="text" id="tags" placeholder="Enter tags" v-model="tags" />
+        <input type="text" id="tags" v-validate="'required'" name="tag" placeholder="Enter tags" v-model="tags" />
         </div>
+         <button id="SubmitButton">Submit</button>
+      <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
       </form>
       </div>
-      <button id="SubmitButton">Submit</button>
-      <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
+     
       </modal>
         
 
@@ -82,6 +83,7 @@ export default {
             .catch(err => {
                 err
             });
+            this.$modal.hide('CreateCard');
             this.question = '';
             this.answer = '';
             this.image = '';

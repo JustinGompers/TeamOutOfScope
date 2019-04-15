@@ -48,7 +48,7 @@ namespace FlashyCards.Controllers
 
         //Creates a FlashCard Associated with a Deck, POST API(url = api/Card)
         [HttpPost]
-        public ActionResult<List<FlashCardWithID>> createFlashCard([FromBody] FlashCard newCard)
+        public ActionResult<List<FlashCardWithID>> createFlashCard([FromForm] FlashCard newCard)
         {
             if (newCard.image == null)
             {
