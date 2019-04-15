@@ -1,7 +1,7 @@
 <template>
     <div class= "CardSection">   
       <a id="CardButton" v-on:click.prevent="show()">Create a Card</a>
-      <modal id="Form" name="CreateCard" :width="600" :height="165">
+      <modal id="Form" name="CreateCard" :width="600" :height="400">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
             </div>
@@ -9,15 +9,19 @@
       <form id="formCard" @submit.prevent="Button" >
 
         <div>
+          <label>Question: </label>
         <input type="text" id="question" placeholder="Enter a question" v-model="question" />
         </div>
         <div>
+          <label>Answer: </label>
         <input type="text" id="answer" placeholder="Enter the answer" v-model="answer" />
         </div>
         <div>
+          <label>Image: </label>
         <input type="text" id="image" placeholder="Enter an image url" v-model="image" />
         </div>
         <div>
+          <label>Tags: </label>
         <input type="text" id="tags" placeholder="Enter tags" v-model="tags" />
         </div>
       </form>
@@ -110,20 +114,32 @@ export default {
   border-bottom: solid;
 }
 #SubmitButton{
-  border: 1px solid rgb(207, 93, 0);
-  border-radius: 15px;
-  box-shadow: 2px 2px #888888;
+  display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
+    background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
 }
 #CancelButton{
-  border: 1px solid rgb(207, 93, 0);
-  border-radius: 15px;
-  box-shadow: 2px 2px #888888;
+  display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
+    background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
+}
+div input{
+    align-items: center;
 }
 
-
-input {
-  display: inline-block;
-  
-}
 
 </style>
