@@ -3,20 +3,21 @@
 
       <h2>This is the start of the Deck section</h2> 
 
+   <!--
       <button id="createDeck" v-on:click.prevent="show()" v-on:click="getCategories">
         Create Your Deck</button>
-
-
-      <!--      
+        -->
+     
       <button id="createDeck" v-on:click.prevent="showCreateDeckForm = true" v-if="showCreateDeckForm== false" v-on:click="getCategories">
           Create Your Deck</button>
-      -->
+   
       <br>
 
-      <modal id="form" name="createDeck" :width="600" :height="300">
+    <!--         <modal id="form" name="createDeck" :width="600" :height="300"> 
             <div id="modal-header">
                 <h2>Create Your Deck</h2>
             </div>
+             -->
             <div id="modal-body">    
                 <form id="formCreateDeck" v-if="showCreateDeckForm === true">         
         
@@ -38,17 +39,15 @@
                     </div>
 
                     <div>
-                        <button id="submitLoginButton" v-on:click="createDeck">Submit</button>
-                        <button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button>
-
-
-                        <!--
+                        <button id="submitLoginButton" v-on:click.prevent="createDeck">Submit</button>
+                         <!--<button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button> -->
+                       
                         <button id="cancelLoginButton" v-on:click.prevent="showCreateDeckForm = false">Cancel</button>
-                        -->
+                        
                     </div>
                 </form>
-                </div>
-            </modal>
+            </div>
+        <!-- </modal> -->
 
         <p id="deckCreated" v-if="showSuccessMsg===true">Your new deck has been created!</p>
         <p id="deckNOTCreated" v-if="showFailMsg === true">Your deck was NOT created.  Please try again.</p>
@@ -75,6 +74,8 @@ export default {
             categoryName: '',
             share_deck: false,            
             showCreateDeckForm: false, 
+            showSuccessMsg: false,
+            showFailMsg: false,
             categories: [],
             decks: [],
             deck: {},
