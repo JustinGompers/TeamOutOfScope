@@ -18,6 +18,9 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
             "inner join User_Decks on Deck.Deck_id = User_Decks.Deck_id " +
             "inner join User_info on User_Decks.Person_id = User_info.Person_id " +
             "where User_info.Person_id = @userID;";
+        private const string SQL_GetSharableDecks = "Select Deck.Name, Category.Name as 'Category_Name', Deck.Deck_id From Deck " +
+            "left outer join Category on Deck.Category_id = Category.Category_id " +
+            "where Deck.Share_Deck = 1;";
 
         public DeckOptionsDAL(string connectionString)
         {
@@ -79,7 +82,7 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
 
         public List<UserFlashCardDeckWithID> GetUserDecks(int userID)
         {
-            List<UserFlashCardDeckWithID> DeckList = new List<UserFlashCardDeckWithID>();
+            List<UserFlashCardDeckWithID> deckList = new List<UserFlashCardDeckWithID>();
             
             try
             {
@@ -97,7 +100,7 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
                         tempDeck.category_id = Convert.ToInt32(reader["Category_id"]);
                         tempDeck.isSharing = Convert.ToBoolean(reader["Share_Deck"]);
                         tempDeck.person_id = Convert.ToInt32(reader["Person_id"]);
-                        DeckList.Add(tempDeck);
+                        deckList.Add(tempDeck);
                     }
 
                 }
@@ -107,8 +110,37 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
 
                 throw;
             }
-            return DeckList;
+            return deckList;
         }
-        
+
+        public List<SharableDecks> GetSharableDecks()
+        {
+            List<SharableDecks> sharableDeckList = new List<SharableDecks>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GetSharableDecks, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        SharableDecks tempDeck = new SharableDecks();
+                        tempDeck.deckName = Convert.ToString(reader["Name"]);
+                        tempDeck.categoryName = Convert.ToString(reader["Category_Name"]);
+                        tempDeck.deck_id = Convert.ToInt32(reader["Deck_id"]);
+                        sharableDeckList.Add(tempDeck);
+                    }
+
+                }
+            }
+            catch (SqlException)
+            {
+
+                throw;
+            }
+            return sharableDeckList;
+        }
     }
 }

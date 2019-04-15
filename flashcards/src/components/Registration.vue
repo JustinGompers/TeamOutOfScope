@@ -1,39 +1,41 @@
 <template>
     <div class= "RegistrationSection">    
         <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
-        <modal id='form' name="Cards" :width="600" :height="400">
+        <modal id='form' name="Cards" :width="600" :height="300">
             <div id="modal-header">
                 <h2>Register Form</h2>
             </div>
             <div id="modal-body">
             <form id="formLogin" @submit.prevent="Button">
                 <div id="body">
-            <div>
+            <div id="E">
                 <label>Email:</label>
                 <input type="email" v-validate="'required|email'" v-model="User.userName" id="email" name="userName" placeholder="Enter your email">
                 <span>{{ errors.first('userName') }}</span>
             </div>
-            <div>
+            <div id="P">
                 <label>Password: </label>
                 <input type="text" v-validate="'required|min:8'" v-model="User.password" id="Registration-password" name="password" ref="password" placeholder="Enter your password">
                 <span>{{ errors.first('password') }}</span>
             </div>
-            <div>
+            <div id="P2">
                 <label>Password2: </label>
                 <input type="text" v-validate="'required|confirmed:password'" v-model="password2" name="password2" placeholder="Confirm your passoword.">
                 <span>{{ errors.first('password2') }}</span>
             </div>
-            <div>
+            <div id="FN">
                 <label>First name: </label>
-                <input type="text" v-model="User.firstName" name="firstName" placeholder="Enter your first name.">
+                <input type="text" v-validate="'required'" v-model="User.firstName" name="firstName" placeholder="Enter your first name.">
+                <span>{{ errors.first('firstName') }}</span>
             </div>
-            <div>
+            <div id="LN">
                 <label>Last name: </label>
-                <input type="text" v-model="User.lastName" name="lastName" placeholder="Enter your last name.">
+                <input type="text" v-validate="'required'" v-model="User.lastName" name="lastName" placeholder="Enter your last name.">
+                <span>{{ errors.first('lastName') }}</span>
             </div>
             </div>
             <div id="buttons">
-                <button>Submit</button>
+                <button @click="hide()">Submit</button>
                 <button id="cancelRegistrationButton" v-on:click.prevent="hide()">Cancel</button>
             </div>
          </form>
@@ -63,7 +65,7 @@ export default {
         }
     },
     methods: {
-    Button() {
+    Button(){
       this.$validator.validateAll().then((result) => {
         if (result) {
           let reg = document.getElementById("formLogin")
@@ -76,19 +78,10 @@ export default {
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                this.Userlogged = data;
-                console.log(this.Userlogged.userId)
-                this.$emit('registeredUser', this.Userlogged);
-            })
             .catch(err => {
                 err
             });
-            
-            
+            this.apiURL2 = this.apiURL2 + "/" + this.User.userName + "/" + this.User.password;
             this.User.userName = '';
             this.User.firstName = '';
             this.User.lastName = '';
@@ -96,6 +89,31 @@ export default {
             this.password2 = '';
             this.$modal.hide('Form');
             alert('Your form has been sumbitted welcome to FlashyCard family!');
+            fetch(this.apiURL2,{
+                method: 'GET'
+                })
+                .then(response => {
+                    return response.json();
+                })
+            //assign the user objects from the DB to the users array defined in this component
+                .then(data => {
+                    this.Userlogged = data;
+                    console.log(this.Userlogged.userId);
+                    if (this.Userlogged.userId > 0){
+                        this.showSuccessMsg = true;
+                        this.$emit('registeredUser', this.Userlogged);
+                        console.log("This worked.");
+                    }
+                    //otherwise emit empty object titled noUserFound
+                    else {
+                        this.showFailMsg = true;
+                        this.$emit('noUserFound', this.Userlogged); 
+                        console.log("This DID NOT work!");
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                });
         }else{
             alert('Your form has missing fields.  Please fill out to register.');
         }
@@ -110,6 +128,9 @@ export default {
         },
         hide(){
             this.$modal.hide('Cards');
+        },
+        getUser(){
+            
         }
     }
 }
@@ -146,5 +167,21 @@ div input{
 }
 #RegistrationButton{
     font-size: 24pt;
+}
+#E label{
+    padding-right: 54px;
+}
+#P label{
+    padding-right: 11px;
+}
+#FN label{
+    padding-right: 4px;
+}
+#LN label{
+    padding-right: 5px;
+}
+div span{
+    font-size: 8pt;
+    color: red;
 }
 </style>
