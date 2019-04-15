@@ -50,6 +50,17 @@ import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 
 export default {
+    beforeCreate() {
+        console.log('Im First');
+        /*
+        fetch(this.apiUrl, {
+          method: 'GET'
+        })
+        .then(response => {
+          
+        })
+        */
+    },
   name: 'app',
   components: {
     Slide,
@@ -61,7 +72,8 @@ export default {
   },
   data() {
     return {
-      User: {}
+      User: {},
+      PublicDecks: {}
     }
   },
   methods: {
