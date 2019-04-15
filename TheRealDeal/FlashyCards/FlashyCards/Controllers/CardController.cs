@@ -64,8 +64,13 @@ namespace FlashyCards.Controllers
             return NotFound();
         }
 
+        
         //Updates a Flashcard
-        [HttpPut]
+        //[HttpPut]
+        //public ActionResult updateFlashCard ([FromBody] FlashCard updatedCard)
+        //{
+
+        //}
 
     }
 }
