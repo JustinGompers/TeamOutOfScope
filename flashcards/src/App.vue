@@ -34,6 +34,12 @@
     </fixed-header>
     <div class='content'>
       <Deck></Deck>
+      <div id="PubDecks">
+        <ul class="decks">
+          </ul>
+        </div>
+        <footer id="footer">&copy; 2019 FlashyCards.com</footer>
+        <footer id="footerslogan"> 	&trade;"Learning is FUNdamental"</footer>
     </div>
   </div>
 
@@ -49,7 +55,31 @@ import Deck from './components/Deck.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 
+// Vue.components('Deck', {
+//   props: ['UserId'],
+//   watch: {
+//     UserId(newValue, oldValue) {
+
+//     }
+//   }
+// })
+
 export default {
+    beforeCreate() {
+        console.log('Im First');
+        /*
+        fetch(this.apiUrl, {
+          method: 'GET'
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          this.PublicDecks = data;
+          console.log(this.PublcDecks);
+        })
+        */
+    },
   name: 'app',
   components: {
     Slide,
@@ -61,7 +91,8 @@ export default {
   },
   data() {
     return {
-      User: {}
+      User: {},
+      PublicDecks: []
     }
   },
   methods: {
@@ -82,7 +113,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background: lightblue;
+  background: #FF983E;
 }
 #header.vue-fixed-header--isFixed {
   position: fixed;
@@ -111,7 +142,7 @@ export default {
   background-color: white;
 }
 .bm-menu{
-  height: 40%;
+  height: 60%;
   background-color: #800020;
   transition: 0.0s;
 }

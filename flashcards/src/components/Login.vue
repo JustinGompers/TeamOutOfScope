@@ -151,5 +151,8 @@ export default {
 #loginButton{
     font-size: 24pt;
 }
+#emailField label{
+    padding-right: 37px;
+}
 </style>
 
