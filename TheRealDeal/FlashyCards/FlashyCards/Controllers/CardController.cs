@@ -50,6 +50,11 @@ namespace FlashyCards.Controllers
         [HttpPost]
         public ActionResult<List<FlashCardWithID>> createFlashCard([FromBody] FlashCard newCard)
         {
+            if (newCard.image == null)
+            {
+                newCard.image = "";
+            }
+
             Dal.CreateCard(newCard);
             List<FlashCardWithID> updatedFlashCardDeck = Dal.GetAllFlashCards(newCard.deckID);
             if (updatedFlashCardDeck != null)
@@ -58,5 +63,14 @@ namespace FlashyCards.Controllers
             }
             return NotFound();
         }
+
+        
+        //Updates a Flashcard
+        //[HttpPut]
+        //public ActionResult updateFlashCard ([FromBody] FlashCard updatedCard)
+        //{
+
+        //}
+
     }
 }
