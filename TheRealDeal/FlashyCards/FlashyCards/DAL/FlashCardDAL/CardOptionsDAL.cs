@@ -147,18 +147,18 @@ namespace FlashyCards.DAL.FlashCardDAL
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
+                    //Need to change this SqlCommand Statement....
                     SqlCommand cmd = new SqlCommand($"select * from Card where Card_id = @id;", conn);
                     cmd.Parameters.AddWithValue("@id", id);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
-                    {
-                        
+                    {                        
                         singleFlashCard.cardID = Convert.ToInt32(reader["Card_id"]);
                         singleFlashCard.question = Convert.ToString(reader["Question"]);
                         singleFlashCard.image = Convert.ToString(reader["Image"]);
                         singleFlashCard.answer = Convert.ToString(reader["Answer"]);
-
+                        singleFlashCard.tag = Convert.ToString(reader["Name"]);
                     }
                 }
             } catch (SqlException)
@@ -178,11 +178,13 @@ namespace FlashyCards.DAL.FlashCardDAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
+                    //Need to change this SqlCommand ....
                     SqlCommand cmd = new SqlCommand($"update Card set Question = @question, Image = @image, Answer = @answer where Card_id = @id;", connection);
 
                     cmd.Parameters.AddWithValue("@question", card.question);
                     cmd.Parameters.AddWithValue("@image", card.image);
                     cmd.Parameters.AddWithValue("@answer", card.answer);
+                    cmd.Parameters.AddWithValue("@tag", card.tag);
                     cmd.Parameters.AddWithValue("id", card.cardID);
 
                     rowsAffected = cmd.ExecuteNonQuery();
