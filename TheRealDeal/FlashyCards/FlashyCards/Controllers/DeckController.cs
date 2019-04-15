@@ -46,8 +46,7 @@ namespace FlashyCards.Controllers
         }
 
         //Returns List of Decks That Are Sharable GET API(url = api/Deck/sharable)
-        [HttpGet(Name = "GetSharableDecks")]
-        [ActionName("sharable")]
+        [HttpGet("sharable", Name = "GetSharableDecks")]
         public ActionResult<List<SharableDecks>> GetSharableDecks()
         {
             List<SharableDecks> sharableDecks = deckOptionsDAL.GetSharableDecks();
