@@ -38,6 +38,8 @@
         <ul class="decks">
           </ul>
         </div>
+        <footer id="footer">&copy; 2019 FlashyCards.com</footer>
+        <footer id="footerslogan"> 	&trade;"Learning is FUNdamental"</footer>
     </div>
   </div>
 
@@ -111,7 +113,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background: lightblue;
+  background: #FF983E;
 }
 #header.vue-fixed-header--isFixed {
   position: fixed;
