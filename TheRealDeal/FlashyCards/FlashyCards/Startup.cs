@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FlashyCards.DAL;
+using FlashyCards.DAL.FlashCardDAL;
 using FlashyCards.DAL.FlashCardDeckDAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace FlashyCards
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddScoped<UserRegisterDataAccessLayer, UserRegisterDataAccessLayer>(x => new UserRegisterDataAccessLayer(@"Data Source=.\sqlexpress;Initial Catalog=FlashCardDB;Integrated Security=true"));
             services.AddScoped<DeckOptionsDAL, DeckOptionsDAL>(x => new DeckOptionsDAL(@"Data Source=.\sqlexpress;Initial Catalog=FlashCardDB;Integrated Security=true"));
+            services.AddScoped<CardOptionsDAL, CardOptionsDAL>(x => new CardOptionsDAL(@"Data Source=.\sqlexpress;Initial Catalog=FlashCardDB;Integrated Security=true"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

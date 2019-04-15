@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace FlashyCards.Model.FlashCardModel
 {
-    public class FlashCard
+    public class FlashCardWithID
     {
         public int deckID { get; set; }
+        public int cardID { get; set; }
         public string question { get; set; }
         public string answer { get; set; }
         public string image { get; set; }

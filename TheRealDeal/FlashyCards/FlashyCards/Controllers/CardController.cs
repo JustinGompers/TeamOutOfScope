@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using FlashyCards.DAL.FlashCardDAL;
 using FlashyCards.Model.FlashCardModel;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlashyCards.Controllers
 {
+    [EnableCors]
     [Route("api/[controller]")]
     [ApiController]
     public class CardController : ControllerBase
@@ -20,31 +22,41 @@ namespace FlashyCards.Controllers
 
         }
 
-        // GET: api/Card/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        // Returns List of Flashcards associated with a deck, GET API(url = api/Card/{deckID})
+        [HttpGet("{deckID}", Name = "GetFlashCardsByDeck")]
+        public ActionResult<List<FlashCardWithID>> GetFlashCardsByDeck(int deckID)
         {
-            return "value";
+            List<FlashCardWithID> flashCardList = Dal.GetAllFlashCards(deckID);
+            if (flashCardList != null)
+            {
+                return flashCardList;
+            }
+            return NotFound();
+        } 
+        
+        // Returns List of Flashcards associated with a tag, GET API(url = api/Card/{tag})
+        [HttpGet("tag/{tag}", Name = "GetFlashCardsByTag")]
+        public ActionResult<List<FlashCardWithID>> GetFlashCardsByTag(string tag)
+        {
+            List<FlashCardWithID> flashCardList = Dal.GetFlashCardsByTag(tag);
+            if (flashCardList != null)
+            {
+                return flashCardList;
+            }
+            return NotFound();
         }
 
-        // POST: api/Card
+        //Creates a FlashCard Associated with a Deck, POST API(url = api/Card)
         [HttpPost]
-        public ActionResult InsertCard([FromBody] FlashCard flashCard)
+        public ActionResult<List<FlashCardWithID>> createFlashCard([FromBody] FlashCard newCard)
         {
-            Dal.createCard(flashCard);
-            return CreatedAtRoute("Get", new { Id = flashCard.cardID }, flashCard);
-        }
-
-        // PUT: api/Card/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            Dal.CreateCard(newCard);
+            List<FlashCardWithID> updatedFlashCardDeck = Dal.GetAllFlashCards(newCard.deckID);
+            if (updatedFlashCardDeck != null)
+            {
+                return updatedFlashCardDeck;
+            }
+            return NotFound();
         }
     }
 }
