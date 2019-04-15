@@ -1,7 +1,7 @@
 <template>
     <div class= "loginSection"> 
-        <button id="loginButton" v-on:click.prevent="show()">Login</button>
-        <modal id="form" name="Login" :width="600" :height="165">
+        <a id="loginButton" v-on:click.prevent="show()">Login</a>
+        <modal id="form" name="Login" :width="600" :height="225">
             <div id="modal-header">
                 <h2>Login Form</h2>
             </div>
@@ -143,6 +143,13 @@ export default {
     justify-content: center;
     justify-content: space-around;
     padding-top: 5px;
+}
+#loginButton{
+    Color: white;
+    border-bottom: solid;
+}
+#loginButton{
+    font-size: 24pt;
 }
 </style>
 

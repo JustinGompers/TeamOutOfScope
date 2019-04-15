@@ -10,17 +10,29 @@
         <Slide disableOutsideClick>
           <a id="home" href="#">
             <div id='hamburgers'>
-              <h2>Flashy Menu {{ User.userId }}</h2>
+              <img id="menu" src="./assets/FlashyMenu.png">
+              <div id="login" v-if="!this.User.userName">
+              <login @confirmedUser="getUserInfo"></login>
+              </div>
+              <div id="register" v-if="!this.User.userName">
               <registration @registeredUser="getRegisteredUser"></registration>
+              </div>
+              <div id="LoggedUser" v-if="this.User.userName">
+                <div>
+                  <img id="userPhoto" src="./assets/normalpic.jpg">
+                  </div>
+                  <span>{{ this.User.firstName }} {{ this.User.lastName }}</span>
+              </div>
+              <div id="Card">
+                  <Card></Card>
+                </div>
             </div>
           </a>
         </Slide>
         
       </div>
     </fixed-header>
-    <div class='content' v-if="User != {}">
-      <login @confirmedUser="getUserInfo"></login>
-      <Card></Card>
+    <div class='content'>
       <Deck></Deck>
     </div>
   </div>
@@ -101,7 +113,7 @@ export default {
 .bm-menu{
   height: 40%;
   background-color: #800020;
-  transition: 0.5s;
+  transition: 0.0s;
 }
 .bm-item-list{
   margin-left: 5%;
@@ -121,5 +133,21 @@ export default {
 }
 li{
   margin-left: 5%;
+}
+#register{
+  padding-top: 15px;
+}
+#menu{
+  width: 20vw;
+}
+#userPhoto{
+  border-radius: 125px;
+  width: 50%;
+}
+#LoggedUser{
+  color: white;
+}
+#Card{
+  padding-top: 15px;
 }
 </style>

@@ -1,22 +1,32 @@
 <template>
-    <div class= "cardSection">   
-      <button id="CardButton" v-on:click.prevent="showCardForm = true" v-if="showCardForm== false">Create Your Card</button>
-      
-      <form id="formCard" v-if="showCardForm" >
+    <div class= "CardSection">   
+      <a id="CardButton" v-on:click.prevent="show()">Create a Card</a>
+      <modal id="Form" name="CreateCard" :width="600" :height="165">
+        <div id="modal-header">
+                <h2>Create a Card Form</h2>
+            </div>
+            <div id="modal-body">
+      <form id="formCard" @submit.prevent="Button" >
 
         <div>
-        <label>Question:</label>
-            <input type="text" id="question" placeholder="Enter a question" v-model="question" />
+        <input type="text" id="question" placeholder="Enter a question" v-model="question" />
         </div>
         <div>
-          <label>Answer: </label>
-            <input type="text" id="answer" placeholder="Enter the answer" v-model="answer" />
+        <input type="text" id="answer" placeholder="Enter the answer" v-model="answer" />
         </div>
-        
-        <button id="submitQuestionButton" v-on:click="submitCard">Submit</button>
-        <button id="cancelQuestionButton" v-on:click.prevent="showCardForm = false">Cancel</button>
-        
+        <div>
+        <input type="text" id="image" placeholder="Enter an image url" v-model="image" />
+        </div>
+        <div>
+        <input type="text" id="tags" placeholder="Enter tags" v-model="tags" />
+        </div>
       </form>
+      </div>
+      <button id="SubmitButton">Submit</button>
+      <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
+      </modal>
+        
+
       </div>
     
 </template> 
@@ -26,28 +36,32 @@
 export default {
     name: 'Card',   
 
-    props: {
-        id: Number,
-        question: String,
-        answer: String,
-        image: String
-    },   
+    // props: {
+    //     id: Number,
+    //     question: String,
+    //     answer: String,
+    //     image: String
+
+    // },   
 
     data() {
         return {
 
           cards: [],
           showCardForm: false,
-          apiURL: "https://localhost:44337/api/flashycards",
+          apiURL: "https://localhost:44337/api/Card",
           question: '',
           answer: '',
+          image: '',
+          tags: '',
             
         };  
     },
 
     methods: {
     Button() {
-        if (result) {
+         this.$validator.validateAll().then((result) => {
+             if (result) {
           let cardInput = document.getElementById("formCard")
             let card = new FormData(cardInput)
             fetch(this.apiURL, {
@@ -58,24 +72,58 @@ export default {
                     'Content-Type': 'application/json'
                 }
             })
+            .then(response => {
+                return response.json();
+            })
             .catch(err => {
                 err
             });
             this.question = '';
             this.answer = '';
+            this.image = '';
+            this.tags = '';
             this.showCardForm = false;
             alert('Your card has been submitted!');
         }else{
-            alert('Correct them errors!');
+            alert('Your card has missing fields!');
         }
-    }
+    })
     },
+
+    show(){
+            this.$modal.show('CreateCard');
+        },
+        hide(){
+            this.$modal.hide('CreateCard');
+        }
 }
+}
+
 
 </script>
 
+
 <style>
-#modal-header{
-    text-align: center;
+
+#CardButton{ 
+  Color: white;
+  border-bottom: solid;
 }
+#SubmitButton{
+  border: 1px solid rgb(207, 93, 0);
+  border-radius: 15px;
+  box-shadow: 2px 2px #888888;
+}
+#CancelButton{
+  border: 1px solid rgb(207, 93, 0);
+  border-radius: 15px;
+  box-shadow: 2px 2px #888888;
+}
+
+
+input {
+  display: inline-block;
+  
+}
+
 </style>
