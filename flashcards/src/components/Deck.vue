@@ -1,28 +1,17 @@
 <template>
   <div class= "deck"> 
-
-      <h2>This is the start of the Deck section</h2> 
-
-   <!--
-      <button id="createDeck" v-on:click.prevent="show()" v-on:click="getCategories">
-        Create Your Deck</button>
-        -->
-     
-      <button id="createDeck" v-on:click.prevent="showCreateDeckForm = true" v-if="showCreateDeckForm== false" v-on:click="getCategories">
-          Create Your Deck</button>
-   
-      <br>
-
-    <!--         <modal id="form" name="createDeck" :width="600" :height="300"> 
-            <div id="modal-header">
-                <h2>Create Your Deck</h2>
-            </div>
-             -->
+      <a id="createDeck" v-on:click.prevent="show()">Create a Deck</a>
+      <modal id="Form" name="createDeck" :width="600" :height="400">
+        <div id="modal-header">
+            <h2>Create a Deck Form</h2>
+        </div>
             <div id="modal-body">    
-                <form id="formCreateDeck" v-if="showCreateDeckForm === true">         
-        
-                    <input type="text" id="deck-name" placeholder="Enter name of deck" v-model.trim="name"/>
-            
+                <form id="formCreateDeck" @submit.prevent="Button">
+
+                    <div>
+                        <label>Question: </label>         
+                    <input type="text" id="deck-name" placeholder="Enter name of deck" v-model="name"/>
+                    </div>
                     <div>
                         <p>Choose the category of your deck:</p>
                         <select id="deck-category" v-model="categoryName">
@@ -37,20 +26,11 @@
                             <input type="radio" id="share-deck-no" name="yes-or-no" value="no" v-on:click="share_deck=false" v-model="share_deck"/>No<br>
                         </form>
                     </div>
-
-                    <div>
-                        <button id="submitLoginButton" v-on:click.prevent="createDeck">Submit</button>
-                         <!--<button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button> -->
-                       
-                        <button id="cancelLoginButton" v-on:click.prevent="showCreateDeckForm = false">Cancel</button>
-                        
-                    </div>
+                        <button id="submitLoginButton">Submit</button>
+                        <button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button>     
                 </form>
             </div>
-        <!-- </modal> -->
-
-        <p id="deckCreated" v-if="showSuccessMsg===true">Your new deck has been created!</p>
-        <p id="deckNOTCreated" v-if="showFailMsg === true">Your deck was NOT created.  Please try again.</p>
+        </modal>
 
         <br>
         <div>
@@ -73,9 +53,9 @@ export default {
             name: '',
             categoryName: '',
             share_deck: false,            
-            showCreateDeckForm: false, 
-            showSuccessMsg: false,
-            showFailMsg: false,
+            // showCreateDeckForm: false, 
+            // showSuccessMsg: false,
+            // showFailMsg: false,
             categories: [],
             decks: [],
             deck: {},
@@ -100,6 +80,9 @@ export default {
     },
 
         createDeck() {
+            this.$validator.validateAll().then((result) => {
+                if (result) {  
+            
 
             let deckInfo = document.getElementById("formCreateDeck");
             let deck = new FormData(deckInfo);
@@ -119,19 +102,25 @@ export default {
                         // the next time this page is refreshed the new deck will be pulled from the server.
                         //if we set up additional code to do that
                         this.decks.push(deck);
-                        this.showSuccessMsg = true;
-                        console.log("This worked.");
-                    } else {
-                        this.showFailMsg = true;
-                        console.log("This DID NOT work!");
+                        // this.showSuccessMsg = true;
+                        // console.log("This worked.");
+                    // } else {
+                    //     this.showFailMsg = true;
+                    //     console.log("This DID NOT work!");
                     }
                     })
                     .catch(err => console.error(err));
 
-            this.showCreateDeckForm = false;
+            
             this.name = '';
             this.share_deck = false;
             this.categoryName = '';
+            this.showCreateDeckForm = false;
+               alert('Your Deck has been submitted!');
+        }else{ 
+            alert('Your Deck has missing fields!');
+        }})
+
 
         },
 
