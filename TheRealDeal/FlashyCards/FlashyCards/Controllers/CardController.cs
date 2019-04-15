@@ -102,8 +102,7 @@ namespace FlashyCards.Controllers
                 return NotFound();
             } else
             {
-                //WE MAY HAVE TO CHANGE THE NAME BEING USED IN THE ROUTE BELOW
-                return CreatedAtRoute("GetFlashCardsByDeck", new { id = existingCard.cardID }, existingCard);
+                return CreatedAtRoute("GetFlashCardsByTag", new { tag = existingCard.tag }, existingCard);
             }
 
             
