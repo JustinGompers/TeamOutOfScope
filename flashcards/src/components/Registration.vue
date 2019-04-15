@@ -65,7 +65,7 @@ export default {
         }
     },
     methods: {
-    Button() {
+    Button(){
       this.$validator.validateAll().then((result) => {
         if (result) {
           let reg = document.getElementById("formLogin")
@@ -81,8 +81,7 @@ export default {
             .catch(err => {
                 err
             });
-            
-            getUser(User);
+            this.apiURL2 = this.apiURL2 + "/" + this.User.userName + "/" + this.User.password;
             this.User.userName = '';
             this.User.firstName = '';
             this.User.lastName = '';
@@ -90,6 +89,31 @@ export default {
             this.password2 = '';
             this.$modal.hide('Form');
             alert('Your form has been sumbitted welcome to FlashyCard family!');
+            fetch(this.apiURL2,{
+                method: 'GET'
+                })
+                .then(response => {
+                    return response.json();
+                })
+            //assign the user objects from the DB to the users array defined in this component
+                .then(data => {
+                    this.Userlogged = data;
+                    console.log(this.Userlogged.userId);
+                    if (this.Userlogged.userId > 0){
+                        this.showSuccessMsg = true;
+                        this.$emit('registeredUser', this.Userlogged);
+                        console.log("This worked.");
+                    }
+                    //otherwise emit empty object titled noUserFound
+                    else {
+                        this.showFailMsg = true;
+                        this.$emit('noUserFound', this.Userlogged); 
+                        console.log("This DID NOT work!");
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                });
         }else{
             alert('Your form has missing fields.  Please fill out to register.');
         }
@@ -105,32 +129,8 @@ export default {
         hide(){
             this.$modal.hide('Cards');
         },
-        getUser(User){
-            fetch(this.apiURL2,{
-                method: 'GET'
-                })
-                .then(response => {
-                    return response.json();
-                })
-            //assign the user objects from the DB to the users array defined in this component
-                .then(data => {
-                    this.Userlogged = data;
-                    console.log(this.Userlogged.userId);
-                    if (this.singleUser.userId > 0){
-                        this.showSuccessMsg = true;
-                        this.$emit('confirmedUser', this.Userlogged);
-                        console.log("This worked.");
-                    }
-                    //otherwise emit empty object titled noUserFound
-                    else {
-                        this.showFailMsg = true;
-                        this.$emit('noUserFound', this.Userlogged); 
-                        console.log("This DID NOT work!");
-                    }
-                })
-                .catch(e => {
-                    console.log(e);
-                });
+        getUser(){
+            
         }
     }
 }

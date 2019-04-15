@@ -34,6 +34,10 @@
     </fixed-header>
     <div class='content'>
       <Deck></Deck>
+      <div id="PubDecks">
+        <ul class="decks">
+          </ul>
+        </div>
     </div>
   </div>
 
@@ -49,6 +53,15 @@ import Deck from './components/Deck.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 
+// Vue.components('Deck', {
+//   props: ['UserId'],
+//   watch: {
+//     UserId(newValue, oldValue) {
+
+//     }
+//   }
+// })
+
 export default {
     beforeCreate() {
         console.log('Im First');
@@ -57,7 +70,11 @@ export default {
           method: 'GET'
         })
         .then(response => {
-          
+          return response.json();
+        })
+        .then(data => {
+          this.PublicDecks = data;
+          console.log(this.PublcDecks);
         })
         */
     },
@@ -73,7 +90,7 @@ export default {
   data() {
     return {
       User: {},
-      PublicDecks: {}
+      PublicDecks: []
     }
   },
   methods: {
@@ -123,7 +140,7 @@ export default {
   background-color: white;
 }
 .bm-menu{
-  height: 40%;
+  height: 60%;
   background-color: #800020;
   transition: 0.0s;
 }
@@ -150,7 +167,7 @@ li{
   padding-top: 15px;
 }
 #menu{
-  width: 14vw;
+  width: 20vw;
 }
 #userPhoto{
   border-radius: 125px;
