@@ -64,13 +64,45 @@ namespace FlashyCards.Controllers
             return NotFound();
         }
 
-        
+        //Example: PUT api/card/16
         //Updates a Flashcard
-        //[HttpPut]
-        //public ActionResult updateFlashCard ([FromBody] FlashCard updatedCard)
-        //{
+        [HttpPut("{id}")]
+        public ActionResult updateFlashCard(int id, [FromBody] FlashCardWithID updatedCard)
+        {
+            //for security, make sure that the id used in API call matches the id in the flashcard object that's passed in
+            if (id != updatedCard.cardID)
+            {
+                return NotFound();
+            }
 
-        //}
+            //make sure this card is, in fact, already existing in the DB
+            var existingCard = Dal.GetSingleCard(id);
+
+            if (existingCard == null)
+            {
+                return NotFound();
+            }
+
+            //For fields passed in from the API ... if those fields are null, keep the existing data in the DB
+            //For the fields passed in from API that are NOT null, update that data in the DB
+            existingCard.cardID = updatedCard.cardID;
+            existingCard.question = updatedCard.question == "" ? existingCard.question : updatedCard.question;
+            existingCard.image = updatedCard.image == "" ? existingCard.image : updatedCard.image;
+            existingCard.answer = updatedCard.answer == "" ? existingCard.answer : updatedCard.answer;
+
+            bool isNowUpdated = Dal.UpdateCard(id, existingCard);
+
+            if (!isNowUpdated)
+            {
+                return NotFound();
+            } else
+            {
+                //WE MAY HAVE TO CHANGE THE NAME BEING USED IN THE ROUTE BELOW
+                return CreatedAtRoute("GetFlashCardsByDeck", new { id = existingCard.cardID }, existingCard);
+            }
+
+            
+        }
 
     }
 }

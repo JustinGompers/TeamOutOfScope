@@ -136,5 +136,65 @@ namespace FlashyCards.DAL.FlashCardDAL
             }
             return cardList;
         }
+
+        public FlashCardWithID GetSingleCard (int id)
+        {
+
+            FlashCardWithID singleFlashCard = new FlashCardWithID();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"select * from Card where Card_id = @id;", conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        
+                        singleFlashCard.cardID = Convert.ToInt32(reader["Card_id"]);
+                        singleFlashCard.question = Convert.ToString(reader["Question"]);
+                        singleFlashCard.image = Convert.ToString(reader["Image"]);
+                        singleFlashCard.answer = Convert.ToString(reader["Answer"]);
+
+                    }
+                }
+            } catch (SqlException)
+            {
+                throw;
+            }
+
+            return singleFlashCard;
+        }
+
+        public bool UpdateCard (int id, FlashCardWithID card)
+        {
+            int rowsAffected = -1;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand($"update Card set Question = @question, Image = @image, Answer = @answer where Card_id = @id;", connection);
+
+                    cmd.Parameters.AddWithValue("@question", card.question);
+                    cmd.Parameters.AddWithValue("@image", card.image);
+                    cmd.Parameters.AddWithValue("@answer", card.answer);
+                    cmd.Parameters.AddWithValue("id", card.cardID);
+
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return rowsAffected > 0;
+        }
     }
 }

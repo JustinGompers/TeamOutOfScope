@@ -20,7 +20,7 @@ namespace FlashyCards.Controllers
         {
             this.deckOptionsDAL = deckOptionsDAL;
         }
-
+        
         //Returns List of Categories GET API(url = api/Deck)
         [HttpGet(Name = "GetCategoriesList")]
         public ActionResult<List<Category>> GetCategoriesList()
@@ -34,7 +34,7 @@ namespace FlashyCards.Controllers
         }
 
         //Returns List of Decks Associated with User GET API(url = api/Deck/{user_Id})
-        [HttpGet("{user_Id}", Name = "GetUserDecks")]
+        [HttpGet("user/{user_Id}", Name = "GetUserDecks")]
         public ActionResult<List<UserFlashCardDeckWithID>> GetUserDecks(int user_Id)
         {
             List<UserFlashCardDeckWithID> userDecks = deckOptionsDAL.GetUserDecks(user_Id);
@@ -44,6 +44,20 @@ namespace FlashyCards.Controllers
             }
             return NotFound();
         }
+
+        //Returns List of Decks That Are Sharable GET API(url = api/Deck/sharable)
+        [HttpGet(Name = "GetSharableDecks")]
+        [ActionName("sharable")]
+        public ActionResult<List<SharableDecks>> GetSharableDecks()
+        {
+            List<SharableDecks> sharableDecks = deckOptionsDAL.GetSharableDecks();
+            if (sharableDecks != null)
+            {
+                return sharableDecks;
+            }
+            return NotFound();
+        }
+
 
         //Creates a Deck Associated with a User POST API(url = api/Deck)
         [HttpPost]
