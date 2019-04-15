@@ -78,19 +78,11 @@ export default {
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                this.Userlogged = data;
-                console.log(this.Userlogged.userId)
-                this.$emit('registeredUser', this.Userlogged);
-            })
             .catch(err => {
                 err
             });
             
-            
+            getUser(User);
             this.User.userName = '';
             this.User.firstName = '';
             this.User.lastName = '';
@@ -112,6 +104,33 @@ export default {
         },
         hide(){
             this.$modal.hide('Cards');
+        },
+        getUser(User){
+            fetch(this.apiURL2,{
+                method: 'GET'
+                })
+                .then(response => {
+                    return response.json();
+                })
+            //assign the user objects from the DB to the users array defined in this component
+                .then(data => {
+                    this.Userlogged = data;
+                    console.log(this.Userlogged.userId);
+                    if (this.singleUser.userId > 0){
+                        this.showSuccessMsg = true;
+                        this.$emit('confirmedUser', this.Userlogged);
+                        console.log("This worked.");
+                    }
+                    //otherwise emit empty object titled noUserFound
+                    else {
+                        this.showFailMsg = true;
+                        this.$emit('noUserFound', this.Userlogged); 
+                        console.log("This DID NOT work!");
+                    }
+                })
+                .catch(e => {
+                    console.log(e);
+                });
         }
     }
 }
