@@ -7,9 +7,10 @@ using FlashyCards.Model.FlashCardModel;
 
 namespace FlashyCards.DAL.FlashCardDAL
 {
-    interface ICardOptions
+    interface ICardOptionsDAL
     {
-        int createCard(FlashCard newCard);
-        List<FlashCard> getCardInfo(FlashCard flashCard);
+        void CreateCard(FlashCard newCard);
+        List<FlashCardWithID> GetAllFlashCards(int deckID);
+        List<FlashCardWithID> GetFlashCardsByTag(string tag);
     }
 }
