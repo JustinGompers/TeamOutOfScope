@@ -1,7 +1,7 @@
 <template>
   <div class= "deck"> 
       <button id="createDeck" v-on:click.prevent="show()">Create a Deck</button>
-      <modal id="Form" name="createDeck" :width="600" :height="400">
+      <!-- <modal id="Form" name="createDeck" :width="600" :height="400"> -->
         <div id="modal-header">
             <h2>Create a Deck Form</h2>
         </div>
@@ -32,7 +32,7 @@
                     </div>     
                 </form>
             </div>
-        </modal>
+        <!-- </modal> -->
 
         <br>
         <div>
