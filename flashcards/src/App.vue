@@ -44,6 +44,8 @@
     </fixed-header>
     <div class='content'>
       <Deck :ID=this.User.userId></Deck>
+      <ViewUserDecks></ViewUserDecks>
+      <StudySession></StudySession>
       <div id="PubDecks">
         <ul class="decks">
           </ul>
@@ -65,6 +67,8 @@ import About from './components/About.vue'
 import Login from './components/Login.vue'
 import Registration from './components/Registration.vue'
 import Deck from './components/Deck.vue'
+import ViewUserDecks from './components/ViewUserDecks.vue'
+import StudySession from './components/StudySession.vue'
 import SearchCard from './components/SearchCard.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
@@ -103,7 +107,8 @@ export default {
     Registration, 
     Deck,
     About,
-    SearchCard
+    SearchCard,
+    StudySession
   },
   data() {
     return {
