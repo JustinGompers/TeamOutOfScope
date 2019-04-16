@@ -1,11 +1,12 @@
 <template>
     <div>
+        <button v-for="cards in Cards" v-bind:key="cards.cardID" :value="cards"> {{this.cards.question}} : {{this.cards.answer}}</button>
     </div>
 </template>
 
 <script>
 export default {
-    beforeCreate(){
+    mounted(){
         this.apiURL = this.apiURL + this.DID;
         fetch(this.apiURL, {
             method: 'GET'

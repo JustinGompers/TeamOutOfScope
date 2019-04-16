@@ -1,7 +1,7 @@
 <template>
     <div class= "CardSection">   
       <a id="CardButton" v-on:click.prevent="show()">Create a Card</a>
-      <modal id="Form" name="CreateCard" :width="600" :height="150">
+      <modal id="Form" name="CreateCard" :width="600" :height="250">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
             </div>
