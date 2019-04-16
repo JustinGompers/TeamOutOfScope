@@ -107,7 +107,8 @@ export default {
     Registration, 
     Deck,
     About,
-    SearchCard
+    SearchCard,
+    StudySession
   },
   data() {
     return {
