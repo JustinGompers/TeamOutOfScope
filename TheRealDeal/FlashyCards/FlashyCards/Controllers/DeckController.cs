@@ -70,5 +70,28 @@ namespace FlashyCards.Controllers
             }
             return NotFound();
         }
+
+        //Updates a Deck Associated with a deckID, PUT API(url = api/Deck/deckID/{deckID})
+        [HttpPut("deckID/{deckID}")]
+        public ActionResult<List<UserFlashCardDeckWithID>> updateDeck(int deckID, UserFlashCardDeckWithID deck)
+        {
+            UserFlashCardDeckWithID existingDeck = deckOptionsDAL.GetSingleDeck(deckID);
+            if(existingDeck == null)
+            {
+                return NotFound();
+            }
+
+            existingDeck.deckName = String.IsNullOrEmpty(deck.deckName) ? existingDeck.deckName : deck.deckName;
+            existingDeck.isSharing = deck.isSharing;
+            existingDeck.category_id = deck.category_id;
+
+            UserFlashCardDeckWithID updatedDeck = deckOptionsDAL.updateDeck(existingDeck);
+            List<UserFlashCardDeckWithID> updatedUserDecks = new List<UserFlashCardDeckWithID>();
+            if (updatedDeck != null)
+            {
+                return updatedUserDecks = deckOptionsDAL.GetUserDecks(updatedDeck.person_id);
+            }
+            return NotFound();
+        }
     }
 }

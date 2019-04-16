@@ -13,7 +13,7 @@
                     <input type="text" id="deck-name" v-validate="'required'" placeholder="Enter name of deck" v-model="deckName" name="deckName"/>
                     <span>{{ errors.first('deckName')}}</span>
                     </div>
-                    <input type="hidden" value=ID name="person_id"/>
+                    <input type="hidden" :value="ID" name="person_id"/>
                     <div id="category">
                         <span id="cat">Choose the category of your deck:</span>
                         <select id="deck-category" v-validate="'required|min_value:1'" v-model="category_id" name="category_id">
@@ -66,6 +66,7 @@ export default {
             category_id: 0,
             isOpen: 'false',            
             categories: [],
+            person_id: 0,
             apiURL: "https://localhost:44337/api/deck"   
 
         };

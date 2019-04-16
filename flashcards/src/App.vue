@@ -44,7 +44,7 @@
     </fixed-header>
     <div class='content'>
       <Deck :ID=this.User.userId></Deck>
-      <ViewUserDecks></ViewUserDecks>
+      <ViewUserDecks :ID=this.User.userId></ViewUserDecks>
       <StudySession></StudySession>
       <div id="PubDecks">
         <ul class="decks">
@@ -108,7 +108,8 @@ export default {
     Deck,
     About,
     SearchCard,
-    StudySession
+    StudySession,
+    ViewUserDecks
   },
   data() {
     return {
