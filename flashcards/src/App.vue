@@ -3,6 +3,7 @@
     <fixed-header>
       <div id='header'>
         <div id='main'>
+          
           <img id="logo" src="./assets/flashed-clipart-running.gif">
           <img id="title" src="./assets/Flashlogo.png">
           <img id="logo" src="./assets/reverse-flash.gif">
@@ -10,7 +11,15 @@
         <Slide disableOutsideClick>
           <a id="home" href="#">
             <div id='hamburgers'>
+              <div>
+            
+            </div>
               <img id="menu" src="./assets/FlashyMenu.png">
+              <div>
+              <About></About>
+              </div>
+              <br>
+
               <div id="login" v-if="!this.User.userName">
               <login @confirmedUser="getUserInfo"></login>
               </div>
@@ -30,6 +39,7 @@
           </a>
         </Slide>
         
+        
       </div>
     </fixed-header>
     <div class='content'>
@@ -38,8 +48,10 @@
         <ul class="decks">
           </ul>
         </div>
+        
         <footer id="footer">&copy; 2019 FlashyCards.com</footer>
         <footer id="footerslogan"> 	&trade;"Learning is FUNdamental"</footer>
+        
     </div>
   </div>
 
@@ -49,6 +61,7 @@
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
 import Card from './components/Card.vue'
+import About from './components/About.vue'
 import Login from './components/Login.vue'
 import Registration from './components/Registration.vue'
 import Deck from './components/Deck.vue'
@@ -87,7 +100,8 @@ export default {
     Card,
     Login,
     Registration, 
-    Deck
+    Deck,
+    About
   },
   data() {
     return {
