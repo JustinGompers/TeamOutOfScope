@@ -1,21 +1,17 @@
 <template>
     <div>
         <button id="ViewUserCreatedDecks" @click.prevent="ViewAll()" v-if="showUserDecks === false">View UserDecks</button>
-        <div id="Decks" v-if="showUserDecks === true">
-            <button v-for="deck in UserDecks" @click="DeckDecided(deck.deck_id)" v-bind:key="deck.deck_id" :value="deck.deck_id"> {{deck.deckName}}</button>
+        <div v-if="showUserDecks === true">
+            <div id="Decks">
+                <button v-for="deck in UserDecks" @click="DeckDecided(deck)" v-bind:key="deck.deck_id" :value="deck"> {{deck.deckName}}</button>
+            </div>
         </div>
-        <span>{{ChosenDeck}}</span>
     </div>
 </template>
 
 <script>
-//import ViewDeckCards from './components/VUDcomponents/ViewDeckCards.vue'
-
 export default {
     name: 'ViewUserDecks',
-    components:{
-        //ViewDeckCards
-    },
     props: {
         ID: {
             type: Number,
@@ -28,7 +24,7 @@ export default {
             apiURL: "https://localhost:44337/api/deck/user/",
             UserDecks: [],
             showUserDecks: false,
-            ChosenDeck: 0
+            ChosenDeck: {}
         }
     },
     methods: {
@@ -47,7 +43,9 @@ export default {
                     .catch(e => console.log(e));
         },
         DeckDecided(id){
+            console.log(id.deck_id);
             this.ChosenDeck = id
+            this.$emit('chosenDeck', this.ChosenDeck);
         }
     }
 }
