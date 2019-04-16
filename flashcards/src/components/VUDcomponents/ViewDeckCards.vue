@@ -1,5 +1,6 @@
 <template>
     <div>
+        <span v-for="card in Cards" v-bind:key="card.deck_id"> {{card.question}}:{{card.answer}}</span>
     </div>
 </template>
 
