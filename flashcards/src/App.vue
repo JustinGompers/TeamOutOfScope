@@ -48,7 +48,6 @@
       <ViewUserDecks v-if="!this.ChosenDeck.deck_id" :ID=this.User.userId @chosenDeck="getDeckInfo"></ViewUserDecks>
       <span>{{this.ChosenDeck.deckName}}</span>
       <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.ChosenDeck.deck_id"></ViewDeckCards>
-      <ViewUserDecks :ID=this.User.userId></ViewUserDecks>
       <StudySession :user=this.User.userId></StudySession>
       <div id="PubDecks">
         <ul class="decks">
