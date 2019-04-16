@@ -32,8 +32,8 @@ namespace FlashyCards.Controllers
                 return flashCardList;
             }
             return NotFound();
-        } 
-        
+        }
+
         // Returns List of Flashcards associated with a tag, GET API(url = api/Card/{tag})
         [HttpGet("tag/{tag}", Name = "GetFlashCardsByTag")]
         public ActionResult<List<FlashCardWithID>> GetFlashCardsByTag(string tag)
@@ -85,7 +85,7 @@ namespace FlashyCards.Controllers
 
             //For fields passed in from the API ... if those fields are null, keep the existing data in the DB
             //For the fields passed in from API that are NOT null, update that data in the DB
-            existingCard.cardID = updatedCard.cardID;            
+            existingCard.cardID = updatedCard.cardID;
             existingCard.deckID = updatedCard.deckID;
 
             existingCard.question = updatedCard.question == "" ? existingCard.question : updatedCard.question;
@@ -98,12 +98,35 @@ namespace FlashyCards.Controllers
             if (!isNowUpdated)
             {
                 return NotFound();
-            } else
+            }
+            else
             {
                 return CreatedAtRoute("GetFlashCardsByTag", new { tag = existingCard.tag }, existingCard);
             }
+        }
 
-            
+        //Example: DELETE api/card/16
+        //Disconnects the relationship between a card and its deck
+        [HttpDelete("{id}")]
+        public ActionResult RemoveFlashCard(int id)
+        {
+            var existingCard = Dal.GetSingleCard(id);
+
+            if (existingCard == null)
+            {
+                return NotFound();
+            }
+
+            bool isNowRemoved = Dal.RemoveCard(id);
+
+            if (isNowRemoved)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
     }

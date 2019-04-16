@@ -212,5 +212,30 @@ namespace FlashyCards.DAL.FlashCardDAL
 
             return rowsAffected > 0;
         }
+
+        public bool RemoveCard(int id)
+        {
+            int rowsAffected = -1;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand($"Delete from Deck_Cards where Card_id = @cardId;", connection);
+
+                    cmd.Parameters.AddWithValue("@cardId", id);
+
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return rowsAffected > 0;
+        }
     }
 }
