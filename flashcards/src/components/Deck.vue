@@ -12,7 +12,8 @@
                         <label>Question: </label>         
                     <input type="text" id="deck-name" placeholder="Enter name of deck" v-model="deckName" name="deckName"/>
                     </div>
-                    <input type="hidden" value="1" name="person_id"/>
+                    <input type="hidden" value=ID name="person_id"/>
+                    <span> {{ID}} </span>
                     <div id="category">
                         <p>Choose the category of your deck:</p>
                         <select id="deck-category" v-model="category_id" name="category_id">
@@ -65,6 +66,13 @@ export default {
                 .catch(e => console.log(e));
     },
     name: 'deck',
+    props: {
+        ID:{
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },
 
     data() {
         return {
