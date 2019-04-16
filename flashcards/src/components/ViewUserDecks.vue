@@ -19,9 +19,9 @@ export default {
     },
     data(){
         return{
-            apiURL = "https://localhost:44337/api/deck/user/",
-            UserDecks = [],
-            showUserDecks = false
+            apiURL: "https://localhost:44337/api/deck/user/",
+            UserDecks: [],
+            showUserDecks: false
         }
     },
     methods: {
