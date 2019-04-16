@@ -7,7 +7,7 @@
 <script>
 export default {
     beforeCreate(){
-        fetch("https://localhost:44337/api/Card/1", {
+        fetch("https://localhost:44337/api/Card/3", {
             method: 'GET'
         })
         .then(response => {

@@ -24,9 +24,9 @@ namespace FlashyCards.Controllers
 
         // Returns List of Flashcards associated with a deck, GET API(url = api/Card/{deckID})
         [HttpGet("{deckID}", Name = "GetFlashCardsByDeck")]
-        public ActionResult<List<FlashCardWithID>> GetFlashCardsByDeck(int deckID)
+        public ActionResult<List<FlashCard>> GetFlashCardsByDeck(int deckID)
         {
-            List<FlashCardWithID> flashCardList = Dal.GetAllFlashCards(deckID);
+            List<FlashCard> flashCardList = Dal.GetAllFlashCards(deckID);
             if (flashCardList != null)
             {
                 return flashCardList;
@@ -34,11 +34,11 @@ namespace FlashyCards.Controllers
             return NotFound();
         }
 
-        // Returns List of Flashcards associated with a tag, GET API(url = api/Card/{tag})
+        // Returns List of Flashcards associated with a tag, GET API(url = api/Card/tag/{tag})
         [HttpGet("tag/{tag}", Name = "GetFlashCardsByTag")]
-        public ActionResult<List<FlashCardWithID>> GetFlashCardsByTag(string tag)
+        public ActionResult<List<FlashCard>> GetFlashCardsByTag(string tag)
         {
-            List<FlashCardWithID> flashCardList = Dal.GetFlashCardsByTag(tag);
+            List<FlashCard> flashCardList = Dal.GetFlashCardsByTag(tag);
             if (flashCardList != null)
             {
                 return flashCardList;
@@ -46,17 +46,17 @@ namespace FlashyCards.Controllers
             return NotFound();
         }
 
-        //Creates a FlashCard Associated with a Deck, POST API(url = api/Card)
-        [HttpPost]
-        public ActionResult<List<FlashCardWithID>> createFlashCard([FromForm] FlashCard newCard)
+        //Creates a FlashCard Associated with a Deck, POST API(url = api/Card/{deckID})
+        [HttpPost("{deckID}")]
+        public ActionResult<List<FlashCard>> createFlashCard([FromForm] FlashCard newCard, int deckID)
         {
             if (newCard.image == null)
             {
                 newCard.image = "";
             }
 
-            Dal.CreateCard(newCard);
-            List<FlashCardWithID> updatedFlashCardDeck = Dal.GetAllFlashCards(newCard.deckID);
+            Dal.CreateCard(newCard, deckID);
+            List<FlashCard> updatedFlashCardDeck = Dal.GetAllFlashCards(deckID);
             if (updatedFlashCardDeck != null)
             {
                 return updatedFlashCardDeck;
@@ -67,7 +67,7 @@ namespace FlashyCards.Controllers
         //Example: PUT api/card/16
         //Updates a Flashcard
         [HttpPut("{id}")]
-        public ActionResult updateFlashCard(int id, [FromBody] FlashCardWithID updatedCard)
+        public ActionResult<List<FlashCard>> updateFlashCard(int id, [FromForm] FlashCard updatedCard)
         {
             //for security, make sure that the id used in API call matches the id in the flashcard object that's passed in
             if (id != updatedCard.cardID)
@@ -85,8 +85,6 @@ namespace FlashyCards.Controllers
 
             //For fields passed in from the API ... if those fields are null, keep the existing data in the DB
             //For the fields passed in from API that are NOT null, update that data in the DB
-            existingCard.cardID = updatedCard.cardID;
-            existingCard.deckID = updatedCard.deckID;
 
             existingCard.question = updatedCard.question == "" ? existingCard.question : updatedCard.question;
             existingCard.image = updatedCard.image == "" ? existingCard.image : updatedCard.image;
@@ -95,14 +93,11 @@ namespace FlashyCards.Controllers
 
             bool isNowUpdated = Dal.UpdateCard(id, existingCard);
 
-            if (!isNowUpdated)
+            if (isNowUpdated)
             {
-                return NotFound();
+                return Dal.GetFlashCardsByTag(existingCard.tag);
             }
-            else
-            {
-                return CreatedAtRoute("GetFlashCardsByTag", new { tag = existingCard.tag }, existingCard);
-            }
+            return NotFound();
         }
 
         //Example: DELETE api/card/16
