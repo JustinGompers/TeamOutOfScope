@@ -9,7 +9,7 @@ namespace FlashyCards.DAL.FlashCardDAL
 {
     interface ICardOptionsDAL
     {
-        void CreateCard(FlashCard newCard);
+        void CreateCard(FlashCard newCard, int deckID);
         List<FlashCard> GetAllFlashCards(int deckID);
         List<FlashCard> GetFlashCardsByTag(string tag);
     }
