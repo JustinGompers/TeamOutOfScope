@@ -12,9 +12,14 @@
           <a id="home" href="#">
             <div id='hamburgers'>
               <div>
-            <About></About>
+            
             </div>
               <img id="menu" src="./assets/FlashyMenu.png">
+              <div>
+              <About></About>
+              </div>
+              <br>
+
               <div id="login" v-if="!this.User.userName">
               <login @confirmedUser="getUserInfo"></login>
               </div>

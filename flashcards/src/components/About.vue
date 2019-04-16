@@ -1,11 +1,12 @@
 <template>
 <div>
-<h2 id="aboutSection">About</h2>
- 
-<modal id="Form" name="About" :width="600" :height="400"> 
+<a id="AboutButton" v-on:click.prevent="show()">About</a>
+<modal id="Form" name="About" :width="600" :height="150"> 
     <div id="modal-body">
-        <h3 id="aboutbody">Founded in 2019 by four Tech Elevator students, Flashy Cards is the premier flash card study site for all academic subjects.</h3>
-       
+    <form id="formCard" @submit.prevent="Button()" >
+    <h3 id="aboutbody">Founded in 2019 by four Tech Elevator students, Flashy Cards is the premier flash card study site for all academic subjects. With over 30 million active users from 119 countries, Flashy cards is the trusted learning experience in schools and households throughout the world. Please register and embark on an educational journey by creating your first flash card deck today!</h3>
+        
+    </form>
 </div>
 </modal>
 </div>
@@ -33,18 +34,19 @@ methods:{
 
 <style>
 
-#aboutSection{
+#AboutButton{
     Color: white;
     border-bottom: solid;
-    font-size: 10px;
+    font-size: 24pt;
+    
 }
-#modal-header{
+#modal-body{
     text-align: center;
-    background: lightblue;
+    background: white;
 }
 #aboutbody{
-    color: white;
-    font-size: 15px;
+    color: black;
+    font-size: 17px;
 }
 </style>
     
