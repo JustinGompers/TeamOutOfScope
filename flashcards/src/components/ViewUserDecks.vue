@@ -1,7 +1,7 @@
 <template>
     <div>
-        <a id="ViewUserCreatedDecks" @click.prevent="showUserDecks === true">View UserDecks</a>
-        <div id="Decks>">
+        <button id="ViewUserCreatedDecks" @click.prevent="ViewAll()" v-if="showUserDecks === false">View UserDecks</button>
+        <div id="Decks" v-if="showUserDecks === true">
             <span v-for="deck in UserDecks" v-bind:key="deck.deck_id"> {{deck.deckName}}</span>
         </div>
     </div>
@@ -26,6 +26,7 @@ export default {
     },
     methods: {
         ViewAll(){
+            this.showUserDecks = true;
             this.apiURL = this.apiURL +this.ID ;
             fetch(this.apiURL,{
                     method: 'GET'
