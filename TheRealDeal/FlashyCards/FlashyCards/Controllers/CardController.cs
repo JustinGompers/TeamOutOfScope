@@ -85,10 +85,8 @@ namespace FlashyCards.Controllers
 
             //For fields passed in from the API ... if those fields are null, keep the existing data in the DB
             //For the fields passed in from API that are NOT null, update that data in the DB
-            existingCard.cardID = updatedCard.cardID;
-
-            //a deck id is not being passed in, and isn't an option for user to change.  Therefore, it shouldn't be needed
-            //existingCard.deckID = updatedCard.deckID == 0 ? existingCard.deckID : updatedCard.deckID;
+            existingCard.cardID = updatedCard.cardID;            
+            existingCard.deckID = updatedCard.deckID;
 
             existingCard.question = updatedCard.question == "" ? existingCard.question : updatedCard.question;
             existingCard.image = updatedCard.image == "" ? existingCard.image : updatedCard.image;
