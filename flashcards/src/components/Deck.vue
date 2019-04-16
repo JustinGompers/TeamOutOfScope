@@ -1,30 +1,32 @@
 <template>
   <div class= "deck"> 
       <button id="createDeck" v-on:click.prevent="show()">Create a Deck</button>
-      <!-- <modal id="Form" name="createDeck" :width="600" :height="400"> -->
+      <modal id="Form" name="createDeck" :width="600" :height="400">
         <div id="modal-header">
             <h2>Create a Deck Form</h2>
         </div>
             <div id="modal-body">    
-                <form id="formCreateDeck" @submit.prevent="Button">
+                <form id="formCreateDeck" @submit.prevent="createDeck()">
                 
                     <div>
                         <label>Question: </label>         
-                    <input type="text" id="deck-name" placeholder="Enter name of deck" v-model="name"/>
+                    <input type="text" id="deck-name" placeholder="Enter name of deck" v-model="deckName" name="deckName"/>
                     </div>
-                    <div>
+                    <input type="hidden" value=ID name="person_id"/>
+                    <span> {{ID}} </span>
+                    <div id="category">
                         <p>Choose the category of your deck:</p>
-                        <select id="deck-category" v-model="categoryName">
-                            <option v-for="category in categories" v-bind:key="category.Category_id"> {{category.Name}} </option>
+                        <select id="deck-category" v-model="category_id" name="category_id">
+                            <option disabled value=0>Please Select a Category</option>
+                            <option v-for="category in categories" v-bind:key="category.id"> {{category.id}} </option>     
                         </select>
+                        <p>You chose {{category_id}} </p>
                     </div>
                     <br>
                     <div>
-                        <form id="ShareDeckField">
-                            Would you like to publicly share your deck?<br>
-                            <input type="radio" id="share-deck-yes" name="yes-or-no" value="yes" v-on:click="share_deck=true" v-model="share_deck"/>Yes<br>
-                            <input type="radio" id="share-deck-no" name="yes-or-no" value="no" v-on:click="share_deck=false" v-model="share_deck"/>No<br>
-                        </form>
+                            <p>Would you like to publicly share your deck?</p>
+                            <input type="checkbox" id="shareDeck" true-value="true" false-value="false" v-model="isOpen" name="isOpen">
+                            <span> {{isOpen}}</span>
                     </div>
                     <div id=buttons>
                         <button id="submitLoginButton">Submit</button>
@@ -32,7 +34,7 @@
                     </div>     
                 </form>
             </div>
-        <!-- </modal> -->
+        </modal>
 
         <br>
         <div>
@@ -48,13 +50,35 @@
 
 <script>
 export default {
+    beforeCreate(){
+        fetch("https://localhost:44337/api/deck",{
+                method: 'GET'
+                })
+                .then(response => {
+                    return response.json();
+                    //return response.text();
+                })
+                //.then(text => console.log(text))
+            //assign the user objects from the DB to the users array defined in this component
+                 .then(data => {
+                    this.categories = data;
+                })
+                .catch(e => console.log(e));
+    },
     name: 'deck',
+    props: {
+        ID:{
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },
 
     data() {
         return {
-            name: '',
-            categoryName: '',
-            share_deck: false,            
+            deckName: '',
+            category_id: 0,
+            isOpen: 'false',            
             // showCreateDeckForm: false, 
             // showSuccessMsg: false,
             // showFailMsg: false,
@@ -67,33 +91,15 @@ export default {
     }, 
 
     methods: {
-        getCategories() {
-            fetch(this.apiURL,{
-                method: "GET"
-                })
-                .then(response => {
-                    return response.json();
-                })
-            //assign the user objects from the DB to the users array defined in this component
-                .then(categories => {
-                    this.categories = categories;
-                });   
-        }
-    },
-
         createDeck() {
             //this.$validator.validateAll().then((result) => {
                 //if (result) {  
             let deckInfo = document.getElementById("formCreateDeck");
             let deck = new FormData(deckInfo);
-
+            console.log(deck);
             fetch(this.apiURL, {
-                    method: "POST",                    
-                    mode: 'no-cors',                    
-                    headers: {
-                    "Content-Type": "application/json; charset=utf-8"
-                    },
-                    //body: JSON.stringify(deck)   
+                    method: 'POST',                    
+                    mode: 'no-cors',  
                     body: deck               
                 })
                     .then(response => {
@@ -116,7 +122,7 @@ export default {
             this.share_deck = false;
             this.categoryName = '';
             this.showCreateDeckForm = false;
-            this.$modal.hide('creatDeck');
+            this.$modal.hide('createDeck');
             
             
                alert('Your Deck has been submitted!');
@@ -131,7 +137,7 @@ export default {
         },
         hide(){
              this.$modal.hide('createDeck');
-        }};
+        }}};
 
         // getAllDecks(){
         //     fetch(this.apiURL,{
@@ -154,6 +160,9 @@ export default {
 <style>
 #modal-header{
     text-align: center;
+}
+#category{
+    padding-left: 50px;
 }
 </style>
 

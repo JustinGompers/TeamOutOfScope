@@ -25,7 +25,7 @@
                 <div>
                   <img id="userPhoto" src="./assets/normalpic.jpg">
                   </div>
-                  <span>{{ this.User.firstName }} {{ this.User.lastName }}</span>
+                  <span>{{ this.User.firstName }} {{ this.User.lastName }} {{ this.User.userId }}</span>
               </div>
               <div id="Card">
                   <Card></Card>
@@ -38,7 +38,7 @@
       </div>
     </fixed-header>
     <div class='content'>
-      <Deck></Deck>
+      <Deck :ID=this.User.userId></Deck>
       <div id="PubDecks">
         <ul class="decks">
           </ul>
