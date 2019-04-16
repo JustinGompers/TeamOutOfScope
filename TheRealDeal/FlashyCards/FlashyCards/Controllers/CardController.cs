@@ -86,9 +86,14 @@ namespace FlashyCards.Controllers
             //For fields passed in from the API ... if those fields are null, keep the existing data in the DB
             //For the fields passed in from API that are NOT null, update that data in the DB
             existingCard.cardID = updatedCard.cardID;
+
+            //a deck id is not being passed in, and isn't an option for user to change.  Therefore, it shouldn't be needed
+            //existingCard.deckID = updatedCard.deckID == 0 ? existingCard.deckID : updatedCard.deckID;
+
             existingCard.question = updatedCard.question == "" ? existingCard.question : updatedCard.question;
             existingCard.image = updatedCard.image == "" ? existingCard.image : updatedCard.image;
             existingCard.answer = updatedCard.answer == "" ? existingCard.answer : updatedCard.answer;
+            existingCard.tag = updatedCard.tag == "" ? existingCard.tag : updatedCard.tag;
 
             bool isNowUpdated = Dal.UpdateCard(id, existingCard);
 
@@ -97,8 +102,7 @@ namespace FlashyCards.Controllers
                 return NotFound();
             } else
             {
-                //WE MAY HAVE TO CHANGE THE NAME BEING USED IN THE ROUTE BELOW
-                return CreatedAtRoute("GetFlashCardsByDeck", new { id = existingCard.cardID }, existingCard);
+                return CreatedAtRoute("GetFlashCardsByTag", new { tag = existingCard.tag }, existingCard);
             }
 
             
