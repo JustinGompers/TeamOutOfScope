@@ -7,7 +7,7 @@
             </div>
             <div id="modal-body">
       <form id="formCard" @submit.prevent="Button()" >
-          <input type="hidden" id="DeckId" value="1" name="deckId" />
+          <input type="hidden" id="DeckId" :value="ID" name="deckId" />
         <div>
           <label>Question: </label>
         <input type="text" v-validate="'required'" id="question" placeholder="Enter a question" name="question" v-model="question" />
@@ -43,20 +43,20 @@
 export default {
     name: 'Card',   
 
-    // props: {
-    //     id: Number,
-    //     question: String,
-    //     answer: String,
-    //     image: String
-
-    // },   
+    props: {
+        ID: {
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },   
 
     data() {
         return {
 
           cards: [],
           showCardForm: false,
-          apiURL: "https://localhost:44337/api/Card",
+          apiURL: "https://localhost:44337/api/Card/",
           question: '',
           answer: '',
           image: '',
@@ -71,6 +71,7 @@ export default {
              if (result) {
           let cardInput = document.getElementById("formCard")
             let card = new FormData(cardInput)
+            this.apiURL = this.apiURL + 
             fetch(this.apiURL, {
                 method: 'POST',
                 body: card,
