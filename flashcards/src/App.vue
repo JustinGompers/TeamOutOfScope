@@ -45,7 +45,7 @@
     <div class='content'>
       <Deck :ID=this.User.userId></Deck>
       <ViewUserDecks :ID=this.User.userId></ViewUserDecks>
-      <StudySession></StudySession>
+      <StudySession :user=this.User.userId></StudySession>
       <div id="PubDecks">
         <ul class="decks">
           </ul>

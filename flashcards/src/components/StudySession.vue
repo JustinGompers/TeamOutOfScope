@@ -34,7 +34,7 @@
 <script>
 export default {
     beforeCreate(){
-        fetch("https://localhost:44337/api/deck/" + this.user.Person_id,{
+        fetch("https://localhost:44337/api/deck/" + this.user,{
                 method: 'GET'
                 })
                 .then(response => {
@@ -50,12 +50,9 @@ export default {
 
     props: {
         user: {
-            Person_id: 0,
-            Username: '',
-            FirstName: '',
-            LastName: '',
-            Password: '',
-            Hash: ''
+            type: Number,
+            required: true,
+            default: 0
         }
     },
 
