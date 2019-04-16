@@ -1,7 +1,7 @@
 <template>
     <div class= "SearchCardSection">   
         <br>
-      <a id="SearchButton" v-on:click.prevent="show()">Search cards</a>
+      <a id="SearchButton" v-on:click.prevent="show()">Search Cards</a>
       <modal id="Form" name="SearchCard" :width="600" :height="205">
         <div id="modal-header">
                 <h2>Search Cards Form</h2>
