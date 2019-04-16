@@ -33,7 +33,8 @@
                   <span>{{ this.User.firstName }} {{ this.User.lastName }} {{ this.User.userId }}</span>
               </div>
               <div id="Card">
-                  <Card></Card>
+                  <Card v-if="this.ChosenDeck.deck_id"></Card>
+                  <SearchCard></SearchCard>
                 </div>
             </div>
           </a>
@@ -44,7 +45,9 @@
     </fixed-header>
     <div class='content'>
       <Deck :ID=this.User.userId></Deck>
-      <ViewUserDecks :ID=this.User.userId></ViewUserDecks>
+      <ViewUserDecks v-if="!this.ChosenDeck.deck_id" :ID=this.User.userId @chosenDeck="getDeckInfo"></ViewUserDecks>
+      <span>{{this.ChosenDeck.deckName}}</span>
+      <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.ChosenDeck.deck_id"></ViewDeckCards>
       <StudySession :user=this.User.userId></StudySession>
       <div id="PubDecks">
         <ul class="decks">
@@ -65,6 +68,7 @@
 import Card from './components/Card.vue'
 import About from './components/About.vue'
 import Login from './components/Login.vue'
+import ViewDeckCards from './components/ViewDeckCards.vue'
 import Registration from './components/Registration.vue'
 import Deck from './components/Deck.vue'
 import ViewUserDecks from './components/ViewUserDecks.vue'
@@ -109,11 +113,14 @@ export default {
     About,
     SearchCard,
     StudySession,
-    ViewUserDecks
+    ViewUserDecks,
+    ViewDeckCards
   },
   data() {
     return {
       User: {},
+      Deck: [],
+      ChosenDeck: {},
       PublicDecks: []
     }
   },
@@ -123,6 +130,9 @@ export default {
     },
     getRegisteredUser(UserInformation){
       this.User = UserInformation;
+    },
+    getDeckInfo(DeckInfo){
+      this.ChosenDeck = DeckInfo;
     }
   }
 }

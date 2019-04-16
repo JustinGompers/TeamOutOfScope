@@ -1,13 +1,13 @@
 <template>
     <div>
-        <span v-for="card in Cards" v-bind:key="card.deck_id"> {{card.question}}:{{card.answer}}</span>
     </div>
 </template>
 
 <script>
 export default {
     beforeCreate(){
-        fetch("https://localhost:44337/api/Card/3", {
+        this.apiURL = this.apiURL + this.DID;
+        fetch(this.apiURL, {
             method: 'GET'
         })
         .then(response => {
@@ -27,7 +27,8 @@ export default {
     },
     data() {
         return {
-            Cards: []
+            Cards: [],
+            apiURL: "https://localhost:44337/api/Card/"
         }
     }
 }
