@@ -25,6 +25,20 @@ namespace FlashyCards.DAL.FlashCardDAL
         "Card_Tags on Card.Card_id = Card_Tags.Card_id left outer join Tags on Card_Tags.Tag_id = Tags.tags_id " +
         "where Tags.Name = @TagName;";
 
+        private const string SQL_GetSingleCard = "Select Card.Card_id, Deck.Deck_id, Card.Question, Card.Image, Card.Answer, Tags.Name from Card "
+            + "inner join Card_Tags on Card.Card_id = Card_Tags.Card_id "
+            + "inner join Tags on Tags.tags_id = Card_Tags.Tag_id "
+            + "inner join Deck_Cards on Deck_Cards.Card_id = Card.Card_id "
+            + "inner join Deck on Deck.Deck_id = Deck_Cards.Deck_id "
+            + "where Card.Card_id = @id;";
+
+        private const string SQL_UpdateCard = "update Card set Question = @question, Image = @image, Answer = @answer "
+            //+ "from Deck_Cards inner join Card on Deck_Cards.Card_id = Card.Card_id "
+            + "where Card_id = @cardId; "
+            + "update Tags set Name = @tagName "
+            + "from Card_Tags inner join Tags on Card_Tags.Tag_id = Tags.tags_id "
+            + "where Card_Tags.Card_id = @cardId;";
+
         public CardOptionsDAL(string connectionString)
         {
             this.connectionString = connectionString;
@@ -147,18 +161,18 @@ namespace FlashyCards.DAL.FlashCardDAL
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select * from Card where Card_id = @id;", conn);
+                    SqlCommand cmd = new SqlCommand(SQL_GetSingleCard, conn);
                     cmd.Parameters.AddWithValue("@id", id);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
-                    {
-                        
+                    {                        
                         singleFlashCard.cardID = Convert.ToInt32(reader["Card_id"]);
+                        singleFlashCard.deckID = Convert.ToInt32(reader["Deck_id"]);
                         singleFlashCard.question = Convert.ToString(reader["Question"]);
                         singleFlashCard.image = Convert.ToString(reader["Image"]);
                         singleFlashCard.answer = Convert.ToString(reader["Answer"]);
-
+                        singleFlashCard.tag = Convert.ToString(reader["Name"]);
                     }
                 }
             } catch (SqlException)
@@ -178,12 +192,39 @@ namespace FlashyCards.DAL.FlashCardDAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    SqlCommand cmd = new SqlCommand($"update Card set Question = @question, Image = @image, Answer = @answer where Card_id = @id;", connection);
+                    SqlCommand cmd = new SqlCommand(SQL_UpdateCard, connection);
 
                     cmd.Parameters.AddWithValue("@question", card.question);
                     cmd.Parameters.AddWithValue("@image", card.image);
                     cmd.Parameters.AddWithValue("@answer", card.answer);
-                    cmd.Parameters.AddWithValue("id", card.cardID);
+                    cmd.Parameters.AddWithValue("@tagName", card.tag);
+                    cmd.Parameters.AddWithValue("@cardId", card.cardID);
+                    //cmd.Parameters.AddWithValue("@deckId", card.deckID);
+
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return rowsAffected > 0;
+        }
+
+        public bool RemoveCard(int id)
+        {
+            int rowsAffected = -1;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand($"Delete from Deck_Cards where Card_id = @cardId;", connection);
+
+                    cmd.Parameters.AddWithValue("@cardId", id);
 
                     rowsAffected = cmd.ExecuteNonQuery();
                 }

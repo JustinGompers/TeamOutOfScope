@@ -3,6 +3,7 @@
     <fixed-header>
       <div id='header'>
         <div id='main'>
+          
           <img id="logo" src="./assets/flashed-clipart-running.gif">
           <img id="title" src="./assets/Flashlogo.png">
           <img id="logo" src="./assets/reverse-flash.gif">
@@ -10,7 +11,15 @@
         <Slide disableOutsideClick>
           <a id="home" href="#">
             <div id='hamburgers'>
+              <div>
+            
+            </div>
               <img id="menu" src="./assets/FlashyMenu.png">
+              <div>
+              <About></About>
+              </div>
+              <br>
+
               <div id="login" v-if="!this.User.userName">
               <login @confirmedUser="getUserInfo"></login>
               </div>
@@ -21,7 +30,7 @@
                 <div>
                   <img id="userPhoto" src="./assets/normalpic.jpg">
                   </div>
-                  <span>{{ this.User.firstName }} {{ this.User.lastName }}</span>
+                  <span>{{ this.User.firstName }} {{ this.User.lastName }} {{ this.User.userId }}</span>
               </div>
               <div id="Card">
                   <Card></Card>
@@ -30,14 +39,21 @@
           </a>
         </Slide>
         
+        
       </div>
     </fixed-header>
     <div class='content'>
-      <Deck></Deck>
+      <Deck :ID=this.User.userId></Deck>
+      <ViewUserDecks :ID=this.User.userId></ViewUserDecks>
+      <StudySession></StudySession>
       <div id="PubDecks">
         <ul class="decks">
           </ul>
         </div>
+        
+        <footer id="footer">&copy; 2019 FlashyCards.com</footer>
+        <footer id="footerslogan"> 	&trade;"Learning is FUNdamental"</footer>
+        
     </div>
   </div>
 
@@ -47,9 +63,13 @@
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
 import Card from './components/Card.vue'
+import About from './components/About.vue'
 import Login from './components/Login.vue'
 import Registration from './components/Registration.vue'
 import Deck from './components/Deck.vue'
+import ViewUserDecks from './components/ViewUserDecks.vue'
+import StudySession from './components/StudySession.vue'
+import SearchCard from './components/SearchCard.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 
@@ -85,7 +105,11 @@ export default {
     Card,
     Login,
     Registration, 
-    Deck
+    Deck,
+    About,
+    SearchCard,
+    StudySession,
+    ViewUserDecks
   },
   data() {
     return {
@@ -111,7 +135,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background: lightblue;
+  background: #FF983E;
 }
 #header.vue-fixed-header--isFixed {
   position: fixed;
