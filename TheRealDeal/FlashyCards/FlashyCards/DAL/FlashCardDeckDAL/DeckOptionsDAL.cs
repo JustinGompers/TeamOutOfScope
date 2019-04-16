@@ -21,6 +21,12 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
         private const string SQL_GetSharableDecks = "Select Deck.Name, Category.Name as 'Category_Name', Deck.Deck_id From Deck " +
             "left outer join Category on Deck.Category_id = Category.Category_id " +
             "where Deck.Share_Deck = 1;";
+        private const string SQL_UpdateDeck = "update Deck set Deck.Name = @deckName, Deck.Share_Deck = @shareDeck, " +
+            "Deck.Category_id = @categoryID where Deck_id = @deckID;";
+        private const string SQL_GetSingleDeck = "Select Deck.Deck_id, Deck.Name, Deck.Category_id, Deck.Share_Deck, User_info.Person_id From Deck " +
+            "inner join User_Decks on Deck.Deck_id = User_Decks.Deck_id " +
+            "inner join User_info on User_Decks.Person_id = User_info.Person_id " +
+            "where Deck.Deck_id = @deckID;";
 
         public DeckOptionsDAL(string connectionString)
         {
@@ -141,6 +147,59 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
                 throw;
             }
             return sharableDeckList;
+        }
+
+        public UserFlashCardDeckWithID updateDeck(UserFlashCardDeckWithID updatedDeck)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    int affectedRows = 0;
+                    SqlCommand cmd = new SqlCommand(SQL_UpdateDeck, conn);
+                    cmd.Parameters.AddWithValue("@deckName", updatedDeck.deckName);
+                    cmd.Parameters.AddWithValue("@shareDeck", updatedDeck.isSharing);
+                    cmd.Parameters.AddWithValue("@categoryID", updatedDeck.category_id);
+                    cmd.Parameters.AddWithValue("@deckID", updatedDeck.deck_id);
+                    affectedRows = cmd.ExecuteNonQuery();
+                    return affectedRows == 0 ? (UserFlashCardDeckWithID)null : updatedDeck;
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
+        public UserFlashCardDeckWithID GetSingleDeck(int deckID)
+        {
+            UserFlashCardDeckWithID tempDeck = new UserFlashCardDeckWithID();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GetSingleDeck, conn);
+                    cmd.Parameters.AddWithValue("@deckID", deckID);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        tempDeck.deck_id = Convert.ToInt32(reader["Deck_id"]);
+                        tempDeck.deckName = Convert.ToString(reader["Name"]);
+                        tempDeck.category_id = Convert.ToInt32(reader["Category_id"]);
+                        tempDeck.isSharing = Convert.ToBoolean(reader["Share_Deck"]);
+                        tempDeck.person_id = Convert.ToInt32(reader["Person_id"]);
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return tempDeck;
         }
     }
 }

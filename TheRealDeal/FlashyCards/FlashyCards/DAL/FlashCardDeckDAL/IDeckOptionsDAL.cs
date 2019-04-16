@@ -12,5 +12,7 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
         void CreateDeck(UserFlashCardDeck newDeck);
         List<UserFlashCardDeckWithID> GetUserDecks(int userID);
         List<SharableDecks> GetSharableDecks();
+        UserFlashCardDeckWithID updateDeck(UserFlashCardDeckWithID updatedDeck);
+        UserFlashCardDeckWithID GetSingleDeck(int deckID);
     }
 }

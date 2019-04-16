@@ -44,9 +44,9 @@ namespace FlashyCards.DAL.FlashCardDAL
             this.connectionString = connectionString;
         }
 
-        public List<FlashCardWithID> GetAllFlashCards(int deckID)
+        public List<FlashCard> GetAllFlashCards(int deckID)
         {
-            List<FlashCardWithID> cardsList = new List<FlashCardWithID>();
+            List<FlashCard> cardsList = new List<FlashCard>();
 
             try
             {
@@ -60,8 +60,7 @@ namespace FlashyCards.DAL.FlashCardDAL
 
                     while (reader.Read())
                     {
-                        FlashCardWithID tempCard = new FlashCardWithID();
-                        tempCard.deckID = Convert.ToInt32(reader["Deck_id"]);
+                        FlashCard tempCard = new FlashCard();
                         tempCard.cardID = Convert.ToInt32(reader["Card_id"]);
                         tempCard.question = Convert.ToString(reader["Question"]);
                         tempCard.answer = Convert.ToString(reader["Answer"]);
@@ -80,7 +79,7 @@ namespace FlashyCards.DAL.FlashCardDAL
             return cardsList;
         }
 
-        public void CreateCard(FlashCard newCard)
+        public void CreateCard(FlashCard newCard, int deckID)
         {
             try
             {
@@ -98,7 +97,7 @@ namespace FlashyCards.DAL.FlashCardDAL
                     tagID = Convert.ToInt32(cmd.ExecuteScalar());
 
                     cmd = new SqlCommand(SQL_CreateNewCardDeckRelationship, conn);
-                    cmd.Parameters.AddWithValue("@Deck_id", newCard.deckID);
+                    cmd.Parameters.AddWithValue("@Deck_id", deckID);
                     cmd.Parameters.AddWithValue("@Card_id", cardID);
                     cmd.ExecuteScalar();
 
@@ -115,9 +114,9 @@ namespace FlashyCards.DAL.FlashCardDAL
             }
         }
 
-        public List<FlashCardWithID> GetFlashCardsByTag(string tag)
+        public List<FlashCard> GetFlashCardsByTag(string tag)
         {
-            List<FlashCardWithID> cardList = new List<FlashCardWithID>();
+            List<FlashCard> cardList = new List<FlashCard>();
 
             try
             {
@@ -131,8 +130,7 @@ namespace FlashyCards.DAL.FlashCardDAL
 
                     while (reader.Read())
                     {
-                        FlashCardWithID tempCard = new FlashCardWithID();
-                        tempCard.deckID = Convert.ToInt32(reader["Deck_id"]);
+                        FlashCard tempCard = new FlashCard();
                         tempCard.cardID = Convert.ToInt32(reader["Card_id"]);
                         tempCard.question = Convert.ToString(reader["Question"]);
                         tempCard.answer = Convert.ToString(reader["Answer"]);
@@ -151,10 +149,10 @@ namespace FlashyCards.DAL.FlashCardDAL
             return cardList;
         }
 
-        public FlashCardWithID GetSingleCard (int id)
+        public FlashCard GetSingleCard (int id)
         {
 
-            FlashCardWithID singleFlashCard = new FlashCardWithID();
+            FlashCard singleFlashCard = new FlashCard();
 
             try
             {
@@ -168,7 +166,6 @@ namespace FlashyCards.DAL.FlashCardDAL
                     while (reader.Read())
                     {                        
                         singleFlashCard.cardID = Convert.ToInt32(reader["Card_id"]);
-                        singleFlashCard.deckID = Convert.ToInt32(reader["Deck_id"]);
                         singleFlashCard.question = Convert.ToString(reader["Question"]);
                         singleFlashCard.image = Convert.ToString(reader["Image"]);
                         singleFlashCard.answer = Convert.ToString(reader["Answer"]);
@@ -183,7 +180,7 @@ namespace FlashyCards.DAL.FlashCardDAL
             return singleFlashCard;
         }
 
-        public bool UpdateCard (int id, FlashCardWithID card)
+        public bool UpdateCard (int id, FlashCard card)
         {
             int rowsAffected = -1;
 
@@ -199,7 +196,6 @@ namespace FlashyCards.DAL.FlashCardDAL
                     cmd.Parameters.AddWithValue("@answer", card.answer);
                     cmd.Parameters.AddWithValue("@tagName", card.tag);
                     cmd.Parameters.AddWithValue("@cardId", card.cardID);
-                    //cmd.Parameters.AddWithValue("@deckId", card.deckID);
 
                     rowsAffected = cmd.ExecuteNonQuery();
                 }
