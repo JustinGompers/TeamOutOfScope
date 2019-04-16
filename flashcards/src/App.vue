@@ -34,6 +34,7 @@
               </div>
               <div id="Card">
                   <Card></Card>
+                  <SearchCard></SearchCard>
                 </div>
             </div>
           </a>

@@ -1,19 +1,22 @@
 <template>
     <div class= "SearchCardSection">   
-      <a id="SearchButton" v-on:click.prevent="show()">Search Flash Cards</a>
-      <modal id="Form" name="SearchCard" :width="600" :height="400">
+        <br>
+      <a id="SearchButton" v-on:click.prevent="show()">Search cards</a>
+      <modal id="Form" name="SearchCard" :width="600" :height="150">
         <div id="modal-header">
-                <h2>Search a Card Form</h2>
+                <h2>Search Cards Form</h2>
             </div>
             <div id="modal-body">
       <form id="formSearch" @submit.prevent="Button()" >
           <input type="hidden" id="CardId" value="1" name="cardId" />
         <div>
-          <label>Search: </label>
-        <input type="text" v-validate="'required'" id="search" placeholder="Enter a tag" name="search" v-model="search" />
+          <label>Enter a tag: </label>
+        <input type="text" v-validate="'required'" id="search" placeholder="i.e. algebra" name="search" v-model="search" />
         </div>
+        <div id="Buttons">
          <button id="SubmitButton">Submit</button>
         <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
+        </div>
       </form>
       </div>
      
@@ -32,7 +35,7 @@ export default {
 
           cards: [],
           showFormSearch: false,
-          apiURL: "https://localhost:44337/api/SearchCard",
+          apiURL: "https://localhost:44337/api/Card/tag/",
           search: '',
             
         };
@@ -76,6 +79,57 @@ export default {
     }
     }
 </script>
+<style>
+
+#SearchButton{ 
+  Color: white;
+  border-bottom: solid;
+  font-size: 24pt;
+}
+#SubmitButton{
+  display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
+    background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
+}
+#CancelButton{
+  display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
+    background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
+}
+div input{
+    align-items: center;
+}
+#Buttons{
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
+}
+#buttons button{
+        background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
+}
+
+
+</style>
 
     
     

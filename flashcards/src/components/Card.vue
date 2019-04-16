@@ -1,7 +1,7 @@
 <template>
     <div class= "CardSection">   
       <a id="CardButton" v-on:click.prevent="show()">Create a Card</a>
-      <modal id="Form" name="CreateCard" :width="600" :height="400">
+      <modal id="Form" name="CreateCard" :width="600" :height="150">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
             </div>
@@ -24,8 +24,10 @@
           <label>Tags: </label>
         <input type="text" id="tags" v-validate="'required'" name="tag" placeholder="Enter tags" v-model="tags" />
         </div>
+        <div id="Buttons">
          <button id="SubmitButton">Submit</button>
       <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
+      </div>
       </form>
       </div>
      
@@ -114,6 +116,7 @@ export default {
 #CardButton{ 
   Color: white;
   border-bottom: solid;
+  font-size: 24pt;
 }
 #SubmitButton{
   display: flex;
@@ -141,6 +144,20 @@ export default {
 }
 div input{
     align-items: center;
+}
+#Buttons{
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    padding-top: 5px;
+}
+#buttons button{
+        background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
 }
 
 
