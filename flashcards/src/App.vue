@@ -33,7 +33,7 @@
                   <span>{{ this.User.firstName }} {{ this.User.lastName }} {{ this.User.userId }}</span>
               </div>
               <div id="Deck" v-if="this.User.userName">
-                  <Card v-if="this.ChosenDeck.deck_id"></Card>
+                  <Card v-if="this.ChosenDeck.deck_id" :ID=this.ChosenDeck.deck_id></Card>
                   <SearchCard v-if="this.ChosenDeck.deck_id"></SearchCard>
                   <Deck :ID=this.User.userId></Deck>
                   <ViewUserDecks v-if="!this.ChosenDeck.deck_id" :ID=this.User.userId @chosenDeck="getDeckInfo"></ViewUserDecks>

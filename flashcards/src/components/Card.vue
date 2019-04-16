@@ -7,11 +7,11 @@
             </div>
             <div id="modal-body">
       <form id="formCard" @submit.prevent="Button()" >
-          <input type="hidden" id="DeckId" :value="ID" name="deckId" />
         <div>
           <label>Question: </label>
         <input type="text" v-validate="'required'" id="question" placeholder="Enter a question" name="question" v-model="question" />
         </div>
+        <span>{{this.ID}}</span>
         <div>
           <label>Answer: </label>
         <input type="text" id="answer" v-validate="'required'" placeholder="Enter the answer" name="answer" v-model="answer" />
@@ -71,7 +71,7 @@ export default {
              if (result) {
           let cardInput = document.getElementById("formCard")
             let card = new FormData(cardInput)
-            this.apiURL = this.apiURL + 
+            this.apiURL = this.apiURL + this.ID
             fetch(this.apiURL, {
                 method: 'POST',
                 body: card,
