@@ -49,6 +49,7 @@
        <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.ChosenDeck.deck_id"></ViewDeckCards>
       </div>
       <StudySession :user=this.User.userId></StudySession>
+      <UpdateCard></UpdateCard>
       <div id="PubDecks">
         <ul class="decks">
           </ul>
@@ -73,6 +74,7 @@ import Deck from './components/Deck.vue'
 import ViewUserDecks from './components/ViewUserDecks.vue'
 import StudySession from './components/StudySession.vue'
 import SearchCard from './components/SearchCard.vue'
+import UpdateCard from './components/UpdateCard.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 
@@ -113,7 +115,8 @@ export default {
     SearchCard,
     StudySession,
     ViewUserDecks,
-    ViewDeckCards
+    ViewDeckCards,
+    UpdateCard
   },
   data() {
     return {
