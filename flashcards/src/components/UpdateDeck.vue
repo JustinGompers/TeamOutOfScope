@@ -1,6 +1,5 @@
 <template>
 <div>
-    <h2>This is the start of the Update Deck section.</h2>
 
     <div id="update-deck-section">
         <button id="update-deck-button" v-on:click.prevent="ShowUpdateDeckForm()">Update Deck</button>
