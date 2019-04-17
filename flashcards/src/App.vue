@@ -57,6 +57,7 @@
       <StudySession :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
       <UpdateCard></UpdateCard>
       <ViewCard></ViewCard>
+      <UpdateDeck></UpdateDeck>
       <div id="PubDecks">
         <ul class="decks">
           </ul>
@@ -83,6 +84,7 @@ import StudySession from './components/StudySession.vue'
 import SearchCard from './components/SearchCard.vue'
 import UpdateCard from './components/UpdateCard.vue'
 import ViewCard from './components/ViewCard.vue'
+import UpdateDeck from './components/UpdateDeck.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 
@@ -125,7 +127,8 @@ export default {
     ViewUserDecks,
     ViewDeckCards,
     UpdateCard,
-    ViewCard
+    ViewCard,
+    UpdateDeck
   },
   data() {
     return {
