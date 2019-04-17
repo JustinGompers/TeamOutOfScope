@@ -10,8 +10,15 @@
                 <h2>Card Info</h2>
             </div>
             <div id="modal-body">
-                
-
+                <br>
+                <p>Card Question:  {{ question }} </p>
+                <p>Card Answer:  {{ answer }} </p>
+                <p>Card Image:  {{ image }} </p>
+                <p>Card Tag:  {{ tag }} </p>
+                <br>
+            </div>
+            <div>
+                <button id="done" v-on:click.prevent="HideCardInfo()">Done</button>
             </div>
         </modal>
       </div>
@@ -29,16 +36,19 @@ export default {
     }, 
 
     props: {
-
+        question: String,
+        answer: String,
+        image: String,
+        tag: String
     },
 
     methods: {
         ShowCardInfo(){
-            this.$modal.show('update-card-modal');
+            this.$modal.show('view-card-modal');
         },
 
         HideCardInfo(){
-            this.$modal.hide('update-card-modal');
+            this.$modal.hide('view-card-modal');
         },
     }
 
