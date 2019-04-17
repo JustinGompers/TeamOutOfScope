@@ -11,8 +11,12 @@
             <div id="modal-body">  
                 <form id="formCreateDeck">
                     <div id="deck-options">
-                        <p v-bind="currentCard">{{currentCard.Answer}}</p> 
+                        <p v-if="isEnd === false">{{Cards[index].answer}}</p>
+                        <p v-if="isEnd === true">Right Answers: {{rightDeck.length}}</p>
+                        <p v-if="isEnd === true">Wrong Answers: {{wrongDeck.length}}</p>
                         <span>{{ errors.first('user-deck-options') }}</span>
+                        <button id="submitLoginButton" v-on:click.prevent="addToRightList()">I got it right!</button>
+                        <button id="cancelLoginButton" v-on:click.prevent="addToWrongList()">I feel shame :(</button>
                     </div>
                     <div id=buttons>
                         <button id="submitLoginButton" v-on:click.prevent="getCurrentCard()">Next</button>
@@ -56,7 +60,7 @@ export default {
             beginStudySession: false,
             rightDeck: [],
             wrongDeck: [],
-            currentCard: this.Cards[index],
+            isEnd: false,
             apiURL: "https://localhost:44337/api/deck"
         }
     },
@@ -69,9 +73,19 @@ export default {
              this.$modal.hide('startStudySession');
         },
         getCurrentCard(){
-            if(this.index < this.Cards.length){
+            if(this.index < this.Cards.length-1){
             this.index++;}
+            else{
+                this.isEnd === true;
+            }
+        },
+        addToRightList(item){
+            this.rightDeck.push(item);
+        },
+        addToWrongList(item){
+            this.wrongDeck.push(item);
         }
+        
     }
 
 }
