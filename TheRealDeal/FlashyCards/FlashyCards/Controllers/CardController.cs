@@ -66,19 +66,19 @@ namespace FlashyCards.Controllers
 
         //Example: PUT api/card/16
         //Updates a Flashcard
-        [HttpPut("{id}")]
-        public ActionResult<List<FlashCard>> updateFlashCard(int id, [FromForm] FlashCard updatedCard)
+        [HttpPost("Update/{id}")]
+        public ActionResult<List<FlashCard>> updateFlashCard([FromForm] FlashCard updatedCard, int id)
         {
             //for security, make sure that the id used in API call matches the id in the flashcard object that's passed in
-            if (id != updatedCard.cardID)
+            if (updatedCard.image == null)
             {
-                return NotFound();
+                updatedCard.image = "";
             }
 
             //make sure this card is, in fact, already existing in the DB
             var existingCard = Dal.GetSingleCard(id);
 
-            if (existingCard == null)
+            if (existingCard == null || existingCard.cardID == 0)
             {
                 return NotFound();
             }

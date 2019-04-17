@@ -35,7 +35,7 @@
               <div id="Deck" v-if="this.User.userName">
                   <Card v-if="this.ChosenDeck.deck_id" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
                   <SearchCard v-if="this.ChosenDeck.deck_id"></SearchCard>
-                  <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.ChosenDeck.deck_id"></Deck>
+                  
                 </div>
             </div>
           </a>
@@ -44,13 +44,19 @@
         
       </div>
     </fixed-header>
-    <div class='content'>
-      <h2 v-if="this.ChosenDeck.deck_id">{{this.ChosenDeck.deckName}} Cards</h2>
-       <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.ChosenDeck.deck_id" :ADD=this.CardAdded @cardData="GroupCards"></ViewDeckCards>
+    <div class='content' v-if="this.User.userName">
+      <div class="choices">
+        <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck"></Deck>
+        <button v-if="!this.SelectedDeck" @click="Selected">Select Deck</button>
+        <button v-if="this.SelectedDeck" @click="SelectedDeck = 0">Return to Decks</button>
+        </div>
+      <h2 v-if="this.SelectedDeck">{{this.ChosenDeck.deckName}} Cards</h2>
+       <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards"></ViewDeckCards>
       </div>
-      <ViewUserDecks v-if="!this.ChosenDeck.deck_id && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded @addDeck="addedCard"></ViewUserDecks>
+      <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded @addDeck="addedCard"></ViewUserDecks>
       <StudySession :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
       <UpdateCard></UpdateCard>
+      <ViewCard></ViewCard>
       <div id="PubDecks">
         <ul class="decks">
           </ul>
@@ -76,6 +82,7 @@ import ViewUserDecks from './components/ViewUserDecks.vue'
 import StudySession from './components/StudySession.vue'
 import SearchCard from './components/SearchCard.vue'
 import UpdateCard from './components/UpdateCard.vue'
+import ViewCard from './components/ViewCard.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 
@@ -117,7 +124,8 @@ export default {
     StudySession,
     ViewUserDecks,
     ViewDeckCards,
-    UpdateCard
+    UpdateCard,
+    ViewCard
   },
   data() {
     return {
@@ -128,7 +136,9 @@ export default {
       PublicDecks: [],
       showDecks: false,
       CardAdded: false,
-      DeckAdded: false
+      DeckAdded: false,
+      SelectedDeck: 0,
+      SelectedCard: 0
     }
   },
   methods: {
@@ -152,6 +162,12 @@ export default {
     },
     GroupCards(Group){
         this.Cards = Group;
+    },
+    Selected(){
+      this.SelectedDeck = this.ChosenDeck.deck_id;
+    },
+    SelectedCard(){
+
     }
   }
 }
