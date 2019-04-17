@@ -2,7 +2,7 @@
 <div>
     <h2>This is the start of the Study Session</h2>
 
-    <button id="start-study-session" v-on:click.prevent="show()" v-if="beginStudySession === false">Start Study Session</button>
+    <button id="start-study-session" v-on:click.prevent="show()">Start Study Session</button>
 
     <modal id="study-session-form" name="startStudySession" :width="600" :height="225">
         <div id="modal-header">
@@ -49,14 +49,16 @@ export default {
             deckId: 0,
             name: '',
             beginStudySession: false,
-            userDecks: [],
+            userCards: [],
+            rightDeck: [],
+            wrongDeck: [],
             apiURL: "https://localhost:44337/api/deck"
         }
     },
 
     methods: {         
-        viewDecks(){
-            fetch("https://localhost:44337/api/deck/" + this.user, {
+        getCards(){
+            fetch("https://localhost:44337/api/Card/" + this.user, {
                 method: 'GET',
                 mode: 'no-cors'
                 })
@@ -64,7 +66,7 @@ export default {
                     return response.json();
                 })
                  .then(data => {
-                    this.userDecks = data;
+                    this.userCards = data;
                 })
                 .catch(e => console.log(e));
         },
