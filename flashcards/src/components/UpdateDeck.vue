@@ -1,0 +1,114 @@
+<template>
+<div>
+
+    <div id="update-deck-section">
+        <button id="update-deck-button" v-on:click.prevent="ShowUpdateDeckForm()">Update Deck</button>
+
+        <modal id='update-deck-modal' name="update-deck-modal" :width="600" :height="300">
+          <div id="modal-header">
+            <h2>Update Deck Form</h2>
+          </div>
+
+          <div id="modal-body">
+            <form id="update-deck-form" @submit.prevent="UpdateDeck()">
+                <div id="new-deck-name">
+                    <label>New Deck Name: </label>
+                    <input type="text" id="deck-name" placeholder="if applicable" v-model="deckName" name="deckName"/>
+                </div>
+                <div id="new-deck-category">
+                    <span id="cat">Choose the category of your deck:</span>
+                        <select id="deck-category" v-validate="'required|min_value:1'" v-model="category_id" name="category_id">
+                            <option disabled value=0>Please Select a Category</option>
+                            <option v-for="category in categories" v-bind:key="category.id" :value="category.id"> {{category.name}} </option>     
+                        </select>
+                    <span>{{ errors.first('category_id') }}</span>
+                </div>
+                <div id=submit-deck-update-buttons>
+                    <button id="submit-deck-update-button">Submit</button>
+                    <button id="cancel-deck-update-button" v-on:click.prevent="HideUpdateDeckForm()">Cancel</button>
+                </div>    
+            </form>
+          </div>
+        </modal>
+    </div>
+</div>
+</template>
+
+<script>
+export default {
+    beforeCreate(){
+        fetch("https://localhost:44337/api/deck",{
+                method: 'GET'
+                })
+                .then(response => {
+                    return response.json();
+                })
+                 .then(data => {
+                    this.categories = data;
+                })
+                .catch(e => console.log(e));
+    },
+
+    name: 'UpdateDeck',
+
+    data() {
+        return {
+            deckName: '',
+            categories: [],
+            apiURL: "https://localhost:44337/api/deck/update/" 
+        }
+    },
+
+    props: {
+        chosenDeck: {
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },
+
+    methods: {
+        ShowUpdateDeckForm(){
+            this.$modal.show('update-deck-modal');
+        },
+
+        HideUpdateDeckForm(){
+            this.$modal.hide('update-deck-modal');
+        },
+
+        UpdateDeck() {
+         this.$validator.validateAll().then((result) => {
+             if (result) {
+          let deckUpdate = document.getElementById("update-deck-form")
+            let deck = new FormData(deckUpdate)
+            fetch(this.apiURL + this.chosenDeck, {
+                method: 'POST',
+                body: deck,
+                mode: 'no-cors'                
+            })
+            .then(response => {
+                return response.json();
+            })
+            .catch(err => {
+                console.log(err)
+            });
+            this.deckName = '';
+            this.$modal.hide('update-deck-modal');
+            this.$emit('deck-update', deck);
+            alert('Your update has been submitted!');
+            
+        }else{
+            alert('Your update did not work.  Please try again.');
+        }
+        })
+    }
+
+    }
+}
+</script>
+
+<style>
+
+</style>
+
+

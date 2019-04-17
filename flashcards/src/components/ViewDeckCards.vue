@@ -81,7 +81,7 @@ export default {
     methods:{
         CardDecided(chosen){
             this.ChosenCard = chosen;
-            this.$emit('chosenDeck', this.ChosenCard);
+            this.$emit('chosenCard', this.ChosenCard);
         }
     }
 }

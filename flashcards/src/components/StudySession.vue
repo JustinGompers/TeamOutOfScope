@@ -11,15 +11,15 @@
             <div id="modal-body">  
                 <form id="formCreateDeck">
                     <div id="deck-options">
-                        <span id="decks">Choose the deck for your study session:</span>
-                        <select id="user-decks" v-validate="'required|min_value:1'" v-on:click.prevent="viewDecks()" v-model="category_id" name="user-deck-options">
-                            <option disabled value=0>Please Select a Deck</option>
-                            <option v-for="deck in userDecks" v-bind:key="deck.name" :value="deck.deckId"> {{deck.name}} </option>     
-                        </select>
+                        <p v-if="isEnd === false">{{Cards[index].answer}}</p>
+                        <p v-if="isEnd === true">Right Answers: {{rightDeck.length}}</p>
+                        <p v-if="isEnd === true">Wrong Answers: {{wrongDeck.length}}</p>
                         <span>{{ errors.first('user-deck-options') }}</span>
+                        <button id="submitLoginButton" v-on:click.prevent="addToRightList()">I got it right!</button>
+                        <button id="cancelLoginButton" v-on:click.prevent="addToWrongList()">I feel shame :(</button>
                     </div>
                     <div id=buttons>
-                        <button id="submitLoginButton" v-on:click.prevent="getDeck">Submit</button>
+                        <button id="submitLoginButton" v-on:click.prevent="getCurrentCard()">Next</button>
                         <button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button>
                     </div>   
                 </form> 
@@ -56,10 +56,11 @@ export default {
             userId: 0,
             deckId: 0,
             name: '',
+            index: 0,
             beginStudySession: false,
-            userCards: [],
             rightDeck: [],
             wrongDeck: [],
+            isEnd: false,
             apiURL: "https://localhost:44337/api/deck"
         }
     },
@@ -70,7 +71,21 @@ export default {
         },
         hide(){
              this.$modal.hide('startStudySession');
+        },
+        getCurrentCard(){
+            if(this.index < this.Cards.length-1){
+            this.index++;}
+            else{
+                this.isEnd === true;
+            }
+        },
+        addToRightList(item){
+            this.rightDeck.push(item);
+        },
+        addToWrongList(item){
+            this.wrongDeck.push(item);
         }
+        
     }
 
 }

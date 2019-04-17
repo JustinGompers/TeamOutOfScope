@@ -72,8 +72,8 @@ namespace FlashyCards.Controllers
         }
 
         //Updates a Deck Associated with a deckID, PUT API(url = api/Deck/deckID/{deckID})
-        [HttpPut("deckID/{deckID}")]
-        public ActionResult<List<UserFlashCardDeckWithID>> updateDeck(int deckID, UserFlashCardDeckWithID deck)
+        [HttpPost("update/{deckID}")]
+        public ActionResult<List<UserFlashCardDeckWithID>> updateDeck(int deckID, [FromForm] UserFlashCardDeckWithID deck)
         {
             UserFlashCardDeckWithID existingDeck = deckOptionsDAL.GetSingleDeck(deckID);
             if(existingDeck == null)
