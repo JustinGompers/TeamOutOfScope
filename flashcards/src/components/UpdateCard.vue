@@ -60,9 +60,11 @@ export default {
 
 
     methods: {
+
         show(){
             this.$modal.show('update-card-modal');
         },
+
         hide(){
             this.$modal.hide('update-card-modal');
         },
@@ -96,8 +98,8 @@ export default {
         }else{
             alert('Your update did not work.');
         }
+        })
     }
-        }
     }
 }
 
