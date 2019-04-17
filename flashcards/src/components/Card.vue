@@ -55,7 +55,6 @@ export default {
 
           cards: [],
           showCardForm: false,
-          apiURL: "https://localhost:44337/api/Card/",
           question: '',
           answer: '',
           image: '',
@@ -70,7 +69,7 @@ export default {
              if (result) {
           let cardInput = document.getElementById("formCard")
             let card = new FormData(cardInput)
-            this.apiURL = this.apiURL + this.ID
+            this.apiURL = "https://localhost:44337/api/Card/" + this.ID
             fetch(this.apiURL, {
                 method: 'POST',
                 body: card,
