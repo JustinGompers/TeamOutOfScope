@@ -67,7 +67,8 @@ export default {
             isOpen: 'false',            
             categories: [],
             person_id: 0,
-            apiURL: "https://localhost:44337/api/deck"   
+            apiURL: "https://localhost:44337/api/deck",
+            addDeck: false   
 
         };
     }, 
@@ -100,6 +101,7 @@ export default {
             
             
                     alert('Your Deck has been submitted!');
+                    this.$emit('addDeck', !this.addDeck);
                 }
             })
 

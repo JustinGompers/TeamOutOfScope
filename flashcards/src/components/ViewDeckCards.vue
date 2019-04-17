@@ -12,7 +12,8 @@
 <script>
 export default {
     created(){
-        this.apiURL = this.apiURL + this.DID;
+        this.ID2 = this.ID
+        this.apiURL = "https://localhost:44337/api/Card/" + this.DID;
         fetch(this.apiURL, {
             method: 'GET'
         })
@@ -29,12 +30,48 @@ export default {
             type: Number,
             required: true,
             default: 0
+        },
+        ADD: {
+            type: Boolean,
+            required: true,
+            default: false
+        }
+    },
+    watch:{
+        DID: function(newVal, oldVal) {
+            if(newVal !== oldVal){
+            this.apiURL = "https://localhost:44337/api/Card/" + this.DID;
+        fetch(this.apiURL, {
+            method: 'GET'
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            this.Cards = data;
+        })
+            }
+        },
+        ADD: function(newVal, oldVal){
+            if(newVal !== oldVal){
+                this.apiURL = "https://localhost:44337/api/Card/" + this.DID;
+        fetch(this.apiURL, {
+            method: 'GET'
+        })
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            this.Cards = data;
+        })
+            }
+
         }
     },
     data() {
         return {
             Cards: [],
-            apiURL: "https://localhost:44337/api/Card/"
+            apiURL: "https://localhost:44337/api/Card/",
         }
     }
 }

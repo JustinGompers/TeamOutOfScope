@@ -15,8 +15,7 @@
 <script>
 export default {
     created(){
-        this.showUserDecks = true;
-            this.apiURL = this.apiURL + this.ID ;
+            this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID ;
             fetch(this.apiURL,{
                     method: 'GET'
                     })
@@ -34,6 +33,43 @@ export default {
             type: Number,
             required: true,
             default: 0
+        },
+        ADD: {
+            type: Boolean,
+            required: true,
+            default: false
+        }
+    },
+    watch:{
+        ID: function(newVal, oldVal){
+            if(newVal !== oldVal){
+                this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID ;
+                fetch(this.apiURL,{
+                    method: 'GET'
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                     this.UserDecks = data;
+                    })
+                    .catch(e => console.log(e));
+            }
+        },
+        ADD: function(newVal, oldVal){
+            if(newVal !== oldVal){
+                this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID ;
+                fetch(this.apiURL,{
+                    method: 'GET'
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                     this.UserDecks = data;
+                    })
+                    .catch(e => console.log(e));
+            }
         }
     },
     data(){
@@ -45,20 +81,6 @@ export default {
         }
     },
     methods: {
-        // ViewAll(){
-        //     this.showUserDecks = true;
-        //     this.apiURL = this.apiURL + this.ID ;
-        //     fetch(this.apiURL,{
-        //             method: 'GET'
-        //             })
-        //             .then(response => {
-        //                 return response.json();
-        //             })
-        //             .then(data => {
-        //              this.UserDecks = data;
-        //             })
-        //             .catch(e => console.log(e));
-        // },
         DeckDecided(id){
             console.log(id.deck_id);
             this.ChosenDeck = id
