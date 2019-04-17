@@ -47,15 +47,16 @@
     <div class='content' v-if="this.User.userName">
       <div class="choices">
         <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck"></Deck>
-        <button v-if="!this.SelectedDeck" @click="Selected">Select Deck</button>
-        <button v-if="this.SelectedDeck" @click="SelectedDeck = 0">Return to Decks</button>
+        <button class="selectbar" v-if="!this.SelectedDeck" @click="Selected">Select Deck</button>
+        <button class="selectbar" v-if="this.SelectedDeck" @click="SelectedDeck = 0">Return to Decks</button>
         <StudySession v-if="this.SelectedDeck" :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
         <UpdateCard v-if="this.SelectedDeck" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
         </div>
       <h2 v-if="this.SelectedDeck">{{this.ChosenDeck.deckName}} Cards</h2>
        <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
+       <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
       </div>
-      <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
+      
       
       
       <ViewCard></ViewCard>
@@ -177,11 +178,17 @@ export default {
 </script>
 
 <style>
+html{
+  background: #FF983E;
+}
 .selectbar{
-  /* display: inline-flex;
-  flex-flow: column nowrap;
-  width: 10%; */
-  width:100%
+    width: 150px;
+    height: 50px;
+    background: #800020;
+    font-style: bold;
+    font-size: 15pt;
+    color: white;
+    cursor: pointer;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

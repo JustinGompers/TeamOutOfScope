@@ -118,6 +118,15 @@ export default {
 </script>
 
 <style>
+#createDeck{
+    width: 150px;
+    height: 50px;
+    background: #800020;
+    font-style: bold;
+    font-size: 15pt;
+    color: white;
+    cursor: pointer;
+}
 .deck{
     display:inline;
 }
