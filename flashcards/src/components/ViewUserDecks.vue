@@ -99,6 +99,15 @@ img{
 .decklist{
     display: inline-flex;
     flex-flow: column nowrap;
-    width: 10%;   
+    width: 10%;
+    background: #800020;
+    border: solid black;    
+}
+.decklist button{
+    background: black;
+    border-color: white;
+    color: white;
+    cursor: pointer;
+    font-size: 12pt;
 }
 </style>
