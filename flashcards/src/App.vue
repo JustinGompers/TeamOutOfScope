@@ -51,6 +51,7 @@
         <button class="selectbar" v-if="this.SelectedDeck" @click="SelectedDeck = 0">Return to Decks</button>
         <StudySession v-if="this.SelectedDeck" :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
         <UpdateCard v-if="this.SelectedDeck" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
+        <ViewCard v-if="this.SelectedDeck" :Card=this.ChosenCard></ViewCard>
         </div>
       <h2 v-if="this.SelectedDeck">{{this.ChosenDeck.deckName}} Cards</h2>
        <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
@@ -59,7 +60,7 @@
       
       
       
-      <ViewCard></ViewCard>
+      
       <UpdateDeck></UpdateDeck>
       <div id="PubDecks">
         <ul class="decks">
