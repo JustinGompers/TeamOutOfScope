@@ -30,11 +30,11 @@
                 <div>
                   <img id="userPhoto" src="./assets/normalpic.jpg">
                   </div>
-                  <span>{{ this.User.firstName }} {{ this.User.lastName }} {{ this.User.userId }}</span>
+                  <span class="User">{{ this.User.firstName }} {{ this.User.lastName }}</span>
               </div>
               <div id="Deck" v-if="this.User.userName">
-                  <Card v-if="this.ChosenDeck.deck_id" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
-                  <SearchCard v-if="this.ChosenDeck.deck_id"></SearchCard>
+                  
+                  
                   
                 </div>
             </div>
@@ -46,25 +46,39 @@
     </fixed-header>
     <div class='content' v-if="this.User.userName">
       <div class="choices">
+        <SearchCard v-if="this.SelectedDeck"></SearchCard>
+        <Card v-if="this.SelectedDeck" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
         <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck"></Deck>
-        <button v-if="!this.SelectedDeck" @click="Selected">Select Deck</button>
-        <button v-if="this.SelectedDeck" @click="SelectedDeck = 0">Return to Decks</button>
+        <button class="selectbar" v-if="!this.SelectedDeck" @click="Selected">Select Deck</button>
         <StudySession v-if="this.SelectedDeck" :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
         <UpdateCard v-if="this.SelectedDeck" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
+        <ViewCard v-if="this.SelectedDeck" :Card=this.ChosenCard></ViewCard>
+        <button class="selectbar" v-if="this.SelectedDeck" @click="SelectedDeck = 0">Return</button>
         </div>
       <h2 v-if="this.SelectedDeck">{{this.ChosenDeck.deckName}} Cards</h2>
        <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
+       <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
       </div>
-      <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
       
       
-      <ViewCard></ViewCard>
+      
+      
       <UpdateDeck></UpdateDeck>
       <div id="PubDecks">
         <ul class="decks">
           </ul>
         </div>
-        
+        <div>
+        <img class="public" src="./assets/publicdecks.png">
+        <div id="Decks">
+            <span v-for="deck in PublicDecks" v-bind:key="deck.deck_id" :value="deck">
+                <span class="decklist">
+                <img src="./assets/cards.png">
+                <button> {{deck.deckName}}</button>
+                </span>
+            </span>
+        </div>
+    </div>
         <footer id="footer">&copy; 2019 FlashyCards.com</footer>
         <footer id="footerslogan"> 	&trade;"Learning is FUNdamental"</footer>
         
@@ -100,10 +114,10 @@ import { Slide } from 'vue-burger-menu'
 // })
 
 export default {
-    beforeCreate() {
+    created() {
         console.log('Im First');
-        /*
-        fetch(this.apiUrl, {
+        
+        fetch("https://localhost:44337/api/deck/user/1", {
           method: 'GET'
         })
         .then(response => {
@@ -113,7 +127,7 @@ export default {
           this.PublicDecks = data;
           console.log(this.PublcDecks);
         })
-        */
+        
     },
   name: 'app',
   components: {
@@ -144,7 +158,8 @@ export default {
       CardAdded: false,
       DeckAdded: false,
       SelectedDeck: 0,
-      SelectedCard: 0
+      SelectedCard: 0,
+      apiURL: "https://localhost:44337/api/deck/user/1"
     }
   },
   methods: {
@@ -180,11 +195,24 @@ export default {
 </script>
 
 <style>
+.User{
+  color: white;
+  font-size: 16pt;
+}
+.public{
+  width: 25%;
+}
+html{
+  background: #FF983E;
+}
 .selectbar{
-  /* display: inline-flex;
-  flex-flow: column nowrap;
-  width: 10%; */
-  width:100%
+    width: 150px;
+    height: 50px;
+    background: #800020;
+    font-style: bold;
+    font-size: 15pt;
+    color: white;
+    cursor: pointer;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

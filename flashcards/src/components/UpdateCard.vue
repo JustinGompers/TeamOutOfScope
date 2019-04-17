@@ -1,6 +1,4 @@
 <template>
-<div>
-
 <div class="choose-card">
     <button id="choose-card-button" v-on:click.prevent="showUpdateCardForm()">Update Card</button>
 
@@ -46,7 +44,6 @@
         </div>
             
     </modal>
-</div>
 </div>
 </template>
 
@@ -121,7 +118,18 @@ export default {
 </script>
 
 <style>
-
+#choose-card-button{
+    width: 150px;
+    height: 50px;
+    background: #800020;
+    font-style: bold;
+    font-size: 15pt;
+    color: white;
+    cursor: pointer;
+}
+.choose-card{
+    display:inline;
+}
 </style>
 
 
