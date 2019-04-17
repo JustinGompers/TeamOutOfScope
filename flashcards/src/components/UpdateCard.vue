@@ -101,7 +101,7 @@ export default {
     },
 
     name: 'UpdateCard',
-    //HAVE TO SOMEHOW BIND THE CARD ID SO THE URL IN THE BUTTON METHOD WORKS CORRECTLY
+    //HAVE TO SOMEHOW BIND THE CARD ID AND DECK ID SO THE URLs IN THE BUTTON METHOD WORKS CORRECTLY
     Card_id: 0,
     Deck_id: 0,
     question: '',
@@ -140,7 +140,7 @@ export default {
 
         populateCards(){
             
-              fetch(this.apiURL + "/" + Deck_id,{
+              fetch(this.apiURL + "/" + this.Deck_id,{
                 method: 'GET'
                 })
                 .then(response => {
