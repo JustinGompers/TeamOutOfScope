@@ -21,9 +21,7 @@
       </div>
     </modal>
   
-</div>
-
-
+    </div>
 
 </template>
 
