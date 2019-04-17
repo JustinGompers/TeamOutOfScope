@@ -19,10 +19,11 @@
         </div>
       </form>
       </div>
-     
     </modal>
   
 </div>
+
+
 
 </template>
 
