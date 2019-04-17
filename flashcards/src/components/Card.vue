@@ -1,6 +1,6 @@
 <template>
     <div class= "CardSection">   
-      <a id="CardButton" v-on:click.prevent="show()">Create a Card</a>
+      <button id="CardButton" v-on:click.prevent="show()">Create a Card</button>
       <modal id="Form" name="CreateCard" :width="600" :height="275">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
@@ -111,11 +111,17 @@ export default {
 
 
 <style>
-
+.CardSection{
+    display: inline;
+}
 #CardButton{ 
-  Color: white;
-  border-bottom: solid;
-  font-size: 24pt;
+    width: 150px;
+    height: 50px;
+    background: #800020;
+    font-style: bold;
+    font-size: 15pt;
+    color: white;
+    cursor: pointer;
 }
 #SubmitButton{
   display: flex;
