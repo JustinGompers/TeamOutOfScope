@@ -1,6 +1,6 @@
 <template>
     <div class= "SearchCardSection">   
-        <br>
+      
       <a id="SearchButton" v-on:click.prevent="show()">Search Cards</a>
       <modal id="Form" name="SearchCard" :width="600" :height="205">
         <div id="modal-header">
@@ -20,10 +20,34 @@
       </form>
       </div>
     </modal>
+    
+    <div class= "AddCardSection">
+      </div>
+      <a id="AddButton" v-on:click.prevent="show()">Add a Card</a>
+      <modal id="Form" name="AddCard" :width="600" :height="205">
+        <div id="modal-header">
+          <h2>Add Cards Form</h2>
+          </div>
+          <div id="modal-body">
+            <form id="AddCardSearch" @submit.prevent="Button()" >
+              <input type="hidden" id="DeckId" value="1" name="deckId" />
+              
+                <select id="user-decks" v-validate="'required|min_value:1'" v-on:click.prevent="viewDecks()" v-model="category_id" name="user-deck-options">
+                        <option disabled value=0>Please Select a Deck</option>
+                        <option v-for="deck in userDecks" v-bind:key="deck.name" :value="deck.deckId"> {{deck.name}} </option>     
+                </select>
+                </form>
+          </div>
+              </modal>
+
+
+    
   
     </div>
+    
 
 </template>
+
 
 <script>
 export default {
