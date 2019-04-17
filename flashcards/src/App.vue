@@ -49,13 +49,17 @@
         <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck"></Deck>
         <button v-if="!this.SelectedDeck" @click="Selected">Select Deck</button>
         <button v-if="this.SelectedDeck" @click="SelectedDeck = 0">Return to Decks</button>
+        <StudySession v-if="this.SelectedDeck" :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
+        <UpdateCard v-if="this.SelectedDeck" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
         </div>
       <h2 v-if="this.SelectedDeck">{{this.ChosenDeck.deckName}} Cards</h2>
-       <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards"></ViewDeckCards>
+       <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
       </div>
-      <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded @addDeck="addedCard"></ViewUserDecks>
-      <StudySession :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
-      <UpdateCard></UpdateCard>
+      <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
+      
+      
+      <ViewCard></ViewCard>
+      <UpdateDeck></UpdateDeck>
       <div id="PubDecks">
         <ul class="decks">
           </ul>
@@ -81,6 +85,8 @@ import ViewUserDecks from './components/ViewUserDecks.vue'
 import StudySession from './components/StudySession.vue'
 import SearchCard from './components/SearchCard.vue'
 import UpdateCard from './components/UpdateCard.vue'
+import ViewCard from './components/ViewCard.vue'
+import UpdateDeck from './components/UpdateDeck.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 
@@ -122,13 +128,16 @@ export default {
     StudySession,
     ViewUserDecks,
     ViewDeckCards,
-    UpdateCard
+    UpdateCard,
+    ViewCard,
+    UpdateDeck
   },
   data() {
     return {
       User: {},
       Deck: [],
       ChosenDeck: {},
+      ChosenCard: {},
       Cards: [],
       PublicDecks: [],
       showDecks: false,
@@ -163,14 +172,20 @@ export default {
     Selected(){
       this.SelectedDeck = this.ChosenDeck.deck_id;
     },
-    SelectedCard(){
-
+    getCardInfo(card){
+      this.ChosenCard = card;
     }
   }
 }
 </script>
 
 <style>
+.selectbar{
+  /* display: inline-flex;
+  flex-flow: column nowrap;
+  width: 10%; */
+  width:100%
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
