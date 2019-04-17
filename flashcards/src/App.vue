@@ -35,7 +35,7 @@
               <div id="Deck" v-if="this.User.userName">
                   <Card v-if="this.ChosenDeck.deck_id" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
                   <SearchCard v-if="this.ChosenDeck.deck_id"></SearchCard>
-                  <Deck :ID=this.User.userId @addDeck="addedDeck"></Deck>
+                  <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.ChosenDeck.deck_id"></Deck>
                 </div>
             </div>
           </a>
@@ -45,10 +45,11 @@
       </div>
     </fixed-header>
     <div class='content'>
-       <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.ChosenDeck.deck_id" :ADD=this.CardAdded></ViewDeckCards>
+      <h2 v-if="this.ChosenDeck.deck_id">{{this.ChosenDeck.deckName}} Cards</h2>
+       <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.ChosenDeck.deck_id" :ADD=this.CardAdded @cardData="GroupCards"></ViewDeckCards>
       </div>
-      <ViewUserDecks v-if="!this.ChosenDeck||this.User.userId" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded @addDeck="addedCard"></ViewUserDecks>
-      <StudySession :user=this.User.userId></StudySession>
+      <ViewUserDecks v-if="!this.ChosenDeck.deck_id && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded @addDeck="addedCard"></ViewUserDecks>
+      <StudySession :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
       <UpdateCard></UpdateCard>
       <div id="PubDecks">
         <ul class="decks">
@@ -148,6 +149,9 @@ export default {
     },
     addedDeck(){
       this.DeckAdded = !this.DeckAdded
+    },
+    GroupCards(Group){
+        this.Cards = Group;
     }
   }
 }
