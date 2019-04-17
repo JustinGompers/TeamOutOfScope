@@ -1,7 +1,7 @@
 <template>
     <div class= "CardSection">   
       <a id="CardButton" v-on:click.prevent="show()">Create a Card</a>
-      <modal id="Form" name="CreateCard" :width="600" :height="250">
+      <modal id="Form" name="CreateCard" :width="600" :height="275">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
             </div>
@@ -11,7 +11,6 @@
           <label>Question: </label>
         <input type="text" v-validate="'required'" id="question" placeholder="Enter a question" name="question" v-model="question" />
         </div>
-        <span>{{this.ID}}</span>
         <div>
           <label>Answer: </label>
         <input type="text" id="answer" v-validate="'required'" placeholder="Enter the answer" name="answer" v-model="answer" />
