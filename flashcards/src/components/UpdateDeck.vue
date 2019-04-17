@@ -13,7 +13,7 @@
             <form id="update-deck-form" @submit.prevent="UpdateDeck()">
                 <div id="new-deck-name">
                     <label>New Deck Name: </label>
-                    <input type="text" id="deck-name" placeholder="if applicable" v-model="deckName" name="Name"/>
+                    <input type="text" id="deck-name" placeholder="if applicable" v-model="deckName" name="deckName"/>
                 </div>
                 <div id="new-deck-category">
                     <span id="cat">Choose the category of your deck:</span>
@@ -55,7 +55,7 @@ export default {
         return {
             deckName: '',
             categories: [],
-            apiURL: "https://localhost:44337/api/deck"
+            apiURL: "https://localhost:44337/api/deck/update/" 
         }
     },
 
@@ -81,9 +81,9 @@ export default {
              if (result) {
           let deckUpdate = document.getElementById("update-deck-form")
             let deck = new FormData(deckUpdate)
-            fetch("https://localhost:44337/api/Card/Update/" + this.chosenCard, {
+            fetch(this.apiURL + this.chosenDeck, {
                 method: 'POST',
-                body: card,
+                body: deck,
                 mode: 'no-cors'                
             })
             .then(response => {
@@ -92,12 +92,9 @@ export default {
             .catch(err => {
                 console.log(err)
             });
-            this.question = '';
-            this.answer = '';
-            this.image = '';
-            this.tags = '';
-            this.$modal.hide('update-card-modal');
-            this.$emit('updateCard', !this.updateDeck);
+            this.deckName = '';
+            this.$modal.hide('update-deck-modal');
+            this.$emit('deck-update', deck);
             alert('Your update has been submitted!');
             
         }else{
