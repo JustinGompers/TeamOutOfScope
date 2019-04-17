@@ -1,6 +1,5 @@
 <template>
 <div>
-<h2>This is the beginning of the Update Card Section.</h2>
 
 <div class="choose-card">
     <button id="choose-card-button" v-on:click.prevent="showUpdateCardForm()">Update Card</button>
@@ -13,6 +12,7 @@
         <div id="modal-body">
 
             <form id="update-card-form" @submit.prevent="Button()">
+                <span>{{this.chosenCard}}</span>
                 <div id="body">
                     <label>New Question: </label>
                     <input type="text" id="question" placeholder="if applicable" v-model="question" name="question"/>
@@ -63,17 +63,18 @@ export default {
     answer: '',
     image: '',
     tag: '',
-    apiURL: "https://localhost:44337/api/Card/4"
+    apiURL: "https://localhost:44337/api/Card/",
+    updateDeck: false
         }
     },
 
-    // props: {
-    //     chosenCard: {
-    //         type: Number,
-    //         required: true,
-    //         default: 0
-    //     }
-    // },
+    props: {
+        chosenCard: {
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },
 
     methods: {
 
@@ -90,7 +91,7 @@ export default {
              if (result) {
           let cardUpdate = document.getElementById("update-card-form")
             let card = new FormData(cardUpdate)
-            fetch("https://localhost:44337/api/Card/Update/4", {
+            fetch("https://localhost:44337/api/Card/Update/" + this.chosenCard, {
                 method: 'POST',
                 body: card,
                 mode: 'no-cors'                
@@ -105,7 +106,10 @@ export default {
             this.answer = '';
             this.image = '';
             this.tags = '';
+            this.$modal.hide('update-card-modal');
+            this.$emit('updateCard', !this.updateDeck);
             alert('Your update has been submitted!');
+            
         }else{
             alert('Your update did not work.  Please try again.');
         }
