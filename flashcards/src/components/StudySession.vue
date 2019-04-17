@@ -40,6 +40,14 @@ export default {
             type: Number,
             required: true,
             default: 0
+        },
+        Cards: {
+            type: Array,
+            required: true,
+        },
+        Deck: {
+            type: Object,
+            required: true,
         }
     },
 
@@ -57,21 +65,7 @@ export default {
     },
 
     methods: {         
-        getCards(){
-            fetch("https://localhost:44337/api/Card/" + this.user, {
-                method: 'GET',
-                mode: 'no-cors'
-                })
-                .then(response => {
-                    return response.json();
-                })
-                 .then(data => {
-                    this.userCards = data;
-                })
-                .catch(e => console.log(e));
-        },
         show(){
-            beginStudySession: true;
              this.$modal.show('startStudySession');
         },
         hide(){
