@@ -5,7 +5,7 @@
             <span v-for="deck in UserDecks" v-bind:key="deck.deck_id" :value="deck">
                 <span class="decklist">
                 <img src="../assets/cards.png">
-                <button @click="DeckDecided(deck)"> {{deck.deckName}}</button>
+                <button @click="DeckDecided(deck)" :class="{'active': deck.deck_id == ChosenDeck.deck_id}"> {{deck.deckName}}</button>
                 </span>
             </span>
         </div>
@@ -77,7 +77,8 @@ export default {
             apiURL: "https://localhost:44337/api/deck/user/",
             UserDecks: [],
             showUserDecks: false,
-            ChosenDeck: {}
+            ChosenDeck: {},
+            activeIndex: null
         }
     },
     methods: {
@@ -93,6 +94,9 @@ export default {
 
 
 <style>
+.decklist .active{
+    background-color: red;
+}
 img{
     width: 100%;
 }

@@ -3,7 +3,7 @@
         <span v-for="card in Cards" v-bind:key="card.cardID" :value="card">
             <span class="cardlist">
                 <img src="../assets/cardlogo.png">
-                <button> {{card.question}}</button>
+                <button @click="CardDecided(card)" :class="{'active': card.cardID == ChosenCard.cardID}"> {{card.question}}</button>
             </span>
         </span>
     </div>
@@ -75,12 +75,22 @@ export default {
         return {
             Cards: [],
             apiURL: "https://localhost:44337/api/Card/",
+            ChosenCard: {}
+        }
+    },
+    methods:{
+        CardDecided(chosen){
+            this.ChosenCard = chosen;
+            this.$emit('chosenDeck', this.ChosenCard);
         }
     }
 }
 </script>
 
 <style>
+.cardlist .active{
+    background-color: red;
+}
 .cardlist{
     display: inline-flex;
     flex-flow: column nowrap;
