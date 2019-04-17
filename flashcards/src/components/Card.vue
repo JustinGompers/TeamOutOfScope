@@ -61,7 +61,7 @@ export default {
           answer: '',
           image: '',
           tags: '',
-            
+          addCard: false        
         };  
     },
 
@@ -91,8 +91,8 @@ export default {
             this.answer = '';
             this.image = '';
             this.tags = '';
-            this.showCardForm = false;
             alert('Your card has been submitted!');
+            this.$emit('addCard', !this.addCard);
         }else{
             alert('Your card has missing fields!');
         }
