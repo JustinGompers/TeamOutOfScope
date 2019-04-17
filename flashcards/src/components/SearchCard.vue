@@ -44,15 +44,9 @@ export default {
     Button() {
          this.$validator.validateAll().then((result) => {
              if (result) {
-          let cardSearch = document.getElementById("formSearch")
-            let search = new FormData(cardSearch)
+            this.apiURL = this.apiURL + this.search
             fetch(this.apiURL, {
-                method: 'GET',
-                body: search,
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                method: 'GET'
             })
             .then(response => {
                 return response.json();

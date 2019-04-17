@@ -33,10 +33,9 @@
                   <span>{{ this.User.firstName }} {{ this.User.lastName }} {{ this.User.userId }}</span>
               </div>
               <div id="Deck" v-if="this.User.userName">
-                  <Card v-if="this.ChosenDeck.deck_id"></Card>
+                  <Card v-if="this.ChosenDeck.deck_id" :ID=this.ChosenDeck.deck_id></Card>
                   <SearchCard v-if="this.ChosenDeck.deck_id"></SearchCard>
                   <Deck :ID=this.User.userId></Deck>
-                  <ViewUserDecks v-if="!this.ChosenDeck.deck_id" :ID=this.User.userId @chosenDeck="getDeckInfo"></ViewUserDecks>
                 </div>
             </div>
           </a>
@@ -48,6 +47,8 @@
     <div class='content'>
        <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.ChosenDeck.deck_id"></ViewDeckCards>
       </div>
+      <span> {{this.ChosenDeck.deck_id}}</span>
+      <ViewUserDecks v-if="!this.ChosenDeck||this.User.userId" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" ></ViewUserDecks>
       <StudySession :user=this.User.userId></StudySession>
       <UpdateCard></UpdateCard>
       <div id="PubDecks">
@@ -123,7 +124,9 @@ export default {
       User: {},
       Deck: [],
       ChosenDeck: {},
-      PublicDecks: []
+      Cards: [],
+      PublicDecks: [],
+      showDecks: false
     }
   },
   methods: {
@@ -135,6 +138,9 @@ export default {
     },
     getDeckInfo(DeckInfo){
       this.ChosenDeck = DeckInfo;
+    },
+    getCards(DeckCards){
+      this.Cards = DeckCards;
     }
   }
 }

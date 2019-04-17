@@ -1,12 +1,17 @@
 <template>
     <div>
-        <button v-for="cards in Cards" v-bind:key="cards.cardID" :value="cards"> {{this.cards.question}} : {{this.cards.answer}}</button>
+        <span v-for="card in Cards" v-bind:key="card.cardID" :value="card">
+            <span class="cardlist">
+                <img src="../assets/cardlogo.png">
+                <button> {{card.question}}</button>
+            </span>
+        </span>
     </div>
 </template>
 
 <script>
 export default {
-    mounted(){
+    created(){
         this.apiURL = this.apiURL + this.DID;
         fetch(this.apiURL, {
             method: 'GET'
@@ -23,7 +28,7 @@ export default {
         DID: {
             type: Number,
             required: true,
-            default:0
+            default: 0
         }
     },
     data() {
@@ -36,4 +41,9 @@ export default {
 </script>
 
 <style>
+.cardlist{
+    display: inline-flex;
+    flex-flow: column nowrap;
+    width:10%;
+}
 </style>
