@@ -1,17 +1,17 @@
 <template>
     <div class= "CardSection">   
       <a id="CardButton" v-on:click.prevent="show()">Create a Card</a>
-      <modal id="Form" name="CreateCard" :width="600" :height="150">
+      <modal id="Form" name="CreateCard" :width="600" :height="250">
         <div id="modal-header">
                 <h2>Create a Card Form</h2>
             </div>
             <div id="modal-body">
       <form id="formCard" @submit.prevent="Button()" >
-          <input type="hidden" id="DeckId" value="1" name="deckId" />
         <div>
           <label>Question: </label>
         <input type="text" v-validate="'required'" id="question" placeholder="Enter a question" name="question" v-model="question" />
         </div>
+        <span>{{this.ID}}</span>
         <div>
           <label>Answer: </label>
         <input type="text" id="answer" v-validate="'required'" placeholder="Enter the answer" name="answer" v-model="answer" />
@@ -43,25 +43,25 @@
 export default {
     name: 'Card',   
 
-    // props: {
-    //     id: Number,
-    //     question: String,
-    //     answer: String,
-    //     image: String
-
-    // },   
+    props: {
+        ID: {
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },   
 
     data() {
         return {
 
           cards: [],
           showCardForm: false,
-          apiURL: "https://localhost:44337/api/Card",
+          apiURL: "https://localhost:44337/api/Card/",
           question: '',
           answer: '',
           image: '',
           tags: '',
-            
+          addCard: false        
         };  
     },
 
@@ -71,6 +71,7 @@ export default {
              if (result) {
           let cardInput = document.getElementById("formCard")
             let card = new FormData(cardInput)
+            this.apiURL = this.apiURL + this.ID
             fetch(this.apiURL, {
                 method: 'POST',
                 body: card,
@@ -90,8 +91,8 @@ export default {
             this.answer = '';
             this.image = '';
             this.tags = '';
-            this.showCardForm = false;
             alert('Your card has been submitted!');
+            this.$emit('addCard', !this.addCard);
         }else{
             alert('Your card has missing fields!');
         }

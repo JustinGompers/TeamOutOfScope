@@ -1,22 +1,75 @@
 <template>
     <div>
-        <button id="ViewUserCreatedDecks" @click.prevent="ViewAll()" v-if="showUserDecks === false">View UserDecks</button>
-        <div v-if="showUserDecks === true">
-            <div id="Decks">
-                <button v-for="deck in UserDecks" @click="DeckDecided(deck)" v-bind:key="deck.deck_id" :value="deck"> {{deck.deckName}}</button>
-            </div>
+        <h2>My Decks</h2>
+        <div id="Decks">
+            <span v-for="deck in UserDecks" v-bind:key="deck.deck_id" :value="deck">
+                <span class="decklist">
+                <img src="../assets/cards.png">
+                <button @click="DeckDecided(deck)"> {{deck.deckName}}</button>
+                </span>
+            </span>
         </div>
     </div>
 </template>
 
 <script>
 export default {
+    created(){
+            this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID ;
+            fetch(this.apiURL,{
+                    method: 'GET'
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                     this.UserDecks = data;
+                    })
+                    .catch(e => console.log(e));
+    },
     name: 'ViewUserDecks',
     props: {
         ID: {
             type: Number,
             required: true,
             default: 0
+        },
+        ADD: {
+            type: Boolean,
+            required: true,
+            default: false
+        }
+    },
+    watch:{
+        ID: function(newVal, oldVal){
+            if(newVal !== oldVal){
+                this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID ;
+                fetch(this.apiURL,{
+                    method: 'GET'
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                     this.UserDecks = data;
+                    })
+                    .catch(e => console.log(e));
+            }
+        },
+        ADD: function(newVal, oldVal){
+            if(newVal !== oldVal){
+                this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID ;
+                fetch(this.apiURL,{
+                    method: 'GET'
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(data => {
+                     this.UserDecks = data;
+                    })
+                    .catch(e => console.log(e));
+            }
         }
     },
     data(){
@@ -28,20 +81,6 @@ export default {
         }
     },
     methods: {
-        ViewAll(){
-            this.showUserDecks = true;
-            this.apiURL = this.apiURL +this.ID ;
-            fetch(this.apiURL,{
-                    method: 'GET'
-                    })
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                     this.UserDecks = data;
-                    })
-                    .catch(e => console.log(e));
-        },
         DeckDecided(id){
             console.log(id.deck_id);
             this.ChosenDeck = id
@@ -54,4 +93,12 @@ export default {
 
 
 <style>
+img{
+    width: 100%;
+}
+.decklist{
+    display: inline-flex;
+    flex-flow: column nowrap;
+    width: 10%;   
+}
 </style>
