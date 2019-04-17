@@ -78,7 +78,7 @@ namespace FlashyCards.Controllers
             //make sure this card is, in fact, already existing in the DB
             var existingCard = Dal.GetSingleCard(id);
 
-            if (existingCard == null)
+            if (existingCard == null || existingCard.cardID == 0)
             {
                 return NotFound();
             }
