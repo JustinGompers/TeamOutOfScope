@@ -102,6 +102,7 @@ export default {
                     if (this.Userlogged.userId > 0){
                         this.showSuccessMsg = true;
                         this.$emit('registeredUser', this.Userlogged);
+                        this.$modal.hide('Cards');
                         console.log("This worked.");
                     }
                     //otherwise emit empty object titled noUserFound
