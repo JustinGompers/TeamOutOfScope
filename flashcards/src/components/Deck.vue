@@ -118,6 +118,9 @@ export default {
 </script>
 
 <style>
+.deck{
+    display:inline;
+}
 #modal-header{
     text-align: center;
     background-color:  #FF983E;
