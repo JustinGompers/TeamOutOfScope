@@ -56,6 +56,7 @@
       <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded @addDeck="addedCard"></ViewUserDecks>
       <StudySession :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
       <UpdateCard></UpdateCard>
+      <ViewCard></ViewCard>
       <div id="PubDecks">
         <ul class="decks">
           </ul>
@@ -81,6 +82,7 @@ import ViewUserDecks from './components/ViewUserDecks.vue'
 import StudySession from './components/StudySession.vue'
 import SearchCard from './components/SearchCard.vue'
 import UpdateCard from './components/UpdateCard.vue'
+import ViewCard from './components/ViewCard.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 
@@ -122,7 +124,8 @@ export default {
     StudySession,
     ViewUserDecks,
     ViewDeckCards,
-    UpdateCard
+    UpdateCard,
+    ViewCard
   },
   data() {
     return {
