@@ -121,13 +121,13 @@ export default {
         }
     },
 
-    props: {
-        chosenCard: {
-            type: Number,
-            required: true,
-            default: 0
-        }
-    },
+    // props: {
+    //     chosenCard: {
+    //         type: Number,
+    //         required: true,
+    //         default: 0
+    //     }
+    // },
 
     methods: {
 

@@ -67,7 +67,7 @@ namespace FlashyCards.Controllers
         //Example: PUT api/card/16
         //Updates a Flashcard
         [HttpPut("{id}")]
-        public ActionResult<List<FlashCard>> updateFlashCard(int id, [FromForm] FlashCard updatedCard)
+        public ActionResult<List<FlashCard>> updateFlashCard([FromForm] FlashCard updatedCard, int id)
         {
             //for security, make sure that the id used in API call matches the id in the flashcard object that's passed in
             if (id != updatedCard.cardID)
