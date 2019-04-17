@@ -2,19 +2,19 @@
 <div>
     <h2>This is the start of the Study Session</h2>
 
-    <button id="start-study-session" v-on:click.prevent="show()">Start Study Session</button>
+    <button id="start-study-session" v-on:click.prevent="show()" v-if="beginStudySession === false">Start Study Session</button>
 
     <modal id="study-session-form" name="startStudySession" :width="600" :height="225">
         <div id="modal-header">
-            <h2>Choose A Deck</h2>
+            <h2>Study Session</h2>
         </div>
             <div id="modal-body">  
                 <form id="formCreateDeck">
                     <div id="deck-options">
                         <span id="decks">Choose the deck for your study session:</span>
-                        <select id="user-decks" v-validate="'required|min_value:1'" v-model="category_id" name="user-deck-options">
+                        <select id="user-decks" v-validate="'required|min_value:1'" v-on:click.prevent="viewDecks()" v-model="category_id" name="user-deck-options">
                             <option disabled value=0>Please Select a Deck</option>
-                            <option v-for="deck in userDecks" v-bind:key="deck.deckId" :value="deck.deckId"> {{deck.name}} </option>     
+                            <option v-for="deck in userDecks" v-bind:key="deck.name" :value="deck.deckId"> {{deck.name}} </option>     
                         </select>
                         <span>{{ errors.first('user-deck-options') }}</span>
                     </div>
@@ -33,19 +33,6 @@
 
 <script>
 export default {
-    beforeCreate(){
-        fetch("https://localhost:44337/api/deck/" + this.user,{
-                method: 'GET'
-                })
-                .then(response => {
-                    return response.json();
-                })
-                 .then(data => {
-                    this.userDecks = data;
-                })
-                .catch(e => console.log(e));
-    },
-
     name: 'StudySession',
 
     props: {
@@ -61,14 +48,28 @@ export default {
             userId: 0,
             deckId: 0,
             name: '',
+            beginStudySession: false,
             userDecks: [],
             apiURL: "https://localhost:44337/api/deck"
         }
     },
 
-    methods: {
-         
+    methods: {         
+        viewDecks(){
+            fetch("https://localhost:44337/api/deck/" + this.user, {
+                method: 'GET',
+                mode: 'no-cors'
+                })
+                .then(response => {
+                    return response.json();
+                })
+                 .then(data => {
+                    this.userDecks = data;
+                })
+                .catch(e => console.log(e));
+        },
         show(){
+            beginStudySession: true;
              this.$modal.show('startStudySession');
         },
         hide(){
