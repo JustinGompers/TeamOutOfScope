@@ -42,13 +42,13 @@
         
       </div>
     </fixed-header>
-    <div class='content' v-if="this.User.userName">
-      <div class="choices">
-        <UpdateDeck v-if="!this.SelectedDeck && !this.SelectedPublic" :chosenDeck=this.ChosenDeck.deck_id @deck-update="addedDeck"></UpdateDeck>
-        <SearchCard v-if="this.SelectedDeck"></SearchCard>
+    <div class='content'>
+      <button v-if="!this.SelectedDeck" class="selectbar" @click="Selected">Select Deck</button>
+      <div class="choices" v-if="this.User.userName || this.SelectedDeck">
+        <UpdateDeck v-if="!this.SelectedPublic" :chosenDeck=this.ChosenDeck.deck_id @deck-update="addedDeck"></UpdateDeck>
+        <SearchCard></SearchCard>
         <Card v-if="this.SelectedDeck && !this.SelectedPublic" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
-        <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck"></Deck>
-        <button v-if="!this.SelectedDeck" class="selectbar" @click="Selected">Select Deck</button>
+        <Deck :ID=this.User.userId @addDeck="addedDeck"></Deck>
         <StudySession v-if="this.SelectedDeck" :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
         <UpdateCard v-if="this.SelectedDeck && !this.SelectedPublic" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
         <ViewCard v-if="this.SelectedDeck" :Card=this.ChosenCard></ViewCard>
@@ -56,7 +56,7 @@
         </div>
       <h2 v-if="this.SelectedDeck">{{this.ChosenDeck.deckName}} Cards</h2>
        <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
-       <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
+       <ViewUserDecks v-if="this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
       </div>
       
       
@@ -65,10 +65,6 @@
 
 
         <div>
-        <vue-flip :active-hover="true" width="200px" height="50px" class="simple-test">
-        <div slot="front">test </div>
-        <div slot="back">test </div>
-      </vue-flip>
         <img class="public" src="./assets/publicdecks.png">
         <div id="Decks">
             <span v-for="deck in PublicDecks" v-bind:key="deck.deck_id" :value="deck">

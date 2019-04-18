@@ -113,5 +113,6 @@ img{
     color: white;
     cursor: pointer;
     font-size: 12pt;
+    height: 50px;
 }
 </style>
