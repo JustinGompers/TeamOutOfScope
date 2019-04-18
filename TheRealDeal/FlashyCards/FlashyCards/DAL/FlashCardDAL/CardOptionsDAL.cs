@@ -39,6 +39,8 @@ namespace FlashyCards.DAL.FlashCardDAL
             + "from Card_Tags inner join Tags on Card_Tags.Tag_id = Tags.tags_id "
             + "where Card_Tags.Card_id = @cardId;";
 
+        private const string SQL_AddCard = "Insert into Deck_Cards (Deck_id, Card_id) values (@Deck_id, @Card_id);";
+
         public CardOptionsDAL(string connectionString)
         {
             this.connectionString = connectionString;

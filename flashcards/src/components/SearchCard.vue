@@ -67,7 +67,7 @@ export default {
     Button() {
          this.$validator.validateAll().then((result) => {
              if (result) {
-            this.apiURL = this.apiURL + this.search
+            this.apiURL = "https://localhost:44337/api/Card/tag/" + this.search
             fetch(this.apiURL, {
                 method: 'GET'
             })
