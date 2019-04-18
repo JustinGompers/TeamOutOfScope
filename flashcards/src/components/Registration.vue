@@ -1,6 +1,6 @@
 <template>
     <div class= "RegistrationSection">    
-        <a id="RegistrationButton" v-on:click.prevent="show()">Register</a>
+        <button id="RegistrationButton" v-on:click.prevent="show()">Register</button>
         <modal id='form' name="Cards" :width="600" :height="300">
             <div id="modal-header">
                 <h2>Register Form</h2>
@@ -139,8 +139,13 @@ export default {
 
 <style>
 #RegistrationButton{
-    Color: white;
-    border-bottom: solid;
+  width: 200px;
+  height: 30px;
+  font-size: 15pt;
+  color: white;
+  background: black;
+  border: solid #FF983E;
+  cursor: pointer;
 }
 #modal-header{
     text-align: center;
@@ -165,9 +170,6 @@ export default {
 }
 div input{
     align-items: center;
-}
-#RegistrationButton{
-    font-size: 24pt;
 }
 #E label{
     padding-right: 54px;

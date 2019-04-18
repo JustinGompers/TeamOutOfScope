@@ -1,8 +1,6 @@
 <template>
-<div>
-    <h2>This is the start of the Study Session</h2>
-
-    <button id="start-study-session" v-on:click.prevent="show()">Start Study Session</button>
+<div class="study-session-section">
+    <button id="study-session-button" v-on:click.prevent="show()">Study Session</button>
 
     <modal id="study-session-form" name="startStudySession" :width="600" :height="225">
         <div id="modal-header">
@@ -10,31 +8,40 @@
         </div>
             <div id="modal-body">  
                 <form id="formCreateDeck">
+                    <vue-flip>
                     <div id="deck-options">
-                        <p v-if="isEnd === false">{{Cards[index].answer}}</p>
+                        <div :side="front">
+                            <p v-if="isQuestion === true" >{{Cards[index].question}}</p>
+                            <div id=buttons>
+                            <button id="submitLoginButton" v-if="isQuestion === true" v-on:click.prevent="getCurrentCard()">Show Answer</button>
+                            <button id="cancelLoginButton" v-if="isQuestion === true" v-on:click.prevent="hide()">Leave Session</button>
+                            </div> 
+                        </div>
+                        <p v-if="isQuestion === false" >{{Cards[index].answer}}</p>
                         <p v-if="isEnd === true">Right Answers: {{rightDeck.length}}</p>
                         <p v-if="isEnd === true">Wrong Answers: {{wrongDeck.length}}</p>
                         <span>{{ errors.first('user-deck-options') }}</span>
-                        <button id="submitLoginButton" v-on:click.prevent="addToRightList()">I got it right!</button>
-                        <button id="cancelLoginButton" v-on:click.prevent="addToWrongList()">I feel shame :(</button>
                     </div>
                     <div id=buttons>
-                        <button id="submitLoginButton" v-on:click.prevent="getCurrentCard()">Next</button>
-                        <button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button>
+                        <button id="submitLoginButton" v-if="isQuestion === false" v-on:click.prevent="addToRightList()">I got it right!</button>
+                        <button id="cancelLoginButton" v-if="isQuestion === false" v-on:click.prevent="addToWrongList()">I feel shame :(</button>
+                        <button id="submitLoginButton" v-if="isQuestion === true" v-on:click.prevent="getCurrentCard()">Show Answer</button>
+                        <button id="cancelLoginButton" v-if="isQuestion === true" v-on:click.prevent="hide()">Leave Session</button>
                     </div>   
+                    </vue-flip>
                 </form> 
         </div>
     </modal>
-
-
-
 </div>
 </template>
 
 <script>
+import VueFlip from 'vue-flip';
 export default {
     name: 'StudySession',
-
+     components:{
+        'vue-flip': VueFlip
+    },
     props: {
         user: {
             type: Number,
@@ -61,6 +68,7 @@ export default {
             rightDeck: [],
             wrongDeck: [],
             isEnd: false,
+            isQuestion: true,
             apiURL: "https://localhost:44337/api/deck"
         }
     },
@@ -73,10 +81,12 @@ export default {
              this.$modal.hide('startStudySession');
         },
         getCurrentCard(){
-            if(this.index < this.Cards.length-1){
-            this.index++;}
+            if(this.index < this.Cards.length-1)
+            {
+            this.index++;
+            }
             else{
-                this.isEnd === true;
+                this.isEnd = true;
             }
         },
         addToRightList(item){
@@ -92,7 +102,18 @@ export default {
 </script>
 
 <style>
-
+.study-session-section{
+display: inline;
+}
+#study-session-button{
+width: 150px;
+height: 50px;
+background: #800020;
+font-style: bold;
+font-size: 15pt;
+color: white;
+cursor: pointer;
+}
 </style>
 
 

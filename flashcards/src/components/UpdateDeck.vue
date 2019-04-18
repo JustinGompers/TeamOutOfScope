@@ -1,7 +1,5 @@
 <template>
-<div>
-
-    <div id="update-deck-section">
+<div class="update-deck-section">
         <button id="update-deck-button" v-on:click.prevent="ShowUpdateDeckForm()">Update Deck</button>
 
         <modal id='update-deck-modal' name="update-deck-modal" :width="600" :height="300">
@@ -30,7 +28,6 @@
             </form>
           </div>
         </modal>
-    </div>
 </div>
 </template>
 
@@ -55,7 +52,8 @@ export default {
         return {
             deckName: '',
             categories: [],
-            apiURL: "https://localhost:44337/api/deck/update/" 
+            apiURL: "https://localhost:44337/api/deck/update/",
+            updateDeck: false 
         }
     },
 
@@ -94,8 +92,9 @@ export default {
             });
             this.deckName = '';
             this.$modal.hide('update-deck-modal');
-            this.$emit('deck-update', deck);
+
             alert('Your update has been submitted!');
+            this.$emit('deck-update', !this.updateDeck);
             
         }else{
             alert('Your update did not work.  Please try again.');
@@ -108,7 +107,18 @@ export default {
 </script>
 
 <style>
-
+.update-deck-section{
+    display: inline;
+}
+#update-deck-button{
+    width: 150px;
+    height: 50px;
+    background: #800020;
+    font-style: bold;
+    font-size: 15pt;
+    color: white;
+    cursor: pointer;
+}
 </style>
 
 

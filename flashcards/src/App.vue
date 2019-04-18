@@ -15,9 +15,6 @@
             
             </div>
               <img id="menu" src="./assets/FlashyMenu.png">
-              <div>
-              <About></About>
-              </div>
               <br>
 
               <div id="login" v-if="!this.User.userName">
@@ -30,13 +27,14 @@
                 <div>
                   <img id="userPhoto" src="./assets/normalpic.jpg">
                   </div>
-                  <span class="User">{{ this.User.firstName }} {{ this.User.lastName }}</span>
+                  <p class="User">{{ this.User.firstName }} {{ this.User.lastName }}</p>
               </div>
-              <div id="Deck" v-if="this.User.userName">
-                  
-                  
-                  
-                </div>
+                  <div v-if="this.User.userName">
+                  <button class="logout" @click="UserReset">Logout</button>
+                  </div>
+                  <div id="about">
+                  <About></About>
+                  </div>
             </div>
           </a>
         </Slide>
@@ -44,44 +42,45 @@
         
       </div>
     </fixed-header>
-    <div class='content' v-if="this.User.userName">
-      <div class="choices">
-        <SearchCard v-if="this.SelectedDeck"></SearchCard>
-        <Card v-if="this.SelectedDeck" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
+    <div class='content'>
+      <div id="SelectDeck">
+      <button v-if="!this.SelectedDeck" class="selectbar" @click="Selected">Select Deck</button>
+      </div>
+      <div class="choices" v-if="this.User.userName || this.SelectedDeck">
+        <UpdateDeck v-if="!this.SelectedDeck" :chosenDeck=this.ChosenDeck.deck_id @deck-update="addedDeck"></UpdateDeck>
+        <SearchCard v-if="this.SelectedPublic === false && this.SelectedDeck"></SearchCard>
+        <Card v-if="this.SelectedDeck && this.SelectedPublic === false" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
         <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck"></Deck>
-        <button class="selectbar" v-if="!this.SelectedDeck" @click="Selected">Select Deck</button>
         <StudySession v-if="this.SelectedDeck" :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
-        <UpdateCard v-if="this.SelectedDeck" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
+        <UpdateCard v-if="this.SelectedDeck && this.SelectedPublic === false" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
         <ViewCard v-if="this.SelectedDeck" :Card=this.ChosenCard></ViewCard>
-        <button class="selectbar" v-if="this.SelectedDeck" @click="SelectedDeck = 0">Return</button>
+        <button class="selectbar" v-if="this.SelectedDeck" @click="Return">Return</button>
         </div>
       <h2 v-if="this.SelectedDeck">{{this.ChosenDeck.deckName}} Cards</h2>
        <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
-       <ViewUserDecks v-if="!this.SelectedDeck && this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
+       <ViewUserDecks v-if="this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
       </div>
       
       
       
       
-      <UpdateDeck></UpdateDeck>
-      <div id="PubDecks">
-        <ul class="decks">
-          </ul>
-        </div>
-        <div>
+
+
+        <div v-if="!this.SelectedDeck">
         <img class="public" src="./assets/publicdecks.png">
         <div id="Decks">
             <span v-for="deck in PublicDecks" v-bind:key="deck.deck_id" :value="deck">
-                <span class="decklist">
+                <div class="decklist">
                 <img src="./assets/cards.png">
-                <button> {{deck.deckName}}</button>
-                </span>
+                <button @click="SelectedPublicDeck(deck)" :class="{'active': deck.deck_id == ChosenDeck.deck_id}"> {{deck.deckName}}</button>
+                </div>
             </span>
         </div>
     </div>
+    <div id="bottom">
         <footer id="footer">&copy; 2019 FlashyCards.com</footer>
         <footer id="footerslogan"> 	&trade;"Learning is FUNdamental"</footer>
-        
+        </div>
     </div>
 
 
@@ -103,6 +102,7 @@ import ViewCard from './components/ViewCard.vue'
 import UpdateDeck from './components/UpdateDeck.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
+import VueFlip from 'vue-flip';
 
 // Vue.components('Deck', {
 //   props: ['UserId'],
@@ -131,6 +131,7 @@ export default {
     },
   name: 'app',
   components: {
+    'vue-flip': VueFlip,
     Slide,
     FixedHeader,
     Card,
@@ -159,6 +160,7 @@ export default {
       DeckAdded: false,
       SelectedDeck: 0,
       SelectedCard: 0,
+      SelectedPublic: false,
       apiURL: "https://localhost:44337/api/deck/user/1"
     }
   },
@@ -189,12 +191,47 @@ export default {
     },
     getCardInfo(card){
       this.ChosenCard = card;
+    },
+    UserReset(){
+      this.User = {};
+    },
+    SelectedPublicDeck(Deck){
+      this.ChosenDeck = Deck;
+      this.SelectedPublic = true;
+    },
+    Return(){
+      this.SelectedDeck = 0;
+      this.SelectedPublic = false;
     }
   }
 }
 </script>
 
 <style>
+#about{
+  padding-top: 10px;
+}
+.choices{
+  display: inline;
+}
+#SelectDeck{
+  display:inline;
+}
+#bottom{
+  padding-top: 150px;
+}
+.decklist .active{
+    background-color: red;
+}
+.logout{
+  width: 200px;
+  height: 30px;
+  font-size: 15pt;
+  color: white;
+  background: black;
+  border: solid #FF983E;
+  cursor: pointer;
+}
 .User{
   color: white;
   font-size: 16pt;
@@ -277,6 +314,7 @@ li{
 }
 #menu{
   width: 20vw;
+  border-bottom: solid black 5pt;
 }
 #userPhoto{
   border-radius: 125px;

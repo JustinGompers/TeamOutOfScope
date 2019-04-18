@@ -1,6 +1,6 @@
 <template>
 <div>
-<a id="AboutButton" v-on:click.prevent="show()">About</a>
+<button id="AboutButton" v-on:click.prevent="show()">About</button>
 <modal id="Form" name="About" :width="600" :height="150"> 
     <div id="modal-body">
     <form id="formCard" @submit.prevent="Button()" >
@@ -35,9 +35,13 @@ methods:{
 <style>
 
 #AboutButton{
-    Color: white;
-    border-bottom: solid;
-    font-size: 24pt;
+    width: 200px;
+    height: 30px;
+    font-size: 15pt;
+    color: white;
+    background: black;
+    border: solid #FF983E;
+    cursor: pointer;
     
 }
 #modal-body{
