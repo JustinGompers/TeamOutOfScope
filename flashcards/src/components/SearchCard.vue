@@ -2,16 +2,27 @@
     <div class="SearchCardSection">   
       
       <button id="SearchButton" v-on:click.prevent="show()">Search Cards</button>
-      <modal id="Form" name="SearchCard" :width="600" :height="205">
+      <modal id="Form" name="SearchCard" :width="600" :height="400">
         <div id="modal-header">
                 <h2>Search Cards Form</h2>
             </div>
             <div id="modal-body">
       <form id="formSearch" @submit.prevent="Button()" >
-          <input type="hidden" id="CardId" value="1" name="cardId" />
-        <div>
+        <div id="searchbar">
           <label>Enter a tag: </label>
         <input type="text" v-validate="'required'" id="search" placeholder="i.e. algebra" name="search" v-model="search" />
+        </div>
+        <div id="searchtable">
+            <tr>
+                <th>Card Question?</th>
+                <th>Card Answer</th>
+                <th></th>
+            <tr>
+            <tr v-for="card in cards" v-bind:key="card.cardID" :value="card">
+                <td>{{card.question}}</td>
+                <td>{{card.answer}}</td>
+                <td id="addbutton"><button @click="addToDeck(card.cardID)">Add to Deck</button></td>
+            </tr>
         </div>
         <div id="Buttons">
          <button id="SubmitButton">Submit</button>
@@ -20,26 +31,6 @@
       </form>
       </div>
     </modal>
-    
-      <modal id="Form" name="AddCard" :width="600" :height="205">
-        <div id="modal-header">
-          <h2>Add Cards Form</h2>
-          </div>
-          <div id="modal-body">
-            <form id="AddCardSearch" @submit.prevent="Button()" >
-              <input type="hidden" id="DeckId" value="1" name="deckId" />
-              
-                <select id="user-decks" v-validate="'required|min_value:1'" v-on:click.prevent="viewDecks()" v-model="category_id" name="user-deck-options">
-                        <option disabled value=0>Please Select a Deck</option>
-                        <option v-for="deck in userDecks" v-bind:key="deck.name" :value="deck.deckId"> {{deck.name}} </option>     
-                </select>
-                </form>
-          </div>
-              </modal>
-
-
-    
-  
     </div>
     
 
@@ -71,10 +62,12 @@ export default {
             .then(response => {
                 return response.json();
             })
+            .then(data => {
+                this.cards = data;
+            })
             .catch(err => {
                 err
             });
-            this.$modal.hide('SearchCard');
             this.search = '';
             this.showFormSearch = false;
             alert('Search Succesful!');
@@ -83,7 +76,9 @@ export default {
         }
     })
     },
-    
+    addToDeck(){
+
+    },
     show(){
             this.$modal.show('SearchCard');
         },
@@ -94,6 +89,27 @@ export default {
     }
 </script>
 <style>
+#seachbar{
+    padding-bottom: 10px;
+}
+table, th, td {
+    border: 1px solid black;  
+}
+th, td{
+    padding-top: 5px;
+    padding-right: 100px;
+}
+#addbutton{
+    padding: 0px;
+}
+#addbutton button{
+    width: 125px;
+    height: 50px;
+}
+#searchcard{
+    font-size: 12pt;
+    color: black;
+}
 .SearchCardSection{
     display:inline;
 }
