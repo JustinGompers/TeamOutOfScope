@@ -1,7 +1,5 @@
 <template>
 <div>
-    <h2>This is the start of the Study Session</h2>
-
     <button id="start-study-session" v-on:click.prevent="show()">Start Study Session</button>
 
     <modal id="study-session-form" name="startStudySession" :width="600" :height="225">
@@ -10,6 +8,7 @@
         </div>
             <div id="modal-body">  
                 <form id="formCreateDeck">
+                    <vue-flip>
                     <div id="deck-options">
                         <p v-if="isEnd === false">{{Cards[index].answer}}</p>
                         <p v-if="isEnd === true">Right Answers: {{rightDeck.length}}</p>
@@ -22,6 +21,7 @@
                         <button id="submitLoginButton" v-on:click.prevent="getCurrentCard()">Next</button>
                         <button id="cancelLoginButton" v-on:click.prevent="hide()">Cancel</button>
                     </div>   
+                    </vue-flip>
                 </form> 
         </div>
     </modal>
@@ -73,10 +73,12 @@ export default {
              this.$modal.hide('startStudySession');
         },
         getCurrentCard(){
-            if(this.index < this.Cards.length-1){
-            this.index++;}
+            if(this.index < this.Cards.length-1)
+            {
+            this.index++;
+            }
             else{
-                this.isEnd === true;
+                this.isEnd = true;
             }
         },
         addToRightList(item){
