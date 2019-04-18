@@ -55,7 +55,8 @@ export default {
         return {
             deckName: '',
             categories: [],
-            apiURL: "https://localhost:44337/api/deck/update/" 
+            apiURL: "https://localhost:44337/api/deck/update/",
+            updateDeck: false 
         }
     },
 
@@ -94,8 +95,9 @@ export default {
             });
             this.deckName = '';
             this.$modal.hide('update-deck-modal');
-            this.$emit('deck-update', deck);
+
             alert('Your update has been submitted!');
+            this.$emit('deck-update', !this.updateDeck);
             
         }else{
             alert('Your update did not work.  Please try again.');

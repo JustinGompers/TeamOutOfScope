@@ -30,13 +30,11 @@
                 <div>
                   <img id="userPhoto" src="./assets/normalpic.jpg">
                   </div>
-                  <span class="User">{{ this.User.firstName }} {{ this.User.lastName }}</span>
+                  <p class="User">{{ this.User.firstName }} {{ this.User.lastName }}</p>
+                  <div>
+                  <button class="logout" @click="UserReset">Logout</button>
+                  </div>
               </div>
-              <div id="Deck" v-if="this.User.userName">
-                  
-                  
-                  
-                </div>
             </div>
           </a>
         </Slide>
@@ -46,14 +44,15 @@
     </fixed-header>
     <div class='content' v-if="this.User.userName">
       <div class="choices">
+        <UpdateDeck v-if="!this.SelectedDeck && !this.SelectedPublic" :chosenDeck=this.ChosenDeck.deck_id @deck-update="addedDeck"></UpdateDeck>
         <SearchCard v-if="this.SelectedDeck"></SearchCard>
-        <Card v-if="this.SelectedDeck" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
+        <Card v-if="this.SelectedDeck && !this.SelectedPublic" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
         <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck"></Deck>
-        <button class="selectbar" v-if="!this.SelectedDeck" @click="Selected">Select Deck</button>
+        <button v-if="!this.SelectedDeck" class="selectbar" @click="Selected">Select Deck</button>
         <StudySession v-if="this.SelectedDeck" :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
-        <UpdateCard v-if="this.SelectedDeck" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
+        <UpdateCard v-if="this.SelectedDeck && !this.SelectedPublic" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
         <ViewCard v-if="this.SelectedDeck" :Card=this.ChosenCard></ViewCard>
-        <button class="selectbar" v-if="this.SelectedDeck" @click="SelectedDeck = 0">Return</button>
+        <button class="selectbar" v-if="this.SelectedDeck" @click="Return">Return</button>
         </div>
       <h2 v-if="this.SelectedDeck">{{this.ChosenDeck.deckName}} Cards</h2>
        <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
@@ -63,19 +62,20 @@
       
       
       
-      <UpdateDeck></UpdateDeck>
-      <div id="PubDecks">
-        <ul class="decks">
-          </ul>
-        </div>
+
+
         <div>
+        <vue-flip :active-hover="true" width="200px" height="50px" class="simple-test">
+        <div slot="front">test </div>
+        <div slot="back">test </div>
+      </vue-flip>
         <img class="public" src="./assets/publicdecks.png">
         <div id="Decks">
             <span v-for="deck in PublicDecks" v-bind:key="deck.deck_id" :value="deck">
-                <span class="decklist">
+                <div class="decklist">
                 <img src="./assets/cards.png">
-                <button> {{deck.deckName}}</button>
-                </span>
+                <button @click="SelectedPublicDeck(deck)" :class="{'active': deck.deck_id == ChosenDeck.deck_id}"> {{deck.deckName}}</button>
+                </div>
             </span>
         </div>
     </div>
@@ -103,6 +103,7 @@ import ViewCard from './components/ViewCard.vue'
 import UpdateDeck from './components/UpdateDeck.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
+import VueFlip from 'vue-flip';
 
 // Vue.components('Deck', {
 //   props: ['UserId'],
@@ -131,6 +132,7 @@ export default {
     },
   name: 'app',
   components: {
+    'vue-flip': VueFlip,
     Slide,
     FixedHeader,
     Card,
@@ -159,6 +161,7 @@ export default {
       DeckAdded: false,
       SelectedDeck: 0,
       SelectedCard: 0,
+      SelectedPublic: false,
       apiURL: "https://localhost:44337/api/deck/user/1"
     }
   },
@@ -189,12 +192,35 @@ export default {
     },
     getCardInfo(card){
       this.ChosenCard = card;
+    },
+    UserReset(){
+      this.User = {};
+    },
+    SelectedPublicDeck(Deck){
+      this.ChosenDeck = Deck;
+      this.SelectedPublic = true;
+    },
+    Return(){
+      this.SelectedDeck = 0;
+      this.SelectedPublic = false;
     }
   }
 }
 </script>
 
 <style>
+.decklist .active{
+    background-color: red;
+}
+.logout{
+  width: 200px;
+  height: 30px;
+  font-size: 15pt;
+  color: white;
+  background: black;
+  border: solid #FF983E;
+  cursor: pointer;
+}
 .User{
   color: white;
   font-size: 16pt;

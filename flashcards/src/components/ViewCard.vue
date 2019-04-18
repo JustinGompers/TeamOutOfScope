@@ -2,17 +2,22 @@
   <div class="view-card-section">
           <button id="view-card-button" v-on:click.prevent="ShowCardInfo()">View Card</button>
 
-          <modal id='view-card-modal' name="view-card-modal" :width="600" :height="300">
+          <modal id='view-card-modal' name="view-card-modal" :width="600" :height="325">
             <div id="modal-header">
                 <h2>Card Info</h2>
             </div>
             <div id="modal-body">
-                <br>
-                <p>Card Question:  {{ this.Card.question }} </p>
-                <p>Card Answer:  {{ this.Card.answer }} </p>
-                <p>Card Image:  {{ this.Card.image }} </p>
-                <p>Card Tag:  {{ this.Card.tag }} </p>
-                <br>
+            <div class="flipcard">
+                <vue-flip :active-click="true" width="500px" height="200px" id="card">
+                    <div slot="front">
+                        <p>Question: {{this.Card.question}}</p>
+                    </div>
+                    <div slot="back">
+                        <p>Answer: {{this.Card.answer}}</p>
+                        <p>Tags: {{this.Card.tag}}</p>
+                    </div>
+                </vue-flip>
+            </div>
             </div>
             <div>
                 <button id="done" v-on:click.prevent="HideCardInfo()">Done</button>
@@ -22,9 +27,12 @@
 </template>
 
 <script>
+import VueFlip from 'vue-flip';
 export default {
     name: 'ViewCard',
-
+    components:{
+        'vue-flip': VueFlip
+    },
     data() {
         return {
 
@@ -52,6 +60,37 @@ export default {
 </script>
 
 <style>
+
+#done{
+    margin-left: 50px;
+    text-align: center;
+    width: 500px;
+    background: black;
+    color: white;
+    border: solid #FF983E;
+    height: 35px;
+}
+.flipcard p{
+    font-size: 22pt;
+}
+.flipcard{
+    padding-left: 50px;
+}
+.front {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FF983E;
+    color: white;
+}
+
+.back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #800020;
+    color: white
+}
 .view-card-section{
     display: inline;
 }

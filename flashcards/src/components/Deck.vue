@@ -99,9 +99,9 @@ export default {
                     this.showCreateDeckForm = false;
                     this.$modal.hide('createDeck');
             
-            
-                    alert('Your Deck has been submitted!');
                     this.$emit('addDeck', !this.addDeck);
+                    alert('Your Deck has been submitted!');
+
                 }
             })
 

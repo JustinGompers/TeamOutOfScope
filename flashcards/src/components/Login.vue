@@ -14,7 +14,7 @@
                 </div>
                 <div id="passwordField">
                     <label>Password:</label>
-                    <input type="text" v-validate="'required'" id="login-password" name="password" placeholder="Enter your password" v-model.trim="password"/>
+                    <input type="password" v-validate="'required'" id="login-password" name="password" placeholder="Enter your password" v-model.trim="password"/>
                     <span>{{ errors.first('password') }}</span>
                 </div>
                 <div id="buttons">
@@ -60,7 +60,7 @@ export default {
             e.preventDefault();
             console.log(this.email)
             console.log(this.password)
-            this.apiURL = this.apiURL + '/' + this.email + '/' + this.password;
+            this.apiURL = "https://localhost:44337/api/values" + '/' + this.email + '/' + this.password;
             // use fetch to this user from the database         
             fetch(this.apiURL,{
                 method: 'GET'
