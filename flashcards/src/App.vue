@@ -15,9 +15,6 @@
             
             </div>
               <img id="menu" src="./assets/FlashyMenu.png">
-              <div>
-              <About></About>
-              </div>
               <br>
 
               <div id="login" v-if="!this.User.userName">
@@ -31,10 +28,13 @@
                   <img id="userPhoto" src="./assets/normalpic.jpg">
                   </div>
                   <p class="User">{{ this.User.firstName }} {{ this.User.lastName }}</p>
-                  <div>
+              </div>
+                  <div v-if="this.User.userName">
                   <button class="logout" @click="UserReset">Logout</button>
                   </div>
-              </div>
+                  <div id="about">
+                  <About></About>
+                  </div>
             </div>
           </a>
         </Slide>
@@ -43,14 +43,16 @@
       </div>
     </fixed-header>
     <div class='content'>
+      <div id="SelectDeck">
       <button v-if="!this.SelectedDeck" class="selectbar" @click="Selected">Select Deck</button>
+      </div>
       <div class="choices" v-if="this.User.userName || this.SelectedDeck">
-        <UpdateDeck v-if="!this.SelectedPublic" :chosenDeck=this.ChosenDeck.deck_id @deck-update="addedDeck"></UpdateDeck>
-        <SearchCard></SearchCard>
-        <Card v-if="this.SelectedDeck && !this.SelectedPublic" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
-        <Deck :ID=this.User.userId @addDeck="addedDeck"></Deck>
+        <UpdateDeck v-if="!this.SelectedDeck" :chosenDeck=this.ChosenDeck.deck_id @deck-update="addedDeck"></UpdateDeck>
+        <SearchCard v-if="this.SelectedPublic === false && this.SelectedDeck"></SearchCard>
+        <Card v-if="this.SelectedDeck && this.SelectedPublic === false" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
+        <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck"></Deck>
         <StudySession v-if="this.SelectedDeck" :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
-        <UpdateCard v-if="this.SelectedDeck && !this.SelectedPublic" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
+        <UpdateCard v-if="this.SelectedDeck && this.SelectedPublic === false" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
         <ViewCard v-if="this.SelectedDeck" :Card=this.ChosenCard></ViewCard>
         <button class="selectbar" v-if="this.SelectedDeck" @click="Return">Return</button>
         </div>
@@ -64,7 +66,7 @@
       
 
 
-        <div>
+        <div v-if="!this.SelectedDeck">
         <img class="public" src="./assets/publicdecks.png">
         <div id="Decks">
             <span v-for="deck in PublicDecks" v-bind:key="deck.deck_id" :value="deck">
@@ -75,9 +77,10 @@
             </span>
         </div>
     </div>
+    <div id="bottom">
         <footer id="footer">&copy; 2019 FlashyCards.com</footer>
         <footer id="footerslogan"> 	&trade;"Learning is FUNdamental"</footer>
-        
+        </div>
     </div>
 
 
@@ -205,6 +208,18 @@ export default {
 </script>
 
 <style>
+#about{
+  padding-top: 10px;
+}
+.choices{
+  display: inline;
+}
+#SelectDeck{
+  display:inline;
+}
+#bottom{
+  padding-top: 150px;
+}
 .decklist .active{
     background-color: red;
 }
@@ -299,6 +314,7 @@ li{
 }
 #menu{
   width: 20vw;
+  border-bottom: solid black 5pt;
 }
 #userPhoto{
   border-radius: 125px;

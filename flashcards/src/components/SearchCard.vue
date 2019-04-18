@@ -1,7 +1,7 @@
 <template>
-    <div class= "SearchCardSection">   
+    <div class="SearchCardSection">   
       
-      <a id="SearchButton" v-on:click.prevent="show()">Search Cards</a>
+      <button id="SearchButton" v-on:click.prevent="show()">Search Cards</button>
       <modal id="Form" name="SearchCard" :width="600" :height="205">
         <div id="modal-header">
                 <h2>Search Cards Form</h2>
@@ -21,9 +21,6 @@
       </div>
     </modal>
     
-    <div class= "AddCardSection">
-      </div>
-      <a id="AddButton" v-on:click.prevent="show()">Add a Card</a>
       <modal id="Form" name="AddCard" :width="600" :height="205">
         <div id="modal-header">
           <h2>Add Cards Form</h2>
@@ -97,11 +94,17 @@ export default {
     }
 </script>
 <style>
-
+.SearchCardSection{
+    display:inline;
+}
 #SearchButton{ 
-  Color: white;
-  border-bottom: solid;
-  font-size: 24pt;
+    width: 150px;
+    height: 50px;
+    background: #800020;
+    font-style: bold;
+    font-size: 15pt;
+    color: white;
+    cursor: pointer;
 }
 #SubmitButton{
   display: flex;

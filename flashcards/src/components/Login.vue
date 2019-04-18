@@ -1,6 +1,6 @@
 <template>
     <div class= "loginSection"> 
-        <a id="loginButton" v-on:click.prevent="show()">Login</a>
+        <button id="loginButton" v-on:click.prevent="show()">Login</button>
         <modal id="form" name="Login" :width="600" :height="225">
             <div id="modal-header">
                 <h2>Login Form</h2>
@@ -138,6 +138,9 @@ export default {
 #modal-header{
     text-align: center;
 }
+#modal-body{
+    text-align: left;
+}
 #buttons{
     display: flex;
     justify-content: center;
@@ -145,11 +148,13 @@ export default {
     padding-top: 5px;
 }
 #loginButton{
-    Color: white;
-    border-bottom: solid;
-}
-#loginButton{
-    font-size: 24pt;
+  width: 200px;
+  height: 30px;
+  font-size: 15pt;
+  color: white;
+  background: black;
+  border: solid #FF983E;
+  cursor: pointer;
 }
 #emailField label{
     padding-right: 37px;
