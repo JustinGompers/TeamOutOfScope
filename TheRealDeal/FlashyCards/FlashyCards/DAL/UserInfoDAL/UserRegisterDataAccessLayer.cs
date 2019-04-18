@@ -10,15 +10,15 @@ namespace FlashyCards.DAL
     public class UserRegisterDataAccessLayer : IUserRegisterDataAccessLayer
     {
         private string connectionString;
-        private const string SQL_RegisterUser = "INSERT INTO User_Info (Username, FirstName, LastName, Password) Values (@username, @firstName, @lastName, @password);";
-        private const string SQL_LoginUser = "SELECT * FROM User_info where Username = @userName and Password = @password;";
+        private const string SQL_RegisterUser = "INSERT INTO User_Info (Username, FirstName, LastName, Password, Salt) Values (@username, @firstName, @lastName, @password, @salt);";
+        private const string SQL_LoginUser = "SELECT * FROM User_info where Username = @userName";
 
         public UserRegisterDataAccessLayer(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public UserModel getUserInfo(string userName, string password)
+        public UserModel getUserInfo(string userName)
         {
             UserModel tempModel = new UserModel();
 
@@ -29,7 +29,6 @@ namespace FlashyCards.DAL
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(SQL_LoginUser, conn);
                     cmd.Parameters.AddWithValue("@userName", userName);
-                    cmd.Parameters.AddWithValue("@password", password);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -39,6 +38,7 @@ namespace FlashyCards.DAL
                         tempModel.firstName = Convert.ToString(reader["FirstName"]);
                         tempModel.lastName = Convert.ToString(reader["LastName"]);
                         tempModel.password = Convert.ToString(reader["Password"]);
+                        tempModel.salt = Convert.ToString(reader["salt"]);
                     }
                 }
             }
@@ -62,6 +62,7 @@ namespace FlashyCards.DAL
                     cmd.Parameters.AddWithValue("@firstName", userModel.firstName);
                     cmd.Parameters.AddWithValue("@lastName", userModel.lastName);
                     cmd.Parameters.AddWithValue("@password", userModel.password);
+                    cmd.Parameters.AddWithValue("@salt", userModel.salt);
                     cmd.ExecuteNonQuery();
                 }
             }

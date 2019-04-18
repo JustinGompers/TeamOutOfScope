@@ -286,7 +286,7 @@ html{
   background-color: white;
 }
 .bm-menu{
-  height: 60%;
+  height: 400px;
   background-color: #800020;
   transition: 0.0s;
 }
@@ -313,10 +313,11 @@ li{
   padding-top: 15px;
 }
 #menu{
-  width: 20vw;
+  width: 95%;
   border-bottom: solid black 5pt;
 }
 #userPhoto{
+  padding-top: 10px;
   border-radius: 125px;
   width: 50%;
 }
@@ -325,5 +326,8 @@ li{
 }
 #Card{
   padding-top: 15px;
+}
+#login{
+  padding-top: 10px;
 }
 </style>

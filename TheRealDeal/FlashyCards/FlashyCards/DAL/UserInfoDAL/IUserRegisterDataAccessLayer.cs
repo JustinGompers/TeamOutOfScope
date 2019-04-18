@@ -9,6 +9,6 @@ namespace FlashyCards.DAL
     interface IUserRegisterDataAccessLayer 
     {
         void createUser(RegisterUserModel newUser);
-        UserModel getUserInfo(string userName, string Password);
+        UserModel getUserInfo(string userName);
     }
 }

@@ -26,11 +26,16 @@ namespace FlashyCards.Controllers
         [HttpGet("{username}/{password}", Name = "GetUserInfo")]
         public ActionResult<UserModel> GetUserInfo(string username, string password)
         {
-            UserModel user = dal.getUserInfo(username, password);
+            UserModel user = dal.getUserInfo(username);
             if (user != null)
             {
-                return user;
+                string hashedPassword = Helper.Hasher(password, user.salt);
+                if(hashedPassword == user.password)
+                {
+                    return user;
+                }
             }
+
             return NotFound();
         }
 
@@ -38,8 +43,10 @@ namespace FlashyCards.Controllers
         [HttpPost]
         public ActionResult<UserModel> RegisterUser([FromForm] RegisterUserModel newUser)
         {
+            newUser.salt = Helper.Salter();
+            newUser.password = Helper.Hasher(newUser.password, newUser.salt);
             dal.createUser(newUser);
-            UserModel user = dal.getUserInfo(newUser.userName, newUser.password);
+            UserModel user = dal.getUserInfo(newUser.userName);
             if (user != null)
             {
                 return user;
