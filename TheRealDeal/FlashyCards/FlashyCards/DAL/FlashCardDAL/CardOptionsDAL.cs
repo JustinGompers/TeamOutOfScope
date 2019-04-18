@@ -39,7 +39,7 @@ namespace FlashyCards.DAL.FlashCardDAL
             + "from Card_Tags inner join Tags on Card_Tags.Tag_id = Tags.tags_id "
             + "where Card_Tags.Card_id = @cardId;";
 
-        private const string SQL_AddCard = "Insert into Deck_Cards (Deck_id, Card_id) values (@Deck_id, @Card_id);";
+        private const string SQL_AddCardToDeck = "Insert into Deck_Cards (Deck_id, Card_id) values (@Deck_id, @Card_id);";
 
         public CardOptionsDAL(string connectionString)
         {
@@ -235,5 +235,32 @@ namespace FlashyCards.DAL.FlashCardDAL
 
             return rowsAffected > 0;
         }
+
+        public bool AddCardToDeck (int deckId, int cardId)
+        {
+            int rowsAffected = -1;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_AddCardToDeck, connection);
+
+                    cmd.Parameters.AddWithValue("@Deck_Id", deckId);
+                    cmd.Parameters.AddWithValue("@Card_Id", cardId);
+
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return rowsAffected > 0;
+        }
     }
+    
 }

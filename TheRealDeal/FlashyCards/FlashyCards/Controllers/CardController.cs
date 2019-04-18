@@ -124,5 +124,23 @@ namespace FlashyCards.Controllers
             }
         }
 
+        //Update to add card to deck.  
+        //Normally HttpPut but CORS causes errors so using POST and changing route
+        [HttpPost("update/{deckID}/{cardID}")]
+        public ActionResult AddCardToDeck(int deckId, int cardId)
+        {
+            bool isAddedToDeck = Dal.AddCardToDeck(deckId, cardId);
+
+            if (isAddedToDeck)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
+
+        }
+
     }
 }
