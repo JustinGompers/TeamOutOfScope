@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>My Decks</h2>
+        <h2>{{this.ID.firstName}}'s Decks</h2>
         <div id="Decks">
             <span v-for="deck in UserDecks" v-bind:key="deck.deck_id" :value="deck">
                 <span class="decklist">
@@ -15,7 +15,7 @@
 <script>
 export default {
     created(){
-            this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID ;
+            this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID.userId ;
             fetch(this.apiURL,{
                     method: 'GET'
                     })
@@ -30,9 +30,8 @@ export default {
     name: 'ViewUserDecks',
     props: {
         ID: {
-            type: Number,
+            type: Object,
             required: true,
-            default: 0
         },
         ADD: {
             type: Boolean,
@@ -48,7 +47,7 @@ export default {
     watch:{
         ID: function(newVal, oldVal){
             if(newVal !== oldVal){
-                this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID ;
+                this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID.userId ;
                 fetch(this.apiURL,{
                     method: 'GET'
                     })
@@ -63,7 +62,7 @@ export default {
         },
         ADD: function(newVal, oldVal){
             if(newVal !== oldVal){
-                this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID ;
+                this.apiURL = "https://localhost:44337/api/deck/user/" + this.ID.userId ;
                 fetch(this.apiURL,{
                     method: 'GET'
                     })
@@ -93,9 +92,14 @@ export default {
     },
     methods: {
         DeckDecided(id){
-            console.log(id.deck_id);
+            if(id === this.ChosenDeck){
+                this.ChosenDeck = {}
+                this.$emit('chosenDeck', id);
+            }else{
+                console.log(id.deck_id);
             this.ChosenDeck = id
             this.$emit('chosenDeck', this.ChosenDeck);
+            }
         }
     }
 }

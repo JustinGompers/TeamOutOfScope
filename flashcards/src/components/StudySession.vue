@@ -22,11 +22,11 @@
                         </vue-flip>
                         </div>
                         
-                        <div id="studyanswers">
+                        <div id="studyanswers" v-if="isEnd === true">
                         <span id="right" v-if="isEnd === true">Right Answers: {{rightDeck.length}}</span>
                         <span id="wrong" v-if="isEnd === true">Wrong Answers: {{wrongDeck.length}}</span>
                         </div>
-                        <div id=studysessionbuttons>
+                        <div id=studysessionbuttons v-if="isEnd === true">
                                 <button id="leftButton" v-if="isEnd === true" v-on:click.prevent="show()">Review Deck Again</button>
                                 <button id="rightButton" v-if="isEnd === true" v-on:click.prevent="hide()">Leave Session</button> 
                         </div>
@@ -205,11 +205,11 @@ cursor: pointer;
 }
 #studyanswers #right{
     background: green;
-    border: solid green;
+    border: solid black;
 }
 #studyanswers #wrong{
     background: red;
-    border: solid red;
+    border: solid black;
 }
 </style>
 

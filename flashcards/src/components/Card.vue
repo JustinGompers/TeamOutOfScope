@@ -21,7 +21,8 @@
         </div>
         <div>
           <label>Tags: </label>
-        <input type="text" id="tags" v-validate="'required'" name="tag" placeholder="Enter tags" v-model="tags" />
+        <input type="text" id="tags" v-validate="'required|max:20'" name="tag" placeholder="Enter tags" v-model="tags" />
+        <span>{{ errors.first('tag') }}</span>
         </div>
         <div id="Buttons">
          <button id="SubmitButton">Submit</button>

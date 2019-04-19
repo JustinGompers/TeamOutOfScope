@@ -44,21 +44,21 @@
     </fixed-header>
     <div class='content'>
       <div id="SelectDeck">
-      <button v-if="!this.SelectedDeck.deck_id" class="selectbar" @click="Selected">Select Deck</button>
+      <button v-if="!this.SelectedDeck.deck_id && CardPage === true" class="selectbar" @click="Selected">Select Deck</button>
       </div>
       <div class="choices" v-if="this.User.userName || this.SelectedDeck.deck_id">
-        <UpdateDeck v-if="!this.SelectedDeck.deck_id && !this.ChosenPublicDeck.deck_id" :chosenDeck=this.SelectedDeck.deck_id @deck-update="addedDeck"></UpdateDeck>
-        <SearchCard v-if="this.SelectedPublic === false && this.SelectedDeck.deck_id" :DID=this.SelectedDeck.deck_id @CardTagAdded="addedCard"></SearchCard>
-        <Card v-if="this.SelectedDeck.deck_id && this.SelectedPublic === false" :ID=this.SelectedDeck.deck_id @addCard="addedCard"></Card>
-        <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck.deck_id && !this.ChosenPublicDeck.deck_id"></Deck>
-        <StudySession v-if="this.SelectedDeck.deck_id" :user=this.User.userId :Cards=this.Cards :Deck=this.SelectedDeck></StudySession>
-        <UpdateCard v-if="this.SelectedDeck.deck_id && this.SelectedPublic === false" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
-        <ViewCard v-if="this.SelectedDeck.deck_id" :Card=this.ChosenCard></ViewCard>
+        <UpdateDeck v-if="!this.SelectedDeck.deck_id && !this.ChosenPublicDeck.deck_id && CardPage === true" :chosenDeck=this.SelectedDeck @deck-update="addedDeck"></UpdateDeck>
+        <SearchCard v-if="this.CardPicked === false && this.SelectedPublic === false && this.SelectedDeck.deck_id" :DID=this.SelectedDeck.deck_id @CardTagAdded="addedCard"></SearchCard>
+        <Card v-if="this.CardPicked === true && this.SelectedDeck.deck_id && this.SelectedPublic === false" :ID=this.SelectedDeck.deck_id @addCard="addedCard"></Card>
+        <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck.deck_id && !this.ChosenPublicDeck.deck_id && CardPage === false"></Deck>
+        <StudySession v-if="this.CardPicked === false && this.SelectedDeck.deck_id" :user=this.User.userId :Cards=this.Cards :Deck=this.SelectedDeck></StudySession>
+        <UpdateCard v-if="this.CardPicked === true && this.SelectedDeck.deck_id && this.SelectedPublic === false" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
+        <ViewCard v-if="this.CardPicked === true && this.SelectedDeck.deck_id" :Card=this.ChosenCard></ViewCard>
         <button class="selectbar" v-if="this.SelectedDeck.deck_id" @click="Return">Return</button>
         </div>
       <h2 v-if="this.SelectedDeck.deck_id">{{this.SelectedDeck.deckName}} Cards</h2>
        <ViewDeckCards :DID=this.SelectedDeck.deck_id v-if="this.SelectedDeck.deck_id" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
-       <ViewUserDecks v-if="this.User.userName && !this.SelectedDeck.deck_id" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded :Change=this.ChosenPublicDeck.deck_id></ViewUserDecks>
+       <ViewUserDecks v-if="this.User.userName && !this.SelectedDeck.deck_id" :ID=this.User @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded :Change=this.ChosenPublicDeck.deck_id></ViewUserDecks>
       </div>
       
       
@@ -163,6 +163,8 @@ export default {
       SelectedDeck: {},
       SelectedCard: 0,
       SelectedPublic: false,
+      CardPage: false,
+      CardPicked: false,
       apiURL: "https://localhost:44337/api/deck/user/1"
     }
   },
@@ -174,8 +176,13 @@ export default {
       this.User = UserInformation;
     },
     getDeckInfo(DeckInfo){
-      this.ChosenUserDeck = DeckInfo;
+      if (DeckInfo === this.ChosenUserDeck && this.CardPage === true){
+        this.CardPage = false;
+      }else{
+        this.ChosenUserDeck = DeckInfo;
       this.ChosenPublicDeck = {};
+      this.CardPage = true;
+      }
     },
     getCards(DeckCards){
       this.Cards = DeckCards;
@@ -205,22 +212,36 @@ export default {
         this.SelectedDeck = this.ChosenUserDeck
       }else{
         this.SelectedDeck = this.ChosenPublicDeck
+        this.CardPage = true;
       }
     },
     getCardInfo(card){
-      this.ChosenCard = card;
+      if(card === this.ChosenCard && this.CardPicked === true){
+        this.CardPicked = false;
+      }else{
+        this.ChosenCard = card;
+        this.CardPicked = true;
+      }
     },
     UserReset(){
       this.User = {};
     },
     SelectedPublicDeck(Deck){
-      this.ChosenPublicDeck = Deck;
+      if(this.ChosenPublicDeck === Deck){
+        this.ChosenPublicDeck = {};
+        this.SelectedPublic = false;
+        this.CardPage = false;
+      }else{
+        this.ChosenPublicDeck = Deck;
       this.ChosenUserDeck = {};
       this.SelectedPublic = true;
+      this.CardPage = true;
+      }
     },
     Return(){
       this.SelectedDeck = 0;
       this.SelectedPublic = false;
+      this.CardPage = false;
     }
   }
 }

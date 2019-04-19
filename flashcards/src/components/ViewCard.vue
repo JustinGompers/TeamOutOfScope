@@ -72,6 +72,7 @@ export default {
 }
 .flipcard p{
     font-size: 22pt;
+    text-align: center;
 }
 .flipcard{
     padding-left: 50px;

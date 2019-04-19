@@ -80,8 +80,13 @@ export default {
     },
     methods:{
         CardDecided(chosen){
-            this.ChosenCard = chosen;
+            if(chosen === this.ChosenCard){
+                this.ChosenCard = {}
+                this.$emit('chosenCard', chosen);
+            }else{
+                this.ChosenCard = chosen;
             this.$emit('chosenCard', this.ChosenCard);
+            }
         }
     }
 }

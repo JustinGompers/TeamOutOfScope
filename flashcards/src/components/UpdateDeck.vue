@@ -13,7 +13,7 @@
                 <div id="formContent">
                 <div id="new-deck-name">
                     <label>New Deck Name: </label>
-                    <input type="text" id="deck-name" placeholder="if applicable" v-model="deckName" name="deckName"/>
+                    <input type="text" id="deck-name" v-validate="'max:25'" placeholder="if applicable" v-model="deckName" name="deckName"/>
                 </div>
                 <div id="new-deck-category">
                     <span id="cat">Choose the category of your deck:</span>
