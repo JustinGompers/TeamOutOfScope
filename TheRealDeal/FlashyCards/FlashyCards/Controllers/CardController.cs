@@ -34,6 +34,8 @@ namespace FlashyCards.Controllers
             return NotFound();
         }
 
+
+
         // Returns List of Flashcards associated with a tag, GET API(url = api/Card/tag/{tag})
         [HttpGet("tag/{tag}", Name = "GetFlashCardsByTag")]
         public ActionResult<List<FlashCard>> GetFlashCardsByTag(string tag)
@@ -45,6 +47,8 @@ namespace FlashyCards.Controllers
             }
             return NotFound();
         }
+        
+       
 
         //Creates a FlashCard Associated with a Deck, POST API(url = api/Card/{deckID})
         [HttpPost("{deckID}")]
@@ -122,6 +126,24 @@ namespace FlashyCards.Controllers
             {
                 return NotFound();
             }
+        }
+
+        //Update to add card to deck.  
+        //Normally HttpPut but CORS causes errors so using POST and changing route
+        [HttpPost("update/{deckID}/{cardID}")]
+        public ActionResult AddCardToDeck(int deckId, int cardId)
+        {
+            bool isAddedToDeck = Dal.AddCardToDeck(deckId, cardId);
+
+            if (isAddedToDeck)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
+
         }
 
     }
