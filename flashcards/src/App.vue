@@ -242,6 +242,7 @@ export default {
       this.SelectedDeck = 0;
       this.SelectedPublic = false;
       this.CardPage = false;
+      this.CardPicked = false;
     }
   }
 }
