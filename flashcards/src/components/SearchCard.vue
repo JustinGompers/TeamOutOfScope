@@ -12,6 +12,11 @@
           <label>Enter a tag: </label>
         <input type="text" v-validate="'required'" id="search" placeholder="i.e. algebra" name="search" v-model="search" />
         </div>
+        <div id="SearchButtons">
+         <button id="SubmitButton">Submit</button>
+        <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
+        </div>
+      </form>
         <div id="searchtable">
             <tr>
                 <th>Card Question?</th>
@@ -24,11 +29,6 @@
                 <td id="addbutton"><button @click="addToDeck(card.cardID)">Add to Deck</button></td>
             </tr>
         </div>
-        <div id="Buttons">
-         <button id="SubmitButton">Submit</button>
-        <button id="CancelButton" v-on:click.prevent="hide()">Cancel</button>
-        </div>
-      </form>
       </div>
     </modal>
     </div>
@@ -40,7 +40,13 @@
 <script>
 export default {
     name: 'SearchCard',
-
+    props:{
+        DID:{
+            type: Number,
+            required: true,
+            default: 0
+        }
+    },
     data() {
         return {
 
@@ -66,7 +72,7 @@ export default {
                 this.cards = data;
             })
             .catch(err => {
-                err
+                console.log(err);
             });
             this.search = '';
             this.showFormSearch = false;
@@ -76,8 +82,18 @@ export default {
         }
     })
     },
-    addToDeck(){
-
+    addToDeck(ID){
+        fetch("https://localhost:44337/api/Card/update/" + this.DID + "/" + ID, {
+            method: 'POST'
+        })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        alert('The Card has been added to the deck!');
+        this.$emit('CardTagAdded', ID);
     },
     show(){
             this.$modal.show('SearchCard');
@@ -89,11 +105,17 @@ export default {
     }
 </script>
 <style>
+#searchtable{
+    padding-left: 20px;
+}
 #seachbar{
     padding-bottom: 10px;
 }
 table, th, td {
     border: 1px solid black;  
+}
+th{
+    background: #FF983E;
 }
 th, td{
     padding-top: 5px;
@@ -104,7 +126,10 @@ th, td{
 }
 #addbutton button{
     width: 125px;
-    height: 50px;
+    height: 25px;
+    background: #800020;
+    border: solid #FF983E;
+    color: white;
 }
 #searchcard{
     font-size: 12pt;
@@ -149,22 +174,19 @@ th, td{
 div input{
     align-items: center;
 }
-#Buttons{
-    display: flex;
-    justify-content: center;
-    justify-content: space-around;
-    padding-top: 5px;
+#SearchButtons{
+    padding-left: 50px;
+    padding-bottom: 5px;
 }
-#buttons button{
+#SearchButtons button{
+        display: inline;
         background: #800020;
         color: white;
-        width: 300px;
-        height: 50px;
-        font-size: 25px;
+        width: 100px;
+        height: 25px;
+        font-size: 13px;
         cursor: pointer;
 }
-
-
 </style>
 
     

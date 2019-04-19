@@ -2,13 +2,15 @@
 <div class="update-deck-section">
         <button id="update-deck-button" v-on:click.prevent="ShowUpdateDeckForm()">Update Deck</button>
 
-        <modal id='update-deck-modal' name="update-deck-modal" :width="600" :height="300">
+        <modal id='update-deck-modal' name="update-deck-modal" :width="600" :height="200">
           <div id="modal-header">
             <h2>Update Deck Form</h2>
           </div>
 
           <div id="modal-body">
+              <p id="warning">*Unfilled Content will stay the same.*</p>
             <form id="update-deck-form" @submit.prevent="UpdateDeck()">
+                <div id="formContent">
                 <div id="new-deck-name">
                     <label>New Deck Name: </label>
                     <input type="text" id="deck-name" placeholder="if applicable" v-model="deckName" name="deckName"/>
@@ -21,6 +23,11 @@
                         </select>
                     <span>{{ errors.first('category_id') }}</span>
                 </div>
+                <div id="IsSharing">
+                            <span class="Share">Would you like to publicly share your deck?</span>
+                            <input type="checkbox" id="shareDeck" true-value="true" false-value="false" v-model="isOpen" name="isOpen">
+                    </div>
+                    </div>
                 <div id=submit-deck-update-buttons>
                     <button id="submit-deck-update-button">Submit</button>
                     <button id="cancel-deck-update-button" v-on:click.prevent="HideUpdateDeckForm()">Cancel</button>
@@ -52,6 +59,7 @@ export default {
         return {
             deckName: '',
             categories: [],
+            category_id: 0,
             apiURL: "https://localhost:44337/api/deck/update/",
             updateDeck: false 
         }
@@ -107,6 +115,10 @@ export default {
 </script>
 
 <style>
+#warning{
+    font-size: 8pt;
+    padding-left: 15px;
+}
 .update-deck-section{
     display: inline;
 }
@@ -118,6 +130,17 @@ export default {
     font-size: 15pt;
     color: white;
     cursor: pointer;
+}
+#submit-deck-update-buttons button{
+    background: #800020;
+        color: white;
+        width: 300px;
+        height: 50px;
+        font-size: 25px;
+        cursor: pointer;
+}
+#formContent{
+    padding-left: 15px;
 }
 </style>
 

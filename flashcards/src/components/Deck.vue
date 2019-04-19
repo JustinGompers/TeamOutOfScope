@@ -1,7 +1,7 @@
 <template>
   <div class= "deck"> 
       <button id="createDeck" v-on:click.prevent="show()">Create a Deck</button>
-      <modal id="Form" name="createDeck" :width="600" :height="285">
+      <modal id="Form" name="createDeck" :width="600" :height="225">
         <div id="modal-header">
             <h2>Create a Deck Form</h2>
         </div>
@@ -10,7 +10,7 @@
                 
                     <div id="question">
                         <label>Question: </label>         
-                    <input type="text" id="deck-name" v-validate="'required'" placeholder="Enter name of deck" v-model="deckName" name="deckName"/>
+                    <input type="text" id="deck-name" v-validate="'required|max:25'" placeholder="Enter name of deck" v-model="deckName" name="deckName"/>
                     <span>{{ errors.first('deckName')}}</span>
                     </div>
                     <input type="hidden" :value="ID" name="person_id"/>

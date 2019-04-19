@@ -44,21 +44,21 @@
     </fixed-header>
     <div class='content'>
       <div id="SelectDeck">
-      <button v-if="!this.SelectedDeck" class="selectbar" @click="Selected">Select Deck</button>
+      <button v-if="!this.SelectedDeck.deck_id" class="selectbar" @click="Selected">Select Deck</button>
       </div>
-      <div class="choices" v-if="this.User.userName || this.SelectedDeck">
-        <UpdateDeck v-if="!this.SelectedDeck" :chosenDeck=this.ChosenDeck.deck_id @deck-update="addedDeck"></UpdateDeck>
-        <SearchCard v-if="this.SelectedPublic === false && this.SelectedDeck"></SearchCard>
-        <Card v-if="this.SelectedDeck && this.SelectedPublic === false" :ID=this.ChosenDeck.deck_id @addCard="addedCard"></Card>
-        <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck"></Deck>
-        <StudySession v-if="this.SelectedDeck" :user=this.User.userId :Cards=this.Cards :Deck=this.ChosenDeck></StudySession>
-        <UpdateCard v-if="this.SelectedDeck && this.SelectedPublic === false" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
-        <ViewCard v-if="this.SelectedDeck" :Card=this.ChosenCard></ViewCard>
-        <button class="selectbar" v-if="this.SelectedDeck" @click="Return">Return</button>
+      <div class="choices" v-if="this.User.userName || this.SelectedDeck.deck_id">
+        <UpdateDeck v-if="!this.SelectedDeck.deck_id && !this.ChosenPublicDeck.deck_id" :chosenDeck=this.SelectedDeck.deck_id @deck-update="addedDeck"></UpdateDeck>
+        <SearchCard v-if="this.SelectedPublic === false && this.SelectedDeck.deck_id" :DID=this.SelectedDeck.deck_id @CardTagAdded="addedCard"></SearchCard>
+        <Card v-if="this.SelectedDeck.deck_id && this.SelectedPublic === false" :ID=this.SelectedDeck.deck_id @addCard="addedCard"></Card>
+        <Deck :ID=this.User.userId @addDeck="addedDeck" v-if="!this.SelectedDeck.deck_id && !this.ChosenPublicDeck.deck_id"></Deck>
+        <StudySession v-if="this.SelectedDeck.deck_id" :user=this.User.userId :Cards=this.Cards :Deck=this.SelectedDeck></StudySession>
+        <UpdateCard v-if="this.SelectedDeck.deck_id && this.SelectedPublic === false" :chosenCard=this.ChosenCard.cardID @updateCard="addedCard"></UpdateCard>
+        <ViewCard v-if="this.SelectedDeck.deck_id" :Card=this.ChosenCard></ViewCard>
+        <button class="selectbar" v-if="this.SelectedDeck.deck_id" @click="Return">Return</button>
         </div>
-      <h2 v-if="this.SelectedDeck">{{this.ChosenDeck.deckName}} Cards</h2>
-       <ViewDeckCards :DID=this.ChosenDeck.deck_id v-if="this.SelectedDeck" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
-       <ViewUserDecks v-if="this.User.userName" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded></ViewUserDecks>
+      <h2 v-if="this.SelectedDeck.deck_id">{{this.SelectedDeck.deckName}} Cards</h2>
+       <ViewDeckCards :DID=this.SelectedDeck.deck_id v-if="this.SelectedDeck.deck_id" :ADD=this.CardAdded @cardData="GroupCards" @chosenCard="getCardInfo"></ViewDeckCards>
+       <ViewUserDecks v-if="this.User.userName && !this.SelectedDeck.deck_id" :ID=this.User.userId @chosenDeck="getDeckInfo" @DeckCards="getCards" :ADD=this.DeckAdded :Change=this.ChosenPublicDeck.deck_id></ViewUserDecks>
       </div>
       
       
@@ -66,13 +66,13 @@
       
 
 
-        <div v-if="!this.SelectedDeck">
+        <div v-if="!this.SelectedDeck.deck_id">
         <img class="public" src="./assets/publicdecks.png">
         <div id="Decks">
             <span v-for="deck in PublicDecks" v-bind:key="deck.deck_id" :value="deck">
                 <div class="decklist">
                 <img src="./assets/cards.png">
-                <button @click="SelectedPublicDeck(deck)" :class="{'active': deck.deck_id == ChosenDeck.deck_id}"> {{deck.deckName}}</button>
+                <button @click="SelectedPublicDeck(deck)" :class="{'active': deck.deck_id == ChosenPublicDeck.deck_id}"> {{deck.deckName}}</button>
                 </div>
             </span>
         </div>
@@ -103,6 +103,7 @@ import UpdateDeck from './components/UpdateDeck.vue'
 import FixedHeader from 'vue-fixed-header'
 import { Slide } from 'vue-burger-menu'
 import VueFlip from 'vue-flip';
+import { setTimeout } from 'timers';
 
 // Vue.components('Deck', {
 //   props: ['UserId'],
@@ -117,7 +118,7 @@ export default {
     created() {
         console.log('Im First');
         
-        fetch("https://localhost:44337/api/deck/user/1", {
+        fetch("https://localhost:44337/api/deck/Public", {
           method: 'GET'
         })
         .then(response => {
@@ -151,14 +152,15 @@ export default {
     return {
       User: {},
       Deck: [],
-      ChosenDeck: {},
+      ChosenUserDeck: {},
+      ChosenPublicDeck: {},
       ChosenCard: {},
       Cards: [],
       PublicDecks: [],
       showDecks: false,
       CardAdded: false,
       DeckAdded: false,
-      SelectedDeck: 0,
+      SelectedDeck: {},
       SelectedCard: 0,
       SelectedPublic: false,
       apiURL: "https://localhost:44337/api/deck/user/1"
@@ -172,7 +174,8 @@ export default {
       this.User = UserInformation;
     },
     getDeckInfo(DeckInfo){
-      this.ChosenDeck = DeckInfo;
+      this.ChosenUserDeck = DeckInfo;
+      this.ChosenPublicDeck = {};
     },
     getCards(DeckCards){
       this.Cards = DeckCards;
@@ -182,12 +185,27 @@ export default {
     },
     addedDeck(){
       this.DeckAdded = !this.DeckAdded
+      setTimeout(() =>
+      fetch("https://localhost:44337/api/deck/Public", {
+          method: 'GET'
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          this.PublicDecks = data;
+          console.log(this.PublcDecks);
+        }), 500)
     },
     GroupCards(Group){
         this.Cards = Group;
     },
     Selected(){
-      this.SelectedDeck = this.ChosenDeck.deck_id;
+      if(this.ChosenUserDeck.deck_id){
+        this.SelectedDeck = this.ChosenUserDeck
+      }else{
+        this.SelectedDeck = this.ChosenPublicDeck
+      }
     },
     getCardInfo(card){
       this.ChosenCard = card;
@@ -196,7 +214,8 @@ export default {
       this.User = {};
     },
     SelectedPublicDeck(Deck){
-      this.ChosenDeck = Deck;
+      this.ChosenPublicDeck = Deck;
+      this.ChosenUserDeck = {};
       this.SelectedPublic = true;
     },
     Return(){

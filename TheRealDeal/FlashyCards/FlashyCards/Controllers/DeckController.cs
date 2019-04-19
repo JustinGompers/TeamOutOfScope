@@ -94,6 +94,22 @@ namespace FlashyCards.Controllers
             return NotFound();
         }
 
+        [HttpGet("Public")]
+        public ActionResult<List<UserFlashCardDeckWithID>> GetPublicDecks()
+        {
+            List<UserFlashCardDeckWithID> userDecks = deckOptionsDAL.GetPublicDecks();
+            if (userDecks != null)
+            {
+                return userDecks;
+            }
+            return NotFound();
+        }
 
+        [HttpDelete("Admin/Delete/{DeckID}")]
+        public ActionResult AdminDeleteDeck(int DeckID)
+        {
+            
+            return NotFound();
+        }
     }
 }

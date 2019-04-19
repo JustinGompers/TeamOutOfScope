@@ -3,7 +3,7 @@
         <span v-for="card in Cards" v-bind:key="card.cardID" :value="card">
             <span class="cardlist">
                 <img src="../assets/cardlogo.png">
-                <button @click="CardDecided(card)" :class="{'active': card.cardID == ChosenCard.cardID}"> {{card.question}}</button>
+                <button @click="CardDecided(card)" :class="{'active': card.cardID == ChosenCard.cardID}"> {{card.question.slice(0,25)}}...</button>
             </span>
         </span>
     </div>

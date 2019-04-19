@@ -27,6 +27,7 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
             "inner join User_Decks on Deck.Deck_id = User_Decks.Deck_id " +
             "inner join User_info on User_Decks.Person_id = User_info.Person_id " +
             "where Deck.Deck_id = @deckID;";
+        public const string SQL_GetPublicDecks = "Select * FROM Deck WHERE Share_Deck=1";
 
         public DeckOptionsDAL(string connectionString)
         {
@@ -200,6 +201,69 @@ namespace FlashyCards.DAL.FlashCardDeckDAL
                 throw;
             }
             return tempDeck;
+        }
+
+        public List<UserFlashCardDeckWithID> GetPublicDecks()
+        {
+            List<UserFlashCardDeckWithID> deckList = new List<UserFlashCardDeckWithID>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GetUserDecks, conn);
+                    cmd.Parameters.AddWithValue("@userID", 1);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        UserFlashCardDeckWithID tempDeck = new UserFlashCardDeckWithID();
+                        tempDeck.deck_id = Convert.ToInt32(reader["Deck_id"]);
+                        tempDeck.deckName = Convert.ToString(reader["Name"]);
+                        tempDeck.category_id = Convert.ToInt32(reader["Category_id"]);
+                        tempDeck.isSharing = Convert.ToBoolean(reader["Share_Deck"]);
+                        tempDeck.person_id = Convert.ToInt32(reader["Person_id"]);
+                        deckList.Add(tempDeck);
+                    }
+                    reader.Close();
+                    cmd = new SqlCommand(SQL_GetPublicDecks, conn);
+                    SqlDataReader reader2 = cmd.ExecuteReader();
+                    while (reader2.Read())
+                    {
+                        UserFlashCardDeckWithID tempDeck = new UserFlashCardDeckWithID();
+                        tempDeck.deck_id = Convert.ToInt32(reader2["Deck_id"]);
+                        tempDeck.deckName = Convert.ToString(reader2["Name"]);
+                        tempDeck.category_id = Convert.ToInt32(reader2["Category_id"]);
+                        tempDeck.isSharing = Convert.ToBoolean(reader2["Share_Deck"]);
+                        deckList.Add(tempDeck);
+                    }
+
+                }
+            }
+            catch (SqlException)
+            {
+
+                throw;
+            }
+            return deckList;
+        }
+
+        public void AdminDeleteDeck(int Deckid)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GetUserDecks, conn);
+                    cmd.Parameters.AddWithValue("@userID", 1);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

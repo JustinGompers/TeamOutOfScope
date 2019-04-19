@@ -38,6 +38,11 @@ export default {
             type: Boolean,
             required: true,
             default: false
+        },
+        Change:{
+            type: Number,
+            required: true,
+            default: 0
         }
     },
     watch:{
@@ -70,7 +75,12 @@ export default {
                     })
                     .catch(e => console.log(e));
             }
-        }
+        },
+            Change: function(newVal, oldVal){
+                if(newVal !== 0){
+                this.ChosenDeck = {};
+                }
+            }
     },
     data(){
         return{

@@ -2,18 +2,18 @@
 <div class="choose-card">
     <button id="choose-card-button" v-on:click.prevent="showUpdateCardForm()">Update Card</button>
 
-    <modal id='update-card-modal' name="update-card-modal" :width="600" :height="300">
+    <modal id='update-card-modal' name="update-card-modal" :width="600" :height="230">
         <div id="modal-header">
             <h2>Update Card Form</h2>
         </div>
 
         <div id="modal-body">
-
+            <p id="warning">*Unfilled Content will stay the same.*</p>
             <form id="update-card-form" @submit.prevent="Button()">
-                <span>{{this.chosenCard}}</span>
-                <div id="body">
+                <div id="updatecontent">
+                    <div>
                     <label>New Question: </label>
-                    <input type="text" id="question" placeholder="if applicable" v-model="question" name="question"/>
+                    <input type="text" id="updatequestion" placeholder="if applicable" v-model="question" name="question"/>
                 </div>
                 <div>
                     <label>New Answer: </label>
@@ -36,7 +36,8 @@
                     <!-- <input type="hidden" :value="this.chosenDeck" name="deck_id"/> -->
                     <input type="hidden" :value="4/*this.chosenCard*/" name="cardID" />
                 </div>
-                <div>
+                </div>
+                <div id="buttons">
                     <button id="SubmitButton">Submit</button>
                     <button id="CancelButton" v-on:click.prevent="hideUpdateCardForm()">Cancel</button>
                 </div>
@@ -118,6 +119,18 @@ export default {
 </script>
 
 <style>
+#updatecontent{
+    padding-left: 15px;
+}
+#updatecontent #answer{
+    margin-left: 11px;
+}
+#updatecontent #image{
+    margin-left: 20px;
+}
+#updatecontent #tags{
+    margin-left: 30.5px;
+}
 #choose-card-button{
     width: 150px;
     height: 50px;
