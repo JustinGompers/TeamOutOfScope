@@ -25,7 +25,8 @@
                 </div>
                 <div>
                     <label>New Tags: </label>
-                    <input type="text" id="tags" placeholder="if applicable" v-model="tag" name="tag"/>
+                    <input type="text" id="tags" v-validate="'max:20'" placeholder="if applicable" v-model="tag" name="tag"/>
+                    <span>{{ errors.first('tag') }}</span>
                 </div>
 
                 <!-- add a hidden field that also passes through the deck id 

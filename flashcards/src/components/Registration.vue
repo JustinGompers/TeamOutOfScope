@@ -15,12 +15,12 @@
             </div>
             <div id="P">
                 <label>Password: </label>
-                <input type="text" v-validate="'required|min:8'" v-model="User.password" id="Registration-password" name="password" ref="password" placeholder="Enter your password">
+                <input type="password" v-validate="'required|min:8'" v-model="User.password" id="Registration-password" name="password" ref="password" placeholder="Enter your password">
                 <span>{{ errors.first('password') }}</span>
             </div>
             <div id="P2">
                 <label>Password2: </label>
-                <input type="text" v-validate="'required|confirmed:password'" v-model="password2" name="password2" placeholder="Confirm your passoword.">
+                <input type="password" v-validate="'required|confirmed:password'" v-model="password2" name="password2" placeholder="Confirm your passoword.">
                 <span>{{ errors.first('password2') }}</span>
             </div>
             <div id="FN">
